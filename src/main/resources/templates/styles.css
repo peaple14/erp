@@ -15,7 +15,7 @@
 }
 
 .nav-links li {
-    margin: 0 10px;
+    margin: 0 15px;
 }
 
 .nav-links a {
@@ -23,6 +23,13 @@
     color: #fff;
     font-weight: bold;
 }
+.company-name {
+    color: #fff; /* 회사명 색상 */
+    font-size: 20px; /* 회사명 폰트 크기 */
+    font-weight: bold;
+    margin-right: 100px;
+}
+
 
 /* 전체 컨테이너 스타일 */
 .container {
@@ -129,3 +136,4 @@
 .tab-content.active {
     display: block;
 }
+
