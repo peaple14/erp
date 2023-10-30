@@ -40,9 +40,16 @@ public class NoticeEntity {
 
 
     //시간되면 더티체킹 수정용.
-    public void update(String noticeTitle, String noticeMemo){
-        this.noticeTitle = noticeTitle;
-        this.noticeMemo = noticeMemo;
+    public void update(String noticeTitle, String noticeMemo) {
+        System.out.println("시작");
+        if (noticeTitle != null) {
+            this.noticeTitle = noticeTitle;
+            System.out.println("noticeTitle = " + noticeTitle + ", noticeMemo = " + noticeMemo);
+            System.out.println("noticeTitle2 = " + this.noticeTitle + ", noticeMemo2 = " + this.noticeMemo);
+        }
+        if (noticeMemo != null) {
+            this.noticeMemo = noticeMemo;
+        }
     }
 
 

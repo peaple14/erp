@@ -13,6 +13,9 @@
     <p><strong>작성자:</strong> <span th:text="${notice.writer}"></span></p>
     <p><strong>작성일:</strong> <span th:text="${notice.noticeCreatedTime}"></span></p>
     <p><strong>내용:</strong> <span th:text="${notice.noticeMemo}"></span></p>
+
+    <!-- 수정 버튼 추가 -->
+    <a th:href="@{/notice_edit/{id}(id=${notice.id})}">수정</a>
 </div>
 <div th:if="${notice == null}">
     <p>해당 ID에 대한 공지사항이 없습니다.</p>

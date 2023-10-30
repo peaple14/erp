@@ -7,6 +7,7 @@ import com.example.erp.faq.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
@@ -48,5 +49,12 @@ public class NoticeSerivce {
         } else {
             return null;
         }
+    }
+
+    @Transactional
+    public void update(Long id, NoticeDto noticeDto) {
+        NoticeEntity noticeEntity = noticeRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("공지사항: " + id + " 를 찾을수 없습니다."));
+        noticeEntity.update(noticeDto.getNoticeTitle(),noticeDto.getNoticeMemo());
     }
 }
