@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,5 +37,16 @@ public class NoticeSerivce {
 
 
 
-
+    //게시글 자세히보기
+    @Transactional
+    public NoticeDto findById(long id) {
+        Optional<NoticeEntity> optionalNoticeEntity = noticeRepository.findById(id);
+        if (optionalNoticeEntity.isPresent()){
+            NoticeEntity noticeEntity = optionalNoticeEntity.get();
+            NoticeDto noticeDTO = NoticeDto.toNoticeDTO(noticeEntity);
+            return noticeDTO;
+        } else {
+            return null;
+        }
+    }
 }
