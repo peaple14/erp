@@ -93,19 +93,18 @@ function changeSidebar(menu) {
 
     if (menu === 'menu1') {
         sidebarContent = `
-                    <ul class="sidebar-links">
-                        <li><a href="#" onclick="addTab('Tab1','tab1.html')">제품관리</a></li>
-                        
-                    </ul>
-                `;
+        <ul class="sidebar-links">
+            <li><a href="#" onclick="addTab('Tab1', 'html/tab1.html')">제품관리</a></li>
+        </ul>
+    `;
     } else if (menu === 'menu2') {
         sidebarContent = `
-                    <ul class="sidebar-links">
-                        <li><a href="#" onclick="addTab('Tab2','tab2.html')">발주 거래처</a></li>
-                        <li><a href="#" onclick="addTab('Tab3','tab3.html')">수주 거래처</a></li>
-                        <li><a href="#" onclick="addTab('Tab4','tab1.html')">미수금</a></li>
-                    </ul>
-                `;
+        <ul class="sidebar-links">
+            <li><a href="#" onclick="addTab('Tab2', 'html/tab2.html')">발주 거래처</a></li>
+            <li><a href="#" onclick="addTab('Tab3', 'html/tab3.html')">수주 거래처</a></li>
+            <li><a href="#" onclick="addTab('Tab4', 'html/tab4.html')">미수금</a></li>
+        </ul>
+    `;
     } else if (menu === 'menu3') {
         sidebarContent = `
                     <ul class="sidebar-links">
