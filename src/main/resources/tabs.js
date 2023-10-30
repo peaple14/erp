@@ -12,7 +12,7 @@ function showTab(tabId) {
     }
 }
 
-function addTab(tabName) {
+function addTab(tabName, pageUrl) {
     // 새로운 탭 생성
     var tabsContainer = document.getElementById('tabs');
     var newTabId = 'tab' + (tabsContainer.childElementCount + 1); // 고유한 ID 생성
@@ -22,17 +22,6 @@ function addTab(tabName) {
     newTab.innerHTML = tabName;
     tabsContainer.appendChild(newTab);
 
-    // 새로운 탭의 내용 생성
-    var tabContents = document.getElementById('tabContents');
-    var newTabContent = document.createElement('div');
-    newTabContent.id = newTabId;
-    newTabContent.className = 'tab-content';
-    newTabContent.innerHTML = `
-        <h2>${tabName}</h2>
-        <p>${tabName}의 내용이 여기에 들어갑니다.</p>
-    `;
-    tabContents.appendChild(newTabContent);
-
     // 탭 클릭 이벤트 핸들러 등록
     newTab.addEventListener('click', function() {
         var activeTab = document.querySelector('.tab.active');
@@ -41,6 +30,7 @@ function addTab(tabName) {
         }
         newTab.classList.add('active');
         showTab(newTabId);
+        loadTab(pageUrl);
     });
 
     // 닫기 버튼 추가
@@ -57,8 +47,22 @@ function addTab(tabName) {
     if (tabsContainer.childElementCount === 1) {
         newTab.classList.add('active');
         showTab(newTabId);
+        loadTab(pageUrl);
     }
 }
+
+function loadTab(pageUrl) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            var tabContents = document.getElementById('tabContents');
+            tabContents.innerHTML = this.responseText;
+        }
+    };
+    xhttp.open("GET", pageUrl, true);
+    xhttp.send();
+}
+
 
 function removeTab(tabId) {
     // 탭 제거
@@ -80,8 +84,6 @@ function removeTab(tabId) {
     }
 }
 
-addTab('대시보드'); // 초기 탭 생성
-
 
 function changeSidebar(menu) {
     event.preventDefault(); // 기본 동작을 중단
@@ -92,28 +94,42 @@ function changeSidebar(menu) {
     if (menu === 'menu1') {
         sidebarContent = `
                     <ul class="sidebar-links">
-                        <li><a href="#" onclick="addTab('Tab1')">탭 1</a></li>
-                        <li><a href="#" onclick="addTab('Tab2')">탭 2</a></li>
-                        <li><a href="#" onclick="addTab('Tab3')">탭 3</a></li>
+                        <li><a href="#" onclick="addTab('Tab1','tab1.html')">제품관리</a></li>
+                        
                     </ul>
                 `;
     } else if (menu === 'menu2') {
         sidebarContent = `
                     <ul class="sidebar-links">
-                        <li><a href="#" onclick="addTab('Tab4')">탭 4</a></li>
-                        <li><a href="#" onclick="addTab('Tab5')">탭 5</a></li>
-                        <li><a href="#" onclick="addTab('Tab6')">탭 6</a></li>
+                        <li><a href="#" onclick="addTab('Tab2','tab2.html')">발주 거래처</a></li>
+                        <li><a href="#" onclick="addTab('Tab3','tab3.html')">수주 거래처</a></li>
+                        <li><a href="#" onclick="addTab('Tab4','tab1.html')">미수금</a></li>
                     </ul>
                 `;
     } else if (menu === 'menu3') {
         sidebarContent = `
                     <ul class="sidebar-links">
-                        <li><a href="#" onclick="addTab('Tab7')">탭 7</a></li>
-                        <li><a href="#" onclick="addTab('Tab8')">탭 8</a></li>
-                        <li><a href="#" onclick="addTab('Tab9')">탭 9</a></li>
+                        <li><a href="#" onclick="addTab('Tab5')">견적서관리</a></li>
+                        <li><a href="#" onclick="addTab('Tab6')">지출결의서</a></li>
+                    </ul>
+                `;
+    } else if (menu === 'menu4') {
+        sidebarContent = `
+                    <ul class="sidebar-links">
+                        <li><a href="#" onclick="addTab('Tab7')">주문현황</a></li>
+                        <li><a href="#" onclick="addTab('Tab8')">발주</a></li>
+                        <li><a href="#" onclick="addTab('Tab9')">수주</a></li>
+                    </ul>
+                `;
+    } else if (menu === 'menu5') {
+        sidebarContent = `
+                    <ul class="sidebar-links">
+                        <li><a href="#" onclick="addTab('Tab10')">고객불만접수</a></li>
+                        <li><a href="#" onclick="addTab('Tab11')">공지사항</a></li>
                     </ul>
                 `;
     }
 
     sidebar.innerHTML = sidebarContent;
 }
+
