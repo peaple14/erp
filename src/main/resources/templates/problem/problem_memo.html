@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>고객불만접수 세부 정보</title>
+</head>
+<body>
+<h1>고객불만접수 세부 정보</h1>
+<div th:if="${problem != null}">
+    <p><strong>ID:</strong> <span th:text="${problem.id}"></span></p>
+    <p><strong>제목:</strong> <span th:text="${problem.problemTitle}"></span></p>
+    <p><strong>작성자:</strong> <span th:text="${problem.writer}"></span></p>
+    <p><strong>작성일:</strong> <span th:text="${problem.problemCreatedTime}"></span></p>
+    <p><strong>내용:</strong> <span th:text="${problem.problemMemo}"></span></p>
+
+    <!-- 수정 버튼 추가 -->
+    <a th:href="@{/problem_edit/{id}(id=${problem.id})}">수정</a>
+</div>
+<div th:if="${problem == null}">
+    <p>해당 ID에 대한 공지사항이 없습니다.</p>
+</div>
+<a href="/problem_list">뒤로 가기</a>
+</body>
+</html>
