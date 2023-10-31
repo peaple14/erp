@@ -4,6 +4,8 @@ package com.example.erp.faq.service;
 import com.example.erp.faq.dto.NoticeDto;
 import com.example.erp.faq.entity.NoticeEntity;
 import com.example.erp.faq.repository.NoticeRepository;
+import com.example.erp.member.entity.MemberEntity;
+import com.example.erp.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,21 +21,25 @@ import java.util.stream.Collectors;
 public class NoticeSerivce {
 
     private final NoticeRepository noticeRepository;
+    private final MemberRepository memberRepository;
 
 
     //리스트띄어주기
     public List<NoticeDto> getAllNotices() {
         List<NoticeEntity> noticeEntities = noticeRepository.findAll();
         return noticeEntities.stream()
-                .map(NoticeDto::toNoticeDTO)
+                .map(NoticeDto::toNoticeDto)
                 .collect(Collectors.toList());
     }
 
     //저장용
     @Transactional
     public void save(NoticeDto noticeDTO) throws IOException {
-        NoticeEntity noticeEntity = NoticeEntity.toSaveEntity(noticeDTO);
-        noticeRepository.save(noticeEntity); //entity값으로 반환
+        String writerId = noticeDTO.getWriter();
+        //작성자 정보 찾기
+        MemberEntity writer = memberRepository.findByUserId(writerId).orElse(null);
+        NoticeEntity noticeEntity = NoticeEntity.toSaveEntity(noticeDTO, writer);
+        noticeRepository.save(noticeEntity); // entity 값으로 반환
     }
 
 
@@ -44,13 +50,14 @@ public class NoticeSerivce {
         Optional<NoticeEntity> optionalNoticeEntity = noticeRepository.findById(id);
         if (optionalNoticeEntity.isPresent()){
             NoticeEntity noticeEntity = optionalNoticeEntity.get();
-            NoticeDto noticeDTO = NoticeDto.toNoticeDTO(noticeEntity);
+            NoticeDto noticeDTO = NoticeDto.toNoticeDto(noticeEntity);
             return noticeDTO;
         } else {
             return null;
         }
     }
 
+    //공지사항 수정용
     @Transactional
     public void update(Long id, NoticeDto noticeDto) {
         NoticeEntity noticeEntity = noticeRepository.findById(id)

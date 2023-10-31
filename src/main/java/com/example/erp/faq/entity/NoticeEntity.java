@@ -1,17 +1,17 @@
 package com.example.erp.faq.entity;
 
-
 import com.example.erp.faq.dto.NoticeDto;
+import com.example.erp.member.entity.MemberEntity;
+import com.example.erp.member.repository.MemberRepository;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-
 @Entity
 @Data
-@Table(name="notice_table")
+@Table(name = "notice_table")
 public class NoticeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,34 +23,30 @@ public class NoticeEntity {
     @Column
     private String noticeMemo;
 
-    @Column
-    private String writer;
-
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdTime;
 
-    public static NoticeEntity toSaveEntity(NoticeDto noticeDTO){
+    @ManyToOne
+    @JoinColumn(name = "member_userId")
+    private MemberEntity user;
+
+    public static NoticeEntity toSaveEntity(NoticeDto noticeDTO, MemberEntity writer) {
         NoticeEntity noticeEntity = new NoticeEntity();
         noticeEntity.setNoticeTitle(noticeDTO.getNoticeTitle());
         noticeEntity.setNoticeMemo(noticeDTO.getNoticeMemo());
-        noticeEntity.setWriter(noticeDTO.getWriter());
+        noticeEntity.setUser(writer);
+
         return noticeEntity;
     }
 
-
-    //시간되면 더티체킹 수정용.
+    //더티체킹
     public void update(String noticeTitle, String noticeMemo) {
-        System.out.println("시작");
         if (noticeTitle != null) {
             this.noticeTitle = noticeTitle;
-            System.out.println("noticeTitle = " + noticeTitle + ", noticeMemo = " + noticeMemo);
-            System.out.println("noticeTitle2 = " + this.noticeTitle + ", noticeMemo2 = " + this.noticeMemo);
         }
         if (noticeMemo != null) {
             this.noticeMemo = noticeMemo;
         }
     }
-
-
 }

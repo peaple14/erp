@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
 import java.io.IOException;
 import java.util.List;
 
@@ -30,12 +32,15 @@ public class NoticeController {
     //글추가페이지
     @GetMapping("/notice_add")
     public String notice_add() {
+//        System.out.println("세션내용:" + session.getAttribute("loginId"));
         return "faq/notice/notice_add";  //글추가할 페이지입니다.
     }
 
     //글추가 처리 -> 권한이 admin일때만 되도록.
     @PostMapping("/notice_ok")
-    public String notice_ok(@ModelAttribute NoticeDto noticeDTO) throws IOException {
+    public String notice_ok(@ModelAttribute NoticeDto noticeDTO, HttpSession session) throws IOException {
+        System.out.println("세션내용:" +  session.getAttribute("loginId"));
+        noticeDTO.setWriter(session.getAttribute("loginId").toString());
         noticeSerivce.save(noticeDTO); //writer은 session에서 받아욜 예정입니다.
         return "redirect:/notice_list"; //글추가 끝나고 갈페이지입니다.
     }

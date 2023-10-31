@@ -18,7 +18,8 @@
         <td th:text="${notice.id}"></td>
         <td>
             <a th:text="${notice.noticeTitle}" th:href="@{'/notice_memo/' + ${notice.id}}"></a>
-        </td>        <td th:text="${notice.writer}"></td>
+        </td>
+        <td th:text="${notice.writer}"></td>
         <td th:text="${notice.noticeCreatedTime}"></td>
     </tr>
 </table>
