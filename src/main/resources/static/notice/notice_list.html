@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>공지사항 리스트</title>
+    <link rel="stylesheet" href="css/notice_list.css"> <!-- 추가된 CSS 파일 -->
+</head>
+<body class="notice-list">
+<div class="notice-container">
+    <h1 class="notice-title">공지사항 리스트</h1>
+    <table class="notice-table">
+        <tr>
+            <th>번호</th>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>작성일</th>
+        </tr>
+        <tr th:each="notice : ${notice}">
+            <td th:text="${notice.id}"></td>
+            <td>
+                <a class="notice-link" th:text="${notice.noticeTitle}" th:href="@{'/notice_memo/' + ${notice.id}}"></a>
+            </td>
+            <td th:text="${notice.writer}"></td>
+            <td th:text="${notice.noticeCreatedTime}"></td>
+        </tr>
+    </table>
+    <a class="notice-button" href="/notice_add">글쓰기</a> <!-- 글쓰기 버튼 -->
+</div>
+</body>
+</html>
+
+
+<style>
+
+</style>
