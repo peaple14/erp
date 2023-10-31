@@ -24,13 +24,13 @@ public class ProblemController {
     public String listNotices(Model model) {
         List<ProblemDto> problem = problemService.getAllProblems();
         model.addAttribute("problem", problem);
-        return "problem/problem_list";  //고객불만접수 리스트 띄어주기용
+        return "faq/problem/problem_list";  //고객불만접수 리스트 띄어주기용
     }
 
     //글추가페이지
     @GetMapping("/problem_add")
     public String notice_add() {
-        return "problem/problem_add";  //글추가할 페이지입니다.
+        return "faq/problem/problem_add";  //글추가할 페이지입니다.
     }
 
     //글추가 처리 -> 권한이 admin일때만 되도록.
@@ -45,14 +45,14 @@ public class ProblemController {
     @GetMapping("/problem_memo/{id}")
     public String n_memo(Model model, @PathVariable long id) {
         model.addAttribute("problem", problemService.findById(id));
-        return "problem/problem_memo";
+        return "faq/problem/problem_memo";
     }
 
     //공지사항 수정폼
     @GetMapping("/problem_edit/{id}")
     public String re_notice(Model model, @PathVariable long id) {
         model.addAttribute("problem", problemService.findById(id));
-        return "problem/problem_edit";
+        return "faq/problem/problem_edit";
     }
 
     //글수정 처리

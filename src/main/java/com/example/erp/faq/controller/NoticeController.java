@@ -24,13 +24,13 @@ public class NoticeController {
         List<NoticeDto> notice = noticeSerivce.getAllNotices();
         System.out.println("내용:" + notice);
         model.addAttribute("notice", notice);
-        return "notice/notice_list";  //공지사항 리스트 띄어주기용
+        return "faq/notice/notice_list";  //공지사항 리스트 띄어주기용
     }
 
     //글추가페이지
     @GetMapping("/notice_add")
     public String notice_add() {
-        return "notice/notice_add";  //글추가할 페이지입니다.
+        return "faq/notice/notice_add";  //글추가할 페이지입니다.
     }
 
     //글추가 처리 -> 권한이 admin일때만 되도록.
@@ -45,14 +45,14 @@ public class NoticeController {
     @GetMapping("/notice_memo/{id}")
     public String n_memo(Model model, @PathVariable long id) {
         model.addAttribute("notice", noticeSerivce.findById(id));
-        return "notice/notice_memo";
+        return "faq/notice/notice_memo";
     }
 
     //공지사항 수정폼
     @GetMapping("/notice_edit/{id}")
     public String re_notice(Model model, @PathVariable long id) {
         model.addAttribute("notice", noticeSerivce.findById(id));
-        return "notice/notice_edit";
+        return "faq/notice/notice_edit";
     }
 
     //글수정 처리

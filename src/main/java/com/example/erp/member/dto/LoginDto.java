@@ -14,10 +14,10 @@ public class LoginDto {
     private String userId;
     private String userPass;
 
-    public static LoginDto tologinDto(MemberEntity memberEntity){
-        LoginDto loginDto = new LoginDto();
-        loginDto.setUserId(memberEntity.getUserId());
-        loginDto.setUserPass(memberEntity.getUserPass());
-        return loginDto;
-    }
+//    public static LoginDto tologinDto(MemberEntity memberEntity){
+//        LoginDto loginDto = new LoginDto();
+//        loginDto.setUserId(memberEntity.getUserId());
+//        loginDto.setUserPass(memberEntity.getUserPass());
+//        return loginDto;
+//    }
 }
