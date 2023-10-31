@@ -26,12 +26,13 @@ public class MemberEntity {
     @Column
     private String userauthority; //권한
 
-    public static MemberEntity toMemberEntity(MemberDto memberDTO){
-        MemberEntity memberEntity = new MemberEntity();
-        memberEntity.setUserId(memberDTO.getUserId());
-        memberEntity.setUserPass(memberDTO.getUserPass());
-        memberEntity.setUserName(memberDTO.getUserName());
-        memberEntity.setUserauthority(memberDTO.getUserauthority());
-        return memberEntity;
-    }
+    //사원관리용도.
+//    public static MemberEntity toMemberEntity(MemberDto memberDTO){
+//        MemberEntity memberEntity = new MemberEntity();
+//        memberEntity.setUserId(memberDTO.getUserId());
+//        memberEntity.setUserPass(memberDTO.getUserPass());
+//        memberEntity.setUserName(memberDTO.getUserName());
+//        memberEntity.setUserauthority(memberDTO.getUserauthority());
+//        return memberEntity;
+//    }
 }

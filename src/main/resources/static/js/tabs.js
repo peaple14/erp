@@ -128,7 +128,6 @@ function changeSidebar(menu) {
                     </ul>
                 `;
     }
-
     sidebar.innerHTML = sidebarContent;
 }
 
