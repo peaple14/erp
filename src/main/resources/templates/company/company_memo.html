@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회사 정보</title>
+</head>
+<body>
+<h1>회사 정보</h1>
+<div th:if="${company != null}">
+    <p><strong>ID:</strong> <span th:text="${company.id}"></span></p>
+    <p><strong>회사 이름:</strong> <span th:text="${company.companyName}"></span></p>
+    <p><strong>회사 대표:</strong> <span th:text="${company.companyVip}"></span></p>
+    <p><strong>거래처 연락처:</strong> <span th:text="${company.companyTel}"></span></p>
+    <p><strong>상태:</strong> <span th:text="${company.status}"></span></p>
+    <p><strong>미수금:</strong> <span th:text="${company.moneyRecieve}"></span></p>
+    <p><strong>받은 돈:</strong> <span th:text="${company.money}"></span></p>
+</div>
+<div th:if="${company == null}">
+    <p>해당 ID에 대한 회사 정보가 없습니다.</p>
+</div>
+<a href="/company_list">뒤로 가기</a>
+</body>
+</html>

@@ -26,7 +26,7 @@ public class MemberEntity {
     @Column
     private String userauthority; //권한
 
-    //사원관리용도.
+    //사원관리용도.@
 //    public static MemberEntity toMemberEntity(MemberDto memberDTO){
 //        MemberEntity memberEntity = new MemberEntity();
 //        memberEntity.setUserId(memberDTO.getUserId());

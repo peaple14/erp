@@ -15,15 +15,16 @@ public class QuoteEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "created_at")
+    @Column
     private LocalDateTime createdAt;
 
+    @Column
     private long quantity;
 
-    @Column(name = "unit_price")
+    @Column
     private long unitPrice;
 
-    @Column(name = "total_amount")
+    @Column
     private long totalAmount;
 
     @ManyToOne

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회사 추가</title>
+</head>
+<body>
+<h1>회사 추가</h1>
+<form action="/company_add" method="post">
+    <div>
+        <label for="companyName">회사 이름:</label>
+        <input type="text" id="companyName" name="companyName" required>
+    </div>
+    <div>
+        <label for="companyVip">회사 대표:</label>
+        <input type="text" id="companyVip" name="companyVip" required>
+    </div>
+    <div>
+        <label for="companyTel">거래처 연락처:</label>
+        <input type="text" id="companyTel" name="companyTel" required>
+    </div>
+    <div>
+        <label for="status">상태 (receive 또는 send):</label>
+        <input type="text" id="status" name="status" required>
+    </div>
+    <div>
+        <label for="moneyRecieve">미수금 (0 또는 1):</label>
+        <input type="text" id="moneyRecieve" name="moneyRecieve" required>
+    </div>
+    <div>
+        <label for="money">받은 돈:</label>
+        <input type="text" id="money" name="money" required>
+    </div>
+    <button type="submit">저장</button>
+</form>
+</body>
+</html>

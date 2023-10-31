@@ -1,13 +1,12 @@
 package com.example.erp.order.entity;
 
-import com.example.erp.report.entity.QuoteEntity;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+
 @Entity
-@Table
-public class OrderEntity {
+@Table(name = "expense_table")
+public class ExpenseReportentity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -16,12 +15,15 @@ public class OrderEntity {
     private LocalDateTime createdAt;
 
     @Column
-    private long quantity;
+    private String expenseItem;
+
+    @Column
+    private long expenseAmount;
 
     @Column
     private String status;
 
     @ManyToOne
-    @JoinColumn(name = "quote_id")
-    private QuoteEntity quote;
+    @JoinColumn(name = "order_id")
+    private OrderEntity order;
 }
