@@ -4,22 +4,87 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>고객불만접수 세부 정보</title>
+    <link rel="stylesheet" href="styles.css"> <!-- 스타일 시트 연결 -->
 </head>
-<body>
-<h1>고객불만접수 세부 정보</h1>
-<div th:if="${problem != null}">
-    <p><strong>ID:</strong> <span th:text="${problem.id}"></span></p>
-    <p><strong>제목:</strong> <span th:text="${problem.problemTitle}"></span></p>
-    <p><strong>작성자:</strong> <span th:text="${problem.writer}"></span></p>
-    <p><strong>작성일:</strong> <span th:text="${problem.problemCreatedTime}"></span></p>
-    <p><strong>내용:</strong> <span th:text="${problem.problemMemo}"></span></p>
+<body class="detail-problem">
+<div class="problem-details">
+    <h1 class="problem-title">고객불만접수 세부 정보</h1>
+    <hr>
+    <div th:if="${problem != null}" class="problem-content">
+        <div style="display: flex; justify-content: space-between;">
+            <strong>작성자:</strong> <span th:text="${problem.writer}"></span>
+            <strong>작성일:</strong> <span th:text="${problem.problemCreatedTime}"></span>
+        </div>
+        <p><strong>ID:</strong> <span th:text="${problem.id}"></span></p>
+        <p><strong>제목:</strong> <span th:text="${problem.problemTitle}"></span></p>
+        <p><strong>내용:</strong> <span th:text="${problem.problemMemo}"></span></p>
 
-    <!-- 수정 버튼 추가 -->
-    <a th:href="@{/problem_edit/{id}(id=${problem.id})}">수정</a>
+        <!-- 수정 버튼 추가 -->
+        <a th:href="@{/problem_edit/{id}(id=${problem.id})}" class="edit-link">수정</a>
+    </div>
+    <div th:if="${problem == null}" class="no-problem">
+        <p>해당 ID에 대한 고객불만접수가 없습니다.</p>
+    </div>
+    <a href="/problem_list" class="back-link">뒤로 가기</a>
 </div>
-<div th:if="${problem == null}">
-    <p>해당 ID에 대한 공지사항이 없습니다.</p>
-</div>
-<a href="/problem_list">뒤로 가기</a>
 </body>
 </html>
+
+
+<style>
+    /* styles.css */
+
+    /* 세부 정보 페이지 전용 스타일 */
+    body.detail-problem {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    .problem-details {
+        background-color: #fff;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        margin: 20px auto;
+        padding: 20px;
+        border-radius: 5px;
+    }
+
+    .problem-title {
+        font-size: 24px;
+        margin: 0 0 20px 0;
+    }
+
+    .problem-content p {
+        margin: 10px 0;
+    }
+
+    .problem-content strong {
+        font-weight: bold;
+    }
+
+    .edit-link {
+        text-decoration: none;
+        color: #007bff;
+        margin-top: 10px;
+        display: inline-block;
+    }
+
+    .no-problem {
+        color: #ff0000;
+    }
+
+    .no-problem p {
+        margin: 10px 0;
+    }
+
+    .back-link {
+        display: block;
+        margin-top: 20px;
+        text-align: center;
+        text-decoration: none;
+        color: #007bff;
+        font-size: 16px;
+    }
+
+</style>

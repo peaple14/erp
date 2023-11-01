@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>글쓰기</title>
-    <link rel="stylesheet" href="styles.css"> <!-- 스타일 시트 연결 -->
 </head>
 <body class="write-notice">
 <div class="notice-form">
@@ -28,6 +27,25 @@
 </body>
 </html>
 
+<script>
+    // autoresize.js
+
+    function autoResize(element) {
+        element.style.height = "auto";
+        element.style.height = (element.scrollHeight) + "px";
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var textareas = document.querySelectorAll("textarea");
+        textareas.forEach(function(textarea) {
+            autoResize(textarea);
+            textarea.addEventListener("input", function() {
+                autoResize(this);
+            });
+        });
+    });
+
+</script>
 
 <style>
     /* 글쓰기 페이지 스타일 */
@@ -63,19 +81,13 @@
 
     .form-group input[type="text"],
     .form-group textarea {
+        resize: none;
         width: 100%;
         padding: 10px;
         border: 1px solid #ccc;
         border-radius: 5px;
     }
 
-    .form-group input[type="file"] {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        background-color: #f0f0f0;
-    }
 
     .button-container {
         text-align: center;
@@ -83,6 +95,7 @@
 
     .cancel-button,
     .save-button {
+        border: 1px solid #ccc;
         padding: 5px 10px;
         font-size: 15px;
         text-align: center;

@@ -27,6 +27,26 @@
 </body>
 </html>
 
+<script>
+    // autoresize.js
+
+    function autoResize(element) {
+        element.style.height = "auto";
+        element.style.height = (element.scrollHeight) + "px";
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var textareas = document.querySelectorAll("textarea");
+        textareas.forEach(function(textarea) {
+            autoResize(textarea);
+            textarea.addEventListener("input", function() {
+                autoResize(this);
+            });
+        });
+    });
+
+</script>
+
 <style>
     /* 글쓰기 페이지 스타일 */
 
@@ -61,6 +81,7 @@
 
     .form-group input[type="text"],
     .form-group textarea {
+        resize: none;
         width: 100%;
         padding: 10px;
         border: 1px solid #ccc;
@@ -81,6 +102,7 @@
 
     .cancel-button,
     .save-button {
+        border: 1px solid #ccc;
         padding: 5px 10px;
         font-size: 15px;
         text-align: center;
