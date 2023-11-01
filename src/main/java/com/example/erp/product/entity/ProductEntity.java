@@ -11,12 +11,13 @@ public class ProductEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "product_code")
+    @Column
     private String productCode;
 
-    @Column(name = "product_name")
+    @Column
     private String productName;
 
+    @Column
     private long price;
 
     @ManyToOne

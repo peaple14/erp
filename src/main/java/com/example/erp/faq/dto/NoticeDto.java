@@ -20,13 +20,12 @@ public class NoticeDto {
 
 
 
-    public static NoticeDto toNoticeDTO(NoticeEntity noticeEntity){
+    public static NoticeDto toNoticeDto(NoticeEntity noticeEntity){
         NoticeDto noticeDTO = new NoticeDto();;
         noticeDTO.setId(noticeEntity.getId());
         noticeDTO.setNoticeTitle(noticeEntity.getNoticeTitle());
         noticeDTO.setNoticeCreatedTime(noticeEntity.getCreatedTime());
         noticeDTO.setNoticeMemo(noticeEntity.getNoticeMemo());
-        noticeDTO.setWriter(noticeEntity.getWriter());
         return noticeDTO;
     }
 }

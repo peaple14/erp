@@ -1,29 +1,57 @@
 package com.example.erp.company.entity;
 
+import com.example.erp.company.dto.CompanyDto;
+import com.example.erp.member.entity.MemberEntity;
+import lombok.Data;
+
 import javax.persistence.*;
 
 @Entity
+@Data
 @Table(name = "Company")
 public class CompanyEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
-    @Column(name = "company_name")
-    private String companyName;
+    @Column
+    private String companyName; // 회사이름
 
-    @Column(name = "company_vip")
-    private String companyVip;
+    @Column
+    private String companyVip; // 회사대표
 
-    @Column(name = "company_tel")
-    private String companyTel;
+    @Column
+    private String companyTel; // 거래처 연락처
 
-    private String status;
+    @Column
+    private String status; // 발주회사인지, 수주회사인지 (receive, send)
 
-    @Column(name = "moneyrecieve")
-    private int moneyRecieve;
+    @Column
+    private int moneyRecieve; // 미수금 (0, 1)
 
-    private long money;
+    @Column
+    private long money; // 받은 돈
 
-    // 생성자, 게터, 세터, 기타 필요한 메서드
+
+    public static CompanyEntity toSaveEntity(CompanyDto companyDto) {
+        CompanyEntity companyEntity = new CompanyEntity();
+        companyEntity.setCompanyName(companyDto.getCompanyName());
+        companyEntity.setCompanyVip(companyDto.getCompanyVip());
+        companyEntity.setCompanyTel(companyDto.getCompanyTel());
+        companyEntity.setStatus(companyDto.getStatus());
+        companyEntity.setMoneyRecieve(companyDto.getMoneyRecieve());
+        companyEntity.setMoney(companyDto.getMoney());
+
+        return companyEntity;
+    }
+
+    public void update(CompanyDto companyDto) {
+        this.companyName = companyDto.getCompanyName();
+        this.companyVip = companyDto.getCompanyVip();
+        this.companyTel = companyDto.getCompanyTel();
+        this.status = companyDto.getStatus();
+        this.moneyRecieve = companyDto.getMoneyRecieve();
+        this.money = companyDto.getMoney();
+    }
+
 }
