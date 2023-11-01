@@ -3,6 +3,8 @@ package com.example.erp.company.service;
 import com.example.erp.company.dto.CompanyDto;
 import com.example.erp.company.entity.CompanyEntity;
 import com.example.erp.company.repository.CompanyRepository;
+import com.example.erp.faq.dto.NoticeDto;
+import com.example.erp.faq.entity.NoticeEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +23,14 @@ public class CompanyService {
     // 모든 회사 조회
     public List<CompanyDto> getAllCompanies() {
         List<CompanyEntity> companyEntities = companyRepository.findAll();
+        System.out.println("조회서비스: " + companyEntities);
         return companyEntities.stream()
                 .map(CompanyDto::toCompanyDto)
                 .collect(Collectors.toList());
     }
+
+    //리스트띄어주기
+
 
     // 회사 추가
     @Transactional

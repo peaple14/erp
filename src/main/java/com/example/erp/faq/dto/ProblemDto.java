@@ -26,7 +26,6 @@ public class ProblemDto {
         problemDto.setProblemTitle(problemEntity.getProblemTitle());
         problemDto.setProblemCreatedTime(problemEntity.getCreatedTime());
         problemDto.setProblemMemo(problemEntity.getProblemMemo());
-        problemDto.setWriter(problemEntity.getWriter());
         return problemDto;
     }
 }

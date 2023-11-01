@@ -9,23 +9,6 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
-    <script>
-        // DatePicker를 사용하여 제조년도 선택
-        $(function() {
-            $("#makeday").datepicker();
-        });
-
-        // 폼이 제출될 때 LocalDatetime 필드를 업데이트
-        $("form").submit(function() {
-            // 사용자가 선택한 날짜를 가져옴
-            var selectedDate = $("#makeday").datepicker("getDate");
-            // 기본 시간 정보 (0시 0분 0초)를 추가
-            selectedDate.setHours(0, 0, 0, 0);
-            // 선택한 날짜를 숨겨진 필드에 할당
-            $("#hiddenMakeday").val(selectedDate.toISOString());
-        });
-    </script>
 </head>
 <body>
 <h1>제품 추가</h1>
@@ -48,14 +31,20 @@
     </div>
     <div>
         <label for="makecompany">제조업체:</label>
-        <input type="text" id="makecompany" name="makecompany" required>
+        <!-- 드롭다운 목록 -->
+        <select id="makecompany" name="makecompany" required>
+            <option value="" selected disabled>제조업체 선택</option>
+            <th:block th:each="company : ${companies}">
+                <option th:value="${company.id}" th:text="${company.companyName}"></option>
+            </th:block>
+        </select>
     </div>
     <div>
         <label for="makeday">제조년도:</label>
-        <input type="text" id="makeday" name="makeday" required>
-        <!-- 숨겨진 필드에 선택한 날짜를 할당 -->
-        <input type="hidden" id="hiddenMakeday" name="makeday" th:field="*{makeday}" required>
+        <input type="datetime-local" id="makeday" name="makeday" required>
     </div>
+    <!-- hidden 필드로 선택한 회사의 id를 보냅니다 -->
+    <input type="hidden" id="selectedCompanyId" name="selectedCompanyId">
     <button type="submit">저장</button>
 </form>
 </body>
