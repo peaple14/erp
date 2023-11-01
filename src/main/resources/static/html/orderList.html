@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="css/quoteList.css"> <!-- 새로 추가한 CSS 파일 -->
+</head>
+<body class="quote-list">
+<div class="quote-container">
+    <h1 class="quote-title">주문 리스트
+        <a class="quote-button btn btn-primary" href="주소" role="button">주문 작성</a>
+    </h1>
+    <p></p>
+    <table class="quote-table table table-hover">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">번호</th>
+            <th scope="col">제목</th>
+            <th scope="col">거래처</th>
+            <th scope="col">날짜</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order:${orderList}">
+            <td th:text="${order.id}"></td>
+            <td><a th:href="@{|/admin/order/${order.id}|}" th:text="${order.orderTitle}"></a></td>
+            <td th:text="${order.inputCorrespondent}"></td>
+            <td th:text="*{#temporals.format(notice.noticeCreatedTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

@@ -1,0 +1,78 @@
+/* 견적서 리스트 페이지 스타일 */
+
+body.quote-list {
+    font-family: Arial, sans-serif;
+    position: relative;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.quote-container {
+    background-color: #fff;
+    margin: 20px;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.quote-title {
+    font-size: 30px;
+    margin: 0 0 20px 0;
+}
+
+.quote-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.quote-table th, .quote-table td {
+    border-bottom: 1px solid #dddddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.quote-table th {
+    background-color: #f0f0f0;
+}
+
+.quote-button {
+    display: inline-block;
+    position: absolute;
+    top: 180px; /* 조정 필요 */
+    right: 110px; /* 조정 필요 */
+    padding: 10px 20px;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    background-color: #666666;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.quote-button:hover {
+    background-color: #333333;
+}
+
+.quote-table th:first-child,
+.quote-table td:first-child {
+    width: 10%;
+}
+
+.quote-table th:nth-child(2),
+.quote-table td:nth-child(2) {
+    width: 65%;
+}
+
+.quote-table th:nth-child(3),
+.quote-table td:nth-child(3) {
+    width: 10%;
+}
+
+.quote-table th:nth-child(4),
+.quote-table td:nth-child(4) {
+    width: 15%;
+}

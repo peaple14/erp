@@ -94,37 +94,37 @@ function changeSidebar(menu) {
     if (menu === 'menu1') {
         sidebarContent = `
         <ul class="sidebar-links">
-            <li><a href="#" onclick="addTab('Tab1', 'html/tab1.html')">제품관리</a></li>
+            <li><a href="#" onclick="addTab('제품관리', 'html/productList.html')">제품관리</a></li>
         </ul>
     `;
     } else if (menu === 'menu2') {
         sidebarContent = `
         <ul class="sidebar-links">
-            <li><a href="#" onclick="addTab('Tab2', 'html/tab2.html')">발주 거래처</a></li>
-            <li><a href="#" onclick="addTab('Tab3', 'html/tab3.html')">수주 거래처</a></li>
-            <li><a href="#" onclick="addTab('Tab4', 'html/tab4.html')">미수금</a></li>
+            <li><a href="#" onclick="addTab('발주 거래처', 'html/companyList.html')">발주 거래처</a></li>
+            <li><a href="#" onclick="addTab('수주 거래처', 'html/companyList.html')">수주 거래처</a></li>
+            <li><a href="#" onclick="addTab('미수금', 'html/tab4.html')">미수금</a></li>
         </ul>
     `;
     } else if (menu === 'menu3') {
         sidebarContent = `
                     <ul class="sidebar-links">
-                        <li><a href="#" onclick="addTab('Tab5')">견적서관리</a></li>
-                        <li><a href="#" onclick="addTab('Tab6')">지출결의서</a></li>
+                        <li><a href="#" onclick="addTab('견적서관리','html/quoteList.html')">견적서관리</a></li>
+                        <li><a href="#" onclick="addTab('지출결의서')">지출결의서</a></li>
                     </ul>
                 `;
     } else if (menu === 'menu4') {
         sidebarContent = `
                     <ul class="sidebar-links">
-                        <li><a href="#" onclick="addTab('Tab7')">주문현황</a></li>
-                        <li><a href="#" onclick="addTab('Tab8')">발주</a></li>
-                        <li><a href="#" onclick="addTab('Tab9')">수주</a></li>
+                        <li><a href="#" onclick="addTab('주문현황','html/orderList.html')">주문현황</a></li>
+                        <li><a href="#" onclick="addTab('발주')">발주</a></li>
+                        <li><a href="#" onclick="addTab('수주')">수주</a></li>
                     </ul>
                 `;
     } else if (menu === 'menu5') {
         sidebarContent = `
                     <ul class="sidebar-links">
-                        <li><a href="#" onclick="addTab('Tab10')">고객불만접수</a></li>
-                        <li><a href="#" onclick="addTab('Tab11')">공지사항</a></li>
+                        <li><a href="#" onclick="addTab('고객불만접수')">고객불만접수</a></li>
+                        <li><a href="#" onclick="addTab('공지사항','notice/notice_list.html')">공지사항</a></li>
                     </ul>
                 `;
     }
