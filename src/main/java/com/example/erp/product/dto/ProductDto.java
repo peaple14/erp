@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.time.LocalDateTime;
+import java.time.YearMonth;
 
 @Data
 @NoArgsConstructor
@@ -20,7 +20,7 @@ public class ProductDto {
     private String count; //재고량
     private long price; //제품가격
     private CompanyEntity makecompany; //제조업체
-    private LocalDateTime makeday; //제조년도
+    private YearMonth makeday; //제조년도
 
     public static ProductDto toProductDto(ProductEntity productEntity) {
         ProductDto productDto = new ProductDto();

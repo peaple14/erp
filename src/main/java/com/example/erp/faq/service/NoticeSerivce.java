@@ -28,9 +28,16 @@ public class NoticeSerivce {
     public List<NoticeDto> getAllNotices() {
         List<NoticeEntity> noticeEntities = noticeRepository.findAll();
         return noticeEntities.stream()
-                .map(NoticeDto::toNoticeDto)
+                .map(noticeEntity -> {
+                    NoticeDto noticeDto = NoticeDto.toNoticeDto(noticeEntity);
+                    noticeDto.setWriter(noticeEntity.getUser().getUserName());
+                    return noticeDto;
+                })
                 .collect(Collectors.toList());
     }
+
+
+
 
     //저장용
     @Transactional
@@ -51,6 +58,7 @@ public class NoticeSerivce {
         if (optionalNoticeEntity.isPresent()){
             NoticeEntity noticeEntity = optionalNoticeEntity.get();
             NoticeDto noticeDTO = NoticeDto.toNoticeDto(noticeEntity);
+            noticeDTO.setWriter(noticeEntity.getUser().getUserName());
             return noticeDTO;
         } else {
             return null;

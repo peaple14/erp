@@ -14,7 +14,7 @@
     <p><strong>재고량:</strong> <span th:text="${product.count}"></span></p>
     <p><strong>제품가격:</strong> <span th:text="${product.price}"></span></p>
     <p><strong>제조업체:</strong> <span th:text="${product.makecompany.companyName}"></span></p>
-    <p><strong>제조년도:</strong> <span th:text="${#temporals.format(product.makeday, 'yyyy-MM-dd')}"></span></p>
+    <p><strong>제조년도:</strong> <span th:text="${#temporals.format(product.makeday, 'yyyy-MM')}"></span></p>
 
     <!-- 수정 버튼 추가 (수정 페이지로 이동) -->
     <a th:href="@{'/product_edit/' + ${product.id}}">수정</a>
