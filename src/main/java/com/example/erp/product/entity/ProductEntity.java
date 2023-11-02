@@ -5,7 +5,8 @@ import com.example.erp.product.dto.ProductDto;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.YearMonth;
 
 @Entity
 @Data
@@ -28,7 +29,7 @@ public class ProductEntity {
     private long price;
 
     @Column
-    private LocalDateTime makeDay;
+    private YearMonth makeDay;
 
     @ManyToOne
     @JoinColumn

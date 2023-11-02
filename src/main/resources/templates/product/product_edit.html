@@ -28,8 +28,7 @@
         </select>
         <div>
             <label for="makeday">제조년도:</label>
-            <input type="datetime-local" id="makeday" name="makeday"
-                   required th:value="${#temporals.format(product.makeday, 'yyyy-MM-dd''T''HH:mm')}" />
+            <input type="month" id="makeday" name="makeday" required th:value="${#temporals.format(product.makeday, 'yyyy-MM')}" />
         </div>
 
         <input type="submit" value="수정">

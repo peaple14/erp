@@ -39,9 +39,11 @@ public class ProductService {
     public void save(ProductDto productDto) {
         ProductEntity productEntity = ProductEntity.toSaveEntity(productDto);
         productRepository.save(productEntity);
+        productEntity.setProductCode(productEntity.getCompany().getCompanyName() + productEntity.getId());
     }
 
     // 제품 상세 정보
+    @Transactional
     public ProductDto findById(long id) {
         Optional<ProductEntity> optionalProductEntity = productRepository.findById(id);
         if (optionalProductEntity.isPresent()) {
