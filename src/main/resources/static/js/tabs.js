@@ -73,7 +73,9 @@ function removeTab(tabId) {
     // 탭 내용 제거
     var tabContents = document.getElementById('tabContents');
     var tabContentToRemove = document.getElementById(tabId);
-    tabContents.removeChild(tabContentToRemove);
+    if (tabContentToRemove) {
+        tabContents.removeChild(tabContentToRemove);
+    }
 
     // 삭제된 탭 다음 탭을 활성화 (만약 삭제된 탭이 활성화 상태였다면)
     var activeTab = document.querySelector('.tab.active');
@@ -81,6 +83,9 @@ function removeTab(tabId) {
         var firstTab = tabsContainer.children[0];
         firstTab.classList.add('active');
         showTab(firstTab.id);
+    } else if (tabsContainer.childElementCount === 0) {
+        // 모든 탭이 삭제되었을 때 화면 내용을 비우기
+        tabContents.innerHTML = '';
     }
 }
 

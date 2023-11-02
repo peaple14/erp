@@ -5,21 +5,82 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>공지사항 세부 정보</title>
 </head>
-<body>
-<h1>공지사항 세부 정보</h1>
-<div th:if="${notice != null}">
-    <p><strong>ID:</strong> <span th:text="${notice.id}"></span></p>
-    <p><strong>제목:</strong> <span th:text="${notice.noticeTitle}"></span></p>
-    <p><strong>작성자:</strong> <span th:text="${notice.writer}"></span></p>
-    <p><strong>작성일:</strong> <span th:text="${notice.noticeCreatedTime}"></span></p>
-    <p><strong>내용:</strong> <span th:text="${notice.noticeMemo}"></span></p>
+<body class="detail-notice">
+<div class="notice-details">
+    <h1 class="notice-title">공지사항 세부 정보</h1>
+    <hr>
+    <div th:if="${notice != null}" class="notice-content">
+        <div style="display: flex; justify-content: space-between;">
+            <strong>작성자:</strong> <span th:text="${notice.writer}"></span>
+            <strong>작성일:</strong> <span th:text="${notice.noticeCreatedTime}"></span>
+        </div>
+        <p><strong>ID:</strong> <span th:text="${notice.id}"></span></p>
+        <p><strong>제목:</strong> <span th:text="${notice.noticeTitle}"></span></p>
+        <p><strong>내용:</strong> <span th:text="${notice.noticeMemo}"></span></p>
 
-    <!-- 수정 버튼 추가 -->
-    <a th:href="@{/notice_edit/{id}(id=${notice.id})}">수정</a>
+        <!-- 수정 버튼 추가 -->
+        <a th:href="@{/notice_edit/{id}(id=${notice.id})}" class="edit-link">수정</a>
+    </div>
+    <div th:if="${notice == null}" class="no-notice">
+        <p>해당 ID에 대한 공지사항이 없습니다.</p>
+    </div>
+    <a href="/notice_list" class="back-link">뒤로 가기</a>
 </div>
-<div th:if="${notice == null}">
-    <p>해당 ID에 대한 공지사항이 없습니다.</p>
-</div>
-<a href="/notice_list">뒤로 가기</a>
 </body>
 </html>
+
+<style>
+    /* 스타일 시트 */
+    body.detail-notice {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    .notice-details {
+        background-color: #fff;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        margin: 20px auto;
+        padding: 20px;
+        border-radius: 5px;
+    }
+
+    .notice-title {
+        font-size: 24px;
+        margin: 0 0 20px 0;
+    }
+
+    .notice-content p {
+        margin: 10px 0;
+    }
+
+    .notice-content strong {
+        font-weight: bold;
+    }
+
+    .edit-link {
+        text-decoration: none;
+        color: #007bff;
+        margin-top: 10px;
+        display: inline-block;
+    }
+
+    .no-notice {
+        color: #ff0000;
+    }
+
+    .no-notice p {
+        margin: 10px 0;
+    }
+
+    .back-link {
+        display: block;
+        margin-top: 20px;
+        text-align: center;
+        text-decoration: none;
+        color: #007bff;
+        font-size: 16px;
+    }
+
+</style>
