@@ -1,11 +1,8 @@
 package com.example.erp.faq.service;
 
 
-import com.example.erp.faq.dto.NoticeDto;
 import com.example.erp.faq.dto.ProblemDto;
-import com.example.erp.faq.entity.NoticeEntity;
 import com.example.erp.faq.entity.ProblemEntity;
-import com.example.erp.faq.repository.NoticeRepository;
 import com.example.erp.faq.repository.ProblemRepository;
 import com.example.erp.member.entity.MemberEntity;
 import com.example.erp.member.repository.MemberRepository;
@@ -31,7 +28,11 @@ public class ProblemService {
     public List<ProblemDto> getAllProblems() {
         List<ProblemEntity> problemEntities = problemRepository.findAll();
         return problemEntities.stream()
-                .map(ProblemDto::toProblemDto)
+                .map(problemEntity -> {
+                    ProblemDto problemDto = ProblemDto.toProblemDto(problemEntity);
+                    problemDto.setWriter(problemEntity.getUser().getUserName());
+                    return problemDto;
+                })
                 .collect(Collectors.toList());
     }
 
@@ -54,6 +55,7 @@ public class ProblemService {
         if (optionalProblemEntity.isPresent()){
             ProblemEntity problemEntity = optionalProblemEntity.get();
             ProblemDto problemDto = ProblemDto.toProblemDto(problemEntity);
+            problemDto.setWriter(problemEntity.getUser().getUserName());
             return problemDto;
         } else {
             return null;

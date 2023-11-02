@@ -44,6 +44,10 @@
         <label for="makeday">제조년도:</label>
         <input type="datetime-local" id="makeday" th:field="*{makeday}" required>
     </div>
+        <div>
+            <label for="makeday">제조년도:</label>
+            <input type="month" id="makeday" name="makeday" required th:value="${#temporals.format(product.makeday, 'yyyy-MM')}" />
+        </div>
 
     <input type="submit" value="수정" class="btn btn-primary">
     <a href="/product_list" class="back-link">뒤로 가기</a>

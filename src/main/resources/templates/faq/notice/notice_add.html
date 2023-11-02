@@ -3,29 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>제품 추가</title>
-
-    <!-- jQuery 및 jQuery UI 스크립트 및 스타일 시트 포함 -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
-    <script>
-        // DatePicker를 사용하여 제조년도 선택
-        $(function() {
-            $("#makeday").datepicker();
-        });
-
-        // 폼이 제출될 때 LocalDatetime 필드를 업데이트
-        $("form").submit(function() {
-            // 사용자가 선택한 날짜를 가져옴
-            var selectedDate = $("#makeday").datepicker("getDate");
-            // 기본 시간 정보 (0시 0분 0초)를 추가
-            selectedDate.setHours(0, 0, 0, 0);
-            // 선택한 날짜를 숨겨진 필드에 할당
-            $("#hiddenMakeday").val(selectedDate.toISOString());
-        });
-    </script>
+    <title>글쓰기</title>
 </head>
 <body class="write-notice">
 <div class="notice-form">

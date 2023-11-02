@@ -32,7 +32,7 @@
         <td th:text="${product.count}"></td>
         <td th:text="${product.price}"></td>
         <td th:text="${product.makecompany.companyName}"></td>
-        <td th:text="${#temporals.format(product.makeday, 'yyyy-MM-dd')}"></td>
+        <td th:text="${#temporals.format(product.makeday, 'yyyy-MM')}"></td>
     </tr>
         </tbody>
 </table>
