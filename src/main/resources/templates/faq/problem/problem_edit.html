@@ -5,20 +5,127 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>고객불만접수 수정</title>
 </head>
-<body>
-<h1>고객불만접수 수정</h1>
-<form th:object="${problem}" method="post" th:action="@{/problem_edit_ok}">
-    <!-- ID를 숨겨진 입력 필드로 추가 -->
-    <input type="hidden" th:field="*{id}" />
+<body class="edit-notice">
+<div class="notice-form">
+    <h1 class="notice-title">고객불만접수 수정</h1>
+    <hr>
+    <form th:object="${problem}" method="post" th:action="@{/problem_edit_ok}">
+        <!-- ID를 숨겨진 입력 필드로 추가 -->
+        <input type="hidden" th:field="*{id}" />
 
-    <p><strong>제목:</strong> <input type="text" th:field="*{problemTitle}" /></p>
-    <p><strong>작성자:</strong> <span th:text="${problem.writer}"></span></p>
-    <p><strong>작성일:</strong> <span th:text="${problem.problemCreatedTime}"></span></p>
-    <p><strong>내용:</strong> <textarea th:field="*{problemMemo}"></textarea></p>
+        <div class="form-group" style="display: flex; justify-content: space-between">
+            <label>작성자:</label>
+            <span th:text="${problem.writer}"></span>
+            <label>작성일:</label>
+            <span th:text="${problem.problemCreatedTime}"></span>
+        </div>
+        <div class="form-group">
+            <label for="problemTitle">제목:</label>
+            <input type="text" id="problemTitle" th:field="*{problemTitle}" required placeholder="제목을 입력하세요.">
+        </div>
+        <div class="form-group">
+            <label for="problemMemo">내용:</label>
+            <textarea id="problemMemo" th:field="*{problemMemo}" rows="4" required placeholder="내용을 입력하세요."></textarea>
+        </div>
 
-    <!-- 수정 버튼 추가 -->
-    <input type="submit" value="수정">
-</form>
-<a href="/problem_list">뒤로 가기</a>
+        <!-- 수정 버튼 추가 -->
+        <input type="submit" value="수정" class="edit-button">
+    </form>
+    <a href="/problem_list" class="back-link">뒤로 가기</a>
+</div>
 </body>
 </html>
+
+<script>
+    // autoresize.js
+
+    function autoResize(element) {
+        element.style.height = "auto";
+        element.style.height = (element.scrollHeight) + "px";
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var textareas = document.querySelectorAll("textarea");
+        textareas.forEach(function(textarea) {
+            autoResize(textarea);
+            textarea.addEventListener("input", function() {
+                autoResize(this);
+            });
+        });
+    });
+
+</script>
+
+<style>
+    /* 수정 페이지 전용 스타일 */
+
+    body.edit-notice {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    .notice-form {
+        background-color: #fff;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        margin: 20px auto;
+        padding: 20px;
+        border-radius: 5px;
+    }
+
+    .notice-title {
+        font-size: 24px;
+        margin: 0 0 20px 0;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: bold;
+    }
+
+    .form-group input[type="text"],
+    .form-group textarea {
+        width: calc(100% - 22px);
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .form-group textarea {
+        height: 150px;
+        resize: none;
+    }
+
+    .edit-button {
+        padding: 5px 10px;
+        font-size: 15px;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin: 5px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+    }
+
+    .edit-button:hover {
+        background-color: #0056b3;
+    }
+
+    .back-link {
+        display: block;
+        margin-top: 20px;
+        text-align: center;
+        text-decoration: none;
+        color: #007bff;
+        font-size: 16px;
+    }
+
+</style>

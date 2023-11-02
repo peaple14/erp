@@ -1,62 +1,127 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>제품 추가</title>
-
-    <!-- jQuery 및 jQuery UI 스크립트 및 스타일 시트 포함 -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
-    <script>
-        // DatePicker를 사용하여 제조년도 선택
-        $(function() {
-            $("#makeday").datepicker();
-        });
-
-        // 폼이 제출될 때 LocalDatetime 필드를 업데이트
-        $("form").submit(function() {
-            // 사용자가 선택한 날짜를 가져옴
-            var selectedDate = $("#makeday").datepicker("getDate");
-            // 기본 시간 정보 (0시 0분 0초)를 추가
-            selectedDate.setHours(0, 0, 0, 0);
-            // 선택한 날짜를 숨겨진 필드에 할당
-            $("#hiddenMakeday").val(selectedDate.toISOString());
-        });
-    </script>
+    <title>글쓰기</title>
 </head>
-<body>
-<h1>제품 추가</h1>
-<form action="/product_add" method="post">
-    <div>
-        <label for="productname">제품명:</label>
-        <input type="text" id="productname" name="productname" required>
-    </div>
-    <div>
-        <label for="productcode">제품코드:</label>
-        <input type="text" id="productcode" name="productcode" required>
-    </div>
-    <div>
-        <label for="count">재고량:</label>
-        <input type="text" id="count" name="count" required>
-    </div>
-    <div>
-        <label for="price">제품가격:</label>
-        <input type="text" id="price" name="price" required>
-    </div>
-    <div>
-        <label for="makecompany">제조업체:</label>
-        <input type="text" id="makecompany" name="makecompany" required>
-    </div>
-    <div>
-        <label for="makeday">제조년도:</label>
-        <input type="text" id="makeday" name="makeday" required>
-        <!-- 숨겨진 필드에 선택한 날짜를 할당 -->
-        <input type="hidden" id="hiddenMakeday" name="makeday" th:field="*{makeday}" required>
-    </div>
-    <button type="submit">저장</button>
-</form>
+<body class="write-notice">
+<div class="notice-form">
+    <h1 class="notice-title">글쓰기</h1>
+    <form action="/notice_ok" method="post" enctype="multipart/form-data">
+        <hr>
+        <div class="form-group">
+            <label for="noticeTitle"></label>
+            <input type="text" id="noticeTitle" name="noticeTitle" required placeholder="제목을 입력하세요." style="width: calc(100% - 22px);">
+        </div>
+        <div class="form-group">
+            <label for="noticeMemo"></label>
+            <textarea id="noticeMemo" name="noticeMemo" rows="4" required placeholder="내용을 입력하세요." style="width: calc(100% - 22px);"></textarea>
+        </div>
+        <div class="button-container">
+            <button type="button" class="cancel-button">취소</button>
+            <button type="submit" class="save-button">저장</button>
+        </div>
+    </form>
+</div>
 </body>
 </html>
+
+<script>
+    // autoresize.js
+
+    function autoResize(element) {
+        element.style.height = "auto";
+        element.style.height = (element.scrollHeight) + "px";
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var textareas = document.querySelectorAll("textarea");
+        textareas.forEach(function(textarea) {
+            autoResize(textarea);
+            textarea.addEventListener("input", function() {
+                autoResize(this);
+            });
+        });
+    });
+
+</script>
+
+<style>
+    /* 글쓰기 페이지 스타일 */
+
+    body.write-notice {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    .notice-form {
+        background-color: #fff;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        margin: 20px auto;
+        padding: 20px;
+        border-radius: 5px;
+    }
+
+    .notice-title {
+        font-size: 24px;
+        margin: 0 0 20px 0;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: bold;
+    }
+
+    .form-group input[type="text"],
+    .form-group textarea {
+        resize: none;
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+
+    .button-container {
+        text-align: center;
+    }
+
+    .cancel-button,
+    .save-button {
+        border: 1px solid #ccc;
+        padding: 5px 10px;
+        font-size: 15px;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin: 5px;
+    }
+
+    .cancel-button {
+        background-color: #999;
+        color: #fff;
+    }
+
+    .cancel-button:hover {
+        background-color: #777;
+    }
+
+    .save-button {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    .save-button:hover {
+        background-color: #0056b3;
+    }
+
+</style>
