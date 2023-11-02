@@ -1,25 +1,39 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회사 추가</title>
 </head>
-<body>
-<h1>회사 추가</h1>
+
+<body class="company-add">
 <form action="/company_add" method="post">
-    <div>
+    <h1>회사 추가</h1>
+    <hr>
+    <div class="form-group">
         <label for="companyName">회사 이름:</label>
         <input type="text" id="companyName" name="companyName" required>
     </div>
-    <div>
+    <div class="form-group">
         <label for="companyVip">회사 대표:</label>
         <input type="text" id="companyVip" name="companyVip" required>
     </div>
-    <div>
+    <div class="form-group">
         <label for="companyTel">거래처 연락처:</label>
         <input type="text" id="companyTel" name="companyTel" required>
     </div>
+    <div class="form-group">
+        <label for="status">상태 (receive 또는 send):</label>
+        <input type="text" id="status" name="status" required>
+    </div>
+    <div class="form-group">
+        <label for="moneyRecieve">미수금 (0 또는 1):</label>
+        <input type="text" id="moneyRecieve" name="moneyRecieve" required>
+    </div>
+    <div class="form-group">
+        <label for="money">받은 돈:</label>
+        <input type="text" id="money" name="money" required>
     <div>
         <label for="status">회사분류(수주,발주):</label>
         <select id="status" name="status" required>
@@ -31,7 +45,67 @@
         <input type="hidden" id="moneyRecieve" name="moneyRecieve" value="1" required>
         <input type="hidden" id="money" name="money" value="0" required>
     </div>
-    <button type="submit">저장</button>
+    <button type="submit" class="btn btn-primary">저장</button>
 </form>
+
 </body>
+
 </html>
+
+<style>
+
+    body.company-add {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    .company-add h1 {
+        font-size: 24px;
+        margin: 0 0 20px 0;
+    }
+
+    .company-add form {
+        background-color: #fff;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        margin: 20px auto;
+        border-radius: 5px;
+    }
+
+    .company-add .form-group {
+        margin-bottom: 20px;
+    }
+
+    .company-add label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .company-add input[type="text"] {
+        width: calc(100% - 22px);
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .company-add button {
+        padding: 10px 20px;
+        font-size: 15px;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+    }
+
+    .company-add button:hover {
+        background-color: #0056b3;
+    }
+
+</style>

@@ -1,133 +1,129 @@
-<!doctype html>
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ko">
+
 <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-
+    <title>견적서 작성</title>
 </head>
-<body>
-<span class="border border-dark">
+
+<body class="quote-form">
+<div class="quote-container">
+    <h1 class="quote-title">견적서 작성</h1>
+    <hr>
     <form>
-        <div class="form-group row">
-        <label for="quoteTitle" class="col-sm-2 col-form-label">견적서 제목</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="quoteTitle">
-            </div>
+        <div class="form-group">
+            <label for="quoteTitle">견적서 제목</label>
+            <input type="text" class="form-control" id="quoteTitle">
         </div>
-        <div class="form-group row">
-            <label for="inputCorrespondent" class="col-sm-2 col-form-label">거래처</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="inputCorrespondent">
-            </div>
+        <div class="form-group">
+            <label for="inputCorrespondent">거래처</label>
+            <input type="text" class="form-control" id="inputCorrespondent">
         </div>
-        <div class="form-group row">
-            <label for="inputCorrespondentName" class="col-sm-2 col-form-label">거래처 대표자</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="inputCorrespondentName">
-            </div>
+        <div class="form-group">
+            <label for="inputCorrespondentName">거래처 대표자</label>
+            <input type="text" class="form-control" id="inputCorrespondentName">
         </div>
-        <div class="form-group row">
-            <label for="inputCorrespondentPhone" class="col-sm-2 col-form-label">거래처 연락처</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="inputCorrespondentPhone">
-            </div>
+        <div class="form-group">
+            <label for="inputCorrespondentPhone">거래처 연락처</label>
+            <input type="text" class="form-control" id="inputCorrespondentPhone">
         </div>
 
-        <div class="form-group row">
-            <label for="productName" class="col-sm-2 col-form-label">제품명</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="productName">
-            </div>
+        <div class="form-group">
+            <label for="productName">제품명</label>
+            <input type="text" class="form-control" id="productName">
         </div>
-        <div class="form-group row">
-            <label for="productQuantity" class="col-sm-2 col-form-label">수량</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="productQuantity">
-            </div>
+        <div class="form-group">
+            <label for="productQuantity">수량</label>
+            <input type="text" class="form-control" id="productQuantity">
         </div>
-        <div class="form-group row">
-            <label for="productPrice" class="col-sm-2 col-form-label">단위 단가</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="productPrice">
-            </div>
+        <div class="form-group">
+            <label for="productPrice">단위 단가</label>
+            <input type="text" class="form-control" id="productPrice">
         </div>
-        <div class="form-group row">
-            <label for="" class="col-sm-2 col-form-label">총 단가</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="">
-            </div>
+        <div class="form-group">
+            <label>총 단가</label>
+            <input type="text" class="form-control">
         </div>
-        <div class="form-group row">
-            <label for="" class="col-sm-2 col-form-label">입고 일시</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="">
-            </div>
+        <div class="form-group">
+            <label>입고 일시</label>
+            <input type="text" class="form-control">
         </div>
-        <!--
-        <fieldset class="form-group row">
-            <legend class="col-form-label col-sm-2 float-sm-left pt-0">Radios</legend>
-            <div class="col-sm-10">
-                <div class="form-check">
-                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked>
-                    <label class="form-check-label" for="gridRadios1">
-                        First radio
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
-                    <label class="form-check-label" for="gridRadios2">
-                        Second radio
-                    </label>
-                </div>
-                <div class="form-check disabled">
-                    <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="option3" disabled>
-                    <label class="form-check-label" for="gridRadios3">
-                        Third disabled radio
-                    </label>
-                </div>
-            </div>
-        </fieldset>
-        -->
-        <div class="form-group row">
-            <div class="col-sm-10 offset-sm-2">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="gridCheck1">
-                    <label class="form-check-label" for="gridCheck1">
-                        거래 의사 확인
-                    </label>
-                </div>
-            </div>
+
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="gridCheck1">
+            <label class="form-check-label" for="gridCheck1">거래 의사 확인</label>
         </div>
-        <div class="form-group row">
-            <div class="col-sm-10">
-                <button type="submit" class="btn btn-primary">등록</button>
-            </div>
-        </div>
+
+        <button type="submit" class="btn btn-primary">등록</button>
     </form>
-    </span>
-
-<!--
-    견적서 제목
-
-    거래처 이름
-    거래처 주소
-    거래처 대표자
-    거래처 연락처
-
-    제품명
-    수량
-    단위 단가
-    총 단가
-    입고 일시
--->
-
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+</div>
 
 </body>
+
 </html>
+
+
+<style>
+    /* styles.css */
+
+    /* 견적서 작성 페이지 스타일 */
+    body.quote-form {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    .quote-container {
+        background-color: #fff;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        margin: 20px auto;
+        border-radius: 5px;
+    }
+
+    .quote-title {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: bold;
+    }
+
+    .form-control {
+        width: calc(100% - 22px);
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .form-check {
+        margin-top: 10px;
+    }
+
+    .btn-primary {
+        padding: 5px 10px;
+        font-size: 15px;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin: 5px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+</style>
