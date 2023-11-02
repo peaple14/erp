@@ -1,6 +1,8 @@
 package com.example.erp.product.dto;
 
 
+import com.example.erp.company.entity.CompanyEntity;
+import com.example.erp.product.entity.ProductEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -17,6 +19,18 @@ public class ProductDto {
     private String productcode;//제품코드
     private String count; //재고량
     private long price; //제품가격
-    private String makecompany; //제조업체
+    private CompanyEntity makecompany; //제조업체
     private LocalDateTime makeday; //제조년도
+
+    public static ProductDto toProductDto(ProductEntity productEntity) {
+        ProductDto productDto = new ProductDto();
+        productDto.setId(productEntity.getId());
+        productDto.setProductname(productEntity.getProductName());
+        productDto.setProductcode(productEntity.getProductCode());
+        productDto.setCount(productEntity.getCount());
+        productDto.setPrice(productEntity.getPrice());
+        productDto.setMakecompany(productEntity.getCompany());
+        productDto.setMakeday(productEntity.getMakeDay());
+        return productDto;
+    }
 }

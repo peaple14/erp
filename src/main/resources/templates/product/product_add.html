@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>제품 추가</title>
+
+    <!-- jQuery 및 jQuery UI 스크립트 및 스타일 시트 포함 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+</head>
+<body>
+<h1>제품 추가</h1>
+<form action="/product_add" method="post">
+    <div>
+        <label for="productname">제품명:</label>
+        <input type="text" id="productname" name="productname" required>
+    </div>
+    <div>
+        <label for="productcode">제품코드:</label>
+        <input type="text" id="productcode" name="productcode" required>
+    </div>
+    <div>
+        <label for="count">재고량:</label>
+        <input type="text" id="count" name="count" required>
+    </div>
+    <div>
+        <label for="price">제품가격:</label>
+        <input type="text" id="price" name="price" required>
+    </div>
+    <div>
+        <label for="makecompany">제조업체:</label>
+        <!-- 드롭다운 목록 -->
+        <select id="makecompany" name="makecompany" required>
+            <option value="" selected disabled>제조업체 선택</option>
+            <th:block th:each="company : ${companies}">
+                <option th:value="${company.id}" th:text="${company.companyName}"></option>
+            </th:block>
+        </select>
+    </div>
+    <div>
+        <label for="makeday">제조년도:</label>
+        <input type="datetime-local" id="makeday" name="makeday" required>
+    </div>
+    <!-- hidden 필드로 선택한 회사의 id를 보냅니다 -->
+    <input type="hidden" id="selectedCompanyId" name="selectedCompanyId">
+    <button type="submit">저장</button>
+</form>
+</body>
+</html>

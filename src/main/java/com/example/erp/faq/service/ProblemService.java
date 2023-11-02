@@ -7,6 +7,8 @@ import com.example.erp.faq.entity.NoticeEntity;
 import com.example.erp.faq.entity.ProblemEntity;
 import com.example.erp.faq.repository.NoticeRepository;
 import com.example.erp.faq.repository.ProblemRepository;
+import com.example.erp.member.entity.MemberEntity;
+import com.example.erp.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,7 @@ import java.util.stream.Collectors;
 public class ProblemService {
 
     private final ProblemRepository problemRepository;
+    private final MemberRepository memberRepository;
 
 
     //리스트띄어주기
@@ -35,7 +38,10 @@ public class ProblemService {
     //저장용
     @Transactional
     public void save(ProblemDto problemDto) throws IOException {
-        ProblemEntity problemEntity = ProblemEntity.toSaveEntity(problemDto);
+        String writerId = problemDto.getWriter();
+        //작성자 정보 찾기
+        MemberEntity writer = memberRepository.findByUserId(writerId).orElse(null);
+        ProblemEntity problemEntity = ProblemEntity.toSaveEntity(problemDto, writer);
         problemRepository.save(problemEntity); //entity값으로 반환
     }
 

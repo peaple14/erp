@@ -2,6 +2,7 @@ package com.example.erp.faq.entity;
 
 
 import com.example.erp.faq.dto.ProblemDto;
+import com.example.erp.member.entity.MemberEntity;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -23,18 +24,20 @@ public class ProblemEntity {
     @Column
     private String problemMemo;
 
-    @Column
-    private String writer;
 
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdTime;
 
-    public static ProblemEntity toSaveEntity(ProblemDto problemDto){
+    @ManyToOne
+    @JoinColumn(name = "member_userId")
+    private MemberEntity user;
+
+    public static ProblemEntity toSaveEntity(ProblemDto problemDto,MemberEntity writer){
         ProblemEntity problemEntity = new ProblemEntity();
         problemEntity.setProblemTitle(problemDto.getProblemTitle());
         problemEntity.setProblemMemo(problemDto.getProblemMemo());
-        problemEntity.setWriter(problemDto.getWriter());
+        problemEntity.setUser(writer);
         return problemEntity;
     }
 

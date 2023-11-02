@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>제품 수정</title>
+</head>
+<body>
+<h1>제품 수정</h1>
+<form th:object="${product}" method="post" th:action="@{/product_edit_ok}">
+    <input type="hidden" th:field="*{id}" />
+
+    <p><strong>제품명:</strong> <input type="text" th:field="*{productname}" /></p>
+    <p><strong>제품코드:</strong> <input type="text" th:field="*{productcode}" /></p>
+    <p><strong>재고량:</strong> <input type="text" th:field="*{count}" /></p>
+    <p><strong>제품가격:</strong> <input type="text" th:field="*{price}" /></p>
+    <p><strong>제품가격:</strong> <input type="text" th:field="*{makecompany}" /></p>
+
+    <div>
+        <label for="makecompany">제조업체:</label>
+        <!-- 드롭다운 목록 -->
+        <select id="makecompany" name="makecompany" required>
+            <option value="" selected disabled>제조업체 선택</option>
+            <th:block th:each="company, iterStat : ${companies}">
+                <option th:value="${company.id}" th:text="${company.companyName}"
+                        th:selected="${iterStat.index == product.makecompany.getId()-1}"></option>
+            </th:block>
+        </select>
+        <div>
+            <label for="makeday">제조년도:</label>
+            <input type="datetime-local" id="makeday" name="makeday"
+                   required th:value="${#temporals.format(product.makeday, 'yyyy-MM-dd''T''HH:mm')}" />
+        </div>
+
+        <input type="submit" value="수정">
+</form>
+<a href="/product_list">뒤로 가기</a>
+</body>
+</html>

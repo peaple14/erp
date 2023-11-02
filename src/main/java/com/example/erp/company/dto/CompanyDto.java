@@ -20,6 +20,7 @@ public class CompanyDto {
 
     public static CompanyDto toCompanyDto(CompanyEntity companyEntity) {
         CompanyDto companyDto = new CompanyDto();
+        companyDto.setId(companyEntity.getId());
         companyDto.setCompanyName(companyEntity.getCompanyName());
         companyDto.setCompanyVip(companyEntity.getCompanyVip());
         companyDto.setCompanyTel(companyEntity.getCompanyTel());

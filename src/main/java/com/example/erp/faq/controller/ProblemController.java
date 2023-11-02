@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
@@ -35,7 +36,9 @@ public class ProblemController {
 
     //글추가 처리 -> 권한이 admin일때만 되도록.
     @PostMapping("/problem_ok")
-    public String notice_ok(@ModelAttribute ProblemDto problemDto) throws IOException {
+    public String notice_ok(@ModelAttribute ProblemDto problemDto, HttpSession session) throws IOException {
+        System.out.println("세션내용:" +  session.getAttribute("loginId"));
+        problemDto.setWriter(session.getAttribute("loginId").toString());
         problemService.save(problemDto); //writer은 session에서 받아욜 예정입니다.
         return "redirect:/problem_list"; //글추가 끝나고 갈페이지입니다.
     }

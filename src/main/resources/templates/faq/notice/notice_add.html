@@ -3,8 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>글쓰기</title>
+    <title>제품 추가</title>
+
+    <!-- jQuery 및 jQuery UI 스크립트 및 스타일 시트 포함 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <script>
+        // DatePicker를 사용하여 제조년도 선택
+        $(function() {
+            $("#makeday").datepicker();
+        });
+
+        // 폼이 제출될 때 LocalDatetime 필드를 업데이트
+        $("form").submit(function() {
+            // 사용자가 선택한 날짜를 가져옴
+            var selectedDate = $("#makeday").datepicker("getDate");
+            // 기본 시간 정보 (0시 0분 0초)를 추가
+            selectedDate.setHours(0, 0, 0, 0);
+            // 선택한 날짜를 숨겨진 필드에 할당
+            $("#hiddenMakeday").val(selectedDate.toISOString());
+        });
+    </script>
 </head>
+<body>
+<h1>제품 추가</h1>
+<form action="/product_add" method="post">
+    <div>
+        <label for="productname">제품명:</label>
+        <input type="text" id="productname" name="productname" required>
+    </div>
+    <div>
+        <label for="productcode">제품코드:</label>
+        <input type="text" id="productcode" name="productcode" required>
+    </div>
+    <div>
+        <label for="count">재고량:</label>
+        <input type="text" id="count" name="count" required>
+    </div>
+    <div>
+        <label for="price">제품가격:</label>
+        <input type="text" id="price" name="price" required>
+    </div>
+    <div>
+        <label for="makecompany">제조업체:</label>
+        <input type="text" id="makecompany" name="makecompany" required>
+    </div>
+    <div>
+        <label for="makeday">제조년도:</label>
+        <input type="text" id="makeday" name="makeday" required>
+        <!-- 숨겨진 필드에 선택한 날짜를 할당 -->
+        <input type="hidden" id="hiddenMakeday" name="makeday" th:field="*{makeday}" required>
+    </div>
+    <button type="submit">저장</button>
+</form>
 <body class="write-notice">
 <div class="notice-form">
     <h1 class="notice-title">글쓰기</h1>
