@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>제품 세부 정보</title>
 </head>
-<body>
-<h1>제품 세부 정보</h1>
+<body class="company-info">
+<div class="company-info-container">
+    <h1 class="company-title">제품 세부 정보</h1>
+    <hr>
 <div th:if="${product != null}">
     <p><strong>ID:</strong> <span th:text="${product.id}"></span></p>
     <p><strong>제품명:</strong> <span th:text="${product.productname}"></span></p>
@@ -22,6 +24,50 @@
 <div th:if="${product == null}">
     <p>해당 ID에 대한 제품이 없습니다.</p>
 </div>
-<a href="/product_list">뒤로 가기</a>
+    <a href="/product_list">뒤로 가기</a>
+</div>
 </body>
 </html>
+
+<style>
+
+    .company-title {
+        font-size: 24px;
+        margin: 0 0 20px 0;
+    }
+
+    body.company-info {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    .company-info-container {
+        background-color: #fff;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        margin: 20px auto;
+        border-radius: 5px;
+    }
+
+    .company-info-container p {
+        margin: 10px 0;
+    }
+
+    .company-info-container strong {
+        font-weight: bold;
+    }
+
+    .company-info-container a {
+        text-decoration: none;
+        color: #007bff;
+        margin-top: 10px;
+        display: block;
+    }
+
+    .company-info-container a:hover {
+        text-decoration: underline;
+    }
+
+</style>
