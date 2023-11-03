@@ -2,6 +2,8 @@ package com.example.erp.report.service;
 
 import com.example.erp.company.entity.CompanyEntity;
 import com.example.erp.company.repository.CompanyRepository;
+import com.example.erp.member.entity.MemberEntity;
+import com.example.erp.member.repository.MemberRepository;
 import com.example.erp.product.dto.ProductDto;
 import com.example.erp.product.entity.ProductEntity;
 import com.example.erp.product.repository.ProductRepository;
@@ -23,6 +25,7 @@ public class QuoteService {
     private final QuoteRepository quoteRepository;
     private final CompanyRepository companyRepository;
     private final ProductRepository productRepository;
+    private final MemberRepository memberRepository;
 
     //견적서조회
     @Transactional
@@ -35,6 +38,7 @@ public class QuoteService {
 
 
     //모든 회사 조회후 추가창에 넣기
+    @Transactional
     public List<CompanyEntity> getAllCompanies() {
         List<CompanyEntity> receivedCompanies = companyRepository.findByStatus("receive"); //수주회사만 표시
         List<CompanyEntity> sendCompanies = companyRepository.findByStatus("send"); //발주회사만 표시
@@ -44,6 +48,7 @@ public class QuoteService {
     }
 
     //모든 상품 조회
+    @Transactional
     public List<ProductEntity> getAllProducts() {
         return productRepository.findAll();
     }
@@ -71,6 +76,21 @@ public class QuoteService {
             quoteEntity.update(quoteDto);
             quoteRepository.save(quoteEntity);
         });
+    }
+
+    @Transactional
+    public void check_ok(int id, QuoteDto quoteDto) {
+        Optional<QuoteEntity> quoteOptional = quoteRepository.findById(id);
+        quoteOptional.ifPresent(quoteEntity -> {
+            quoteEntity.check_ok(quoteDto);
+            quoteRepository.save(quoteEntity);
+        });
+    }
+
+    //add시 사용자 선택
+    @Transactional
+    public MemberEntity getMember(String id) {
+        return memberRepository.findByUserId(id).orElse(null); //없을시 null반환.
     }
 
 }

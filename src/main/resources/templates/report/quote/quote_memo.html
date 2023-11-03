@@ -1,0 +1,55 @@
+<!--이곳도 edit와 동일하게 모든 정보가 로그에 뜨게해뒀음. 디자인은 잘 못해서 원하는대로 보이게하면됨.-->
+
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>견적서 상세 정보</title>
+</head>
+<body class="quote-memo">
+<div class="quote-container">
+  <h1>견적서 상세 정보</h1>
+  <table class="quote-table table table-hover">
+    <tr>
+      <th>ID</th>
+      <td th:text="${quote.id}"></td>
+    </tr>
+    <tr>
+      <th>견적서 이름</th>
+      <td th:text="${quote.quotename}"></td>
+    </tr>
+    <tr>
+      <th>제품명</th>
+      <td th:text="${quote.product.productName}"></td>
+    </tr>
+    <tr>
+      <th>수량</th>
+      <td th:text="${quote.quantity}"></td>
+    </tr>
+    <tr>
+      <th>총 단가</th>
+      <td th:text="${quote.totalprice}"></td>
+    </tr>
+    <tr>
+      <th>견적서 일자</th>
+      <td th:text="${quote.createdat}"></td>
+    </tr>
+    <tr>
+      <th>작성자</th>
+      <td th:text="${quote.writer.userName}"></td>
+    </tr>
+    <tr>
+      <th>최종 확인 여부</th>
+      <td>
+        <span th:if="${quote.ischeck == 1}">확인됨</span>
+        <span th:if="${quote.ischeck == 0}">미확인</span>
+      </td>
+    </tr>
+  </table>
+  <h2>견적서 메모</h2>
+  <p th:if="${quote.memo} th:text="${quote.memo}">메모 없음</p>
+  <a th:href="@{'/quote_edit/' + ${quote.id}}">수정</a>
+</div>
+</body>
+</html>

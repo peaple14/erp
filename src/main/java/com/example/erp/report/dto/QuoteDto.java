@@ -24,9 +24,10 @@ public class QuoteDto {
     private ProductEntity product; //제품명,단위단가, //거래처,대표자,연락처
     private long quantity; //수량
     private long totalprice; //총단가
-    private LocalDate createdat; //일자선택
+    private LocalDate createdat; //견적서일자
     private MemberEntity writer; // 작성자
-    private String check; //최종확인 되었는지 안되었는지
+    private int ischeck ; //최종확인 되었는지 안되었는지
+    private MemberEntity checkmember;
 
     public static QuoteDto quoteDto(QuoteEntity quoteEntity) {
         QuoteDto quoteDto = new QuoteDto();

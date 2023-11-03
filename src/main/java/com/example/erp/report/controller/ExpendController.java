@@ -1,5 +1,6 @@
 package com.example.erp.report.controller;
 
+import com.example.erp.product.entity.ProductEntity;
 import com.example.erp.report.dto.ExpendDto;
 import com.example.erp.report.service.ExpendService;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,9 @@ public class ExpendController {
     // 지출 추가 페이지 표시
     @GetMapping("/expend_add")
     public String expendAdd(Model model) {
+        List<ProductEntity> products = expendService.getAllProducts();
+        model.addAttribute("products", products);
+
         model.addAttribute("expendDto", new ExpendDto());
         return "report/expend/expend_add";
     }
@@ -43,7 +47,7 @@ public class ExpendController {
     public String expendInfo(Model model, @PathVariable int id) {
         ExpendDto expendDto = expendService.findById(id);
         model.addAttribute("expend", expendDto);
-        return "report/expend/expend_info";
+        return "report/expend/expend_memo";
     }
 
     // 지출 편집 페이지 표시

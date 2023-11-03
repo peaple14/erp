@@ -35,12 +35,21 @@ public class QuoteEntity {
     @Column
     private LocalDate createdAt;
 
-//    //거래처,대표자,연락처
+    //최종 확인되었는지 안되었는지
+    @Column
+    private int ischeck ;
+
+    //지출결의서 최종확인자
+    @ManyToOne
+    @JoinColumn(name = "checkmember_id")
+    private MemberEntity checkmember;
+
+//    //거래처,대표자,연락처 ,중복되서 제거
 //    @ManyToOne
 //    @JoinColumn(name = "company_id")
 //    private CompanyEntity company;
 
-    //제품명,단위단가
+    //제품명,단위단가 , 거래처,대표자,연락처
     @ManyToOne
     @JoinColumn(name = "product_id")
     private ProductEntity product;
@@ -58,6 +67,7 @@ public class QuoteEntity {
         quoteEntity.setCreatedAt(quoteDto.getCreatedat());
         quoteEntity.setProduct(quoteDto.getProduct());
         quoteEntity.setMember(quoteDto.getWriter());
+        quoteEntity.setIscheck(quoteDto.getIscheck());
         return quoteEntity;
     }
 
@@ -70,6 +80,15 @@ public class QuoteEntity {
         this.createdAt = quoteDto.getCreatedat();
         this.product = quoteDto.getProduct();
         this.member = quoteDto.getWriter();
+        this.checkmember = quoteDto.getCheckmember();
+        this.ischeck = quoteDto.getIscheck();
+    }
+
+    //결제완료용
+    public void check_ok(QuoteDto quoteDto) {
+        this.checkmember = quoteDto.getCheckmember();
+        this.ischeck = 1;
+        System.out.println("여긴가:"+quoteDto);
     }
 
 }
