@@ -24,7 +24,7 @@
             <option value="" selected disabled>제품 선택</option>
             <!-- 제품 목록을 동적으로 렌더링 -->
             <th:block th:each="product : ${products}">
-                <option th:value="${product.id}" th:text="${product.productName}" th:data-company-id="${product.company.id}"></option>
+                <option th:value="${product.id}" th:text="${product.productName}"></option>
             </th:block>
         </select>
     </div>
@@ -59,19 +59,16 @@
     }
 
     // 중복되지 않는 회사 목록 생성 및 드롭다운 업데이트
-    const products = /*[[${products}]]*/ [];
+    const products = ${products}; // 상품 목록
     const companySelect = document.getElementById("company");
 
-    // 중복되지 않는 회사 id 목록 생성
-    const uniqueCompanyIds = [...new Set(products.map(product => product.getAttribute('data-company-id')))];
+    const uniqueCompanies = [...new Set(products.map(product => product.company.companyName))];
 
-    // 중복되지 않는 회사 id 목록을 기반으로 회사 목록 생성
-    uniqueCompanyIds.forEach(companyId => {
-        const companyOption = document.createElement("option");
-        companyOption.value = companyId;
-        const companyName = products.find(product => product.getAttribute('data-company-id') === companyId).text;
-        companyOption.text = companyName;
-        companySelect.appendChild(companyOption);
+    uniqueCompanies.forEach(companyName => {
+        const option = document.createElement("option");
+        option.value = companyName;
+        option.text = companyName;
+        companySelect.appendChild(option);
     });
 </script>
 </body>

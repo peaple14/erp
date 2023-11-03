@@ -23,7 +23,7 @@ public class ProductEntity {
     private String productCode;
 
     @Column
-    private String count;
+    private long count;
 
     @Column
     private long price;
@@ -41,7 +41,7 @@ public class ProductEntity {
         ProductEntity productEntity = new ProductEntity();
         productEntity.setProductName(productDto.getProductname());
         productEntity.setProductCode(productDto.getProductcode());
-        productEntity.setCount(productDto.getCount());
+        productEntity.setCount(0);
         productEntity.setPrice(productDto.getPrice());
         productEntity.setCompany(productDto.getMakecompany());
         productEntity.setMakeDay(productDto.getMakeday());

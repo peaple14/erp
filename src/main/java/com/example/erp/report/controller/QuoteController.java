@@ -27,7 +27,7 @@ public class QuoteController {
         return "report/quote/quote_list";
     }
 
-    //견적서추가 -> 최종도장까지 끝내면 그회사 미수금에 총가격 더하기.
+    //견적서추가
     @GetMapping("/quote_add")
     public String quoteAdd(Model model) {
         List<ProductEntity> products = quoteService.getAllProducts();
