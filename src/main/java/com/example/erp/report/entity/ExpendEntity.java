@@ -66,7 +66,7 @@ public class ExpendEntity {
     public void update(ExpendDto expendDto) {
         this.expendname = expendDto.getExpendname();
         this.quantity = expendDto.getQuantity();
-        this.totalPrice = expendDto.getTotalprice();
+        this.totalPrice  = expendDto.getTotalprice();
         this.createdAt = expendDto.getWritetime();
         this.company = expendDto.getCompany();
         this.member = expendDto.getWriter();

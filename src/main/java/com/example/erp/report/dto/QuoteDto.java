@@ -34,7 +34,7 @@ public class QuoteDto {
         quoteDto.setQuotename(quoteEntity.getQuotename());
         quoteDto.setProduct(quoteEntity.getProduct());
         quoteDto.setQuantity(quoteEntity.getQuantity());
-        quoteDto.setTotalprice(quoteEntity.getTotalAmount());
+        quoteDto.setTotalprice(quoteEntity.getTotalPrice());
         quoteDto.setCreatedat(quoteEntity.getCreatedAt());
         quoteDto.setWriter(quoteEntity.getMember());
         return quoteDto;
