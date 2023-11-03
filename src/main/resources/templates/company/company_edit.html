@@ -1,24 +1,101 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회사 수정</title>
 </head>
-<body>
-<h1>회사 수정</h1>
+
+<body class="company-edit">
 <form th:object="${company}" method="post" th:action="@{/company_edit_ok}">
     <input type="hidden" th:field="*{id}" />
-
+    <h1>회사 수정</h1>
+    <hr>
     <p><strong>회사 이름:</strong> <input type="text" th:field="*{companyName}" /></p>
     <p><strong>회사 대표:</strong> <input type="text" th:field="*{companyVip}" /></p>
     <p><strong>거래처 연락처:</strong> <input type="text" th:field="*{companyTel}" /></p>
-    <p><strong>상태:</strong> <input type="text" th:field="*{status}" /></p>
-    <p><strong>미수금:</strong> <input type="text" th:field="*{moneyRecieve}" /></p>
+    <p><strong>상태 (receive 또는 send):</strong> <input type="text" th:field="*{status}" /></p>
+    <p><strong>미수금 (0 또는 1):</strong> <input type="text" th:field="*{moneyRecieve}" /></p>
     <p><strong>받은 돈:</strong> <input type="text" th:field="*{money}" /></p>
 
     <input type="submit" value="수정">
+    <a href="/company_list">뒤로 가기</a>
 </form>
-<a href="/company_list">뒤로 가기</a>
+
 </body>
+
 </html>
+
+
+<style>
+
+    /* 회사 수정 페이지 스타일 */
+    body.company-edit {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    .company-edit h1 {
+        font-size: 24px;
+        margin: 0 0 20px 0;
+    }
+
+    .company-edit form {
+        background-color: #fff;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        margin: 20px auto;
+        border-radius: 5px;
+    }
+
+    .company-edit p {
+        margin: 10px 0;
+    }
+
+    .company-edit strong {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .company-edit input[type="text"] {
+        width: calc(100% - 22px);
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+
+    .company-edit input[type="submit"] {
+        padding: 5px 10px;
+        font-size: 15px;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin-top: 10px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+    }
+
+    .company-edit input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+
+    .company-edit a {
+        text-decoration: none;
+        color: #007bff;
+        font-size: 16px;
+        float: right;
+    }
+
+    .company-edit a:hover {
+        text-decoration: underline;
+    }
+
+</style>

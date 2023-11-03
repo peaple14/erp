@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,24 +10,32 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <link rel="stylesheet" href="styles.css"> <!-- 스타일 시트 연결 -->
 </head>
-<body>
-<h1>제품 추가</h1>
+
+<body class="product-add">
 <form action="/product_add" method="post">
-    <div>
+    <h1>제품 추가</h1>
+    <hr>
+    <div class="form-group">
         <label for="productname">제품명:</label>
         <input type="text" id="productname" name="productname" required>
     </div>
-
+    <div class="form-group">
+        <label for="productcode">제품코드:</label>
+        <input type="text" id="productcode" name="productcode" required>
+    </div>
+    <div class="form-group">
     <div>
         <label for="count">재고량:</label>
         <input type="text" id="count" name="count" required>
     </div>
-    <div>
+    <div class="form-group">
         <label for="price">제품가격:</label>
         <input type="text" id="price" name="price" required>
     </div>
-    <div>
+    <div class="form-group">
         <label for="makecompany">제조업체:</label>
         <!-- 드롭다운 목록 -->
         <select id="makecompany" name="makecompany" required>
@@ -36,13 +45,97 @@
             </th:block>
         </select>
     </div>
-    <div>
+    <div class="form-group">
         <label for="makeday">제조년도:</label>
         <input type="month" id="makeday" name="makeday" required>
     </div>
     <!-- hidden 필드로 선택한 회사의 id를 보냅니다 -->
     <input type="hidden" id="selectedCompanyId" name="selectedCompanyId">
-    <button type="submit">저장</button>
+    <button type="submit" class="btn btn-primary">저장</button>
+    <a href="/product_list">뒤로 가기</a>
+    </div>
 </form>
+
 </body>
+
 </html>
+
+
+<style>
+    /* styles.css */
+
+    /* 제품 추가 페이지 스타일 */
+    body.product-add {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    .product-add h1 {
+        font-size: 24px;
+        margin: 0 0 20px 0;
+    }
+
+    .product-add form {
+        background-color: #fff;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        margin: 20px auto;
+        border-radius: 5px;
+    }
+
+    .product-add .form-group {
+        margin-bottom: 20px;
+    }
+
+    .product-add label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .product-add input[type="text"],
+    .product-add input[type="datetime-local"] {
+        width: calc(100% - 22px);
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .product-add select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .product-add button {
+        padding: 10px 20px;
+        font-size: 15px;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+    }
+
+    .product-add button:hover {
+        background-color: #0056b3;
+    }
+
+    .product-add a {
+        text-decoration: none;
+        color: #007bff;
+        font-size: 16px;
+        float: right;
+    }
+
+    .product-add a:hover {
+        text-decoration: underline;
+    }
+
+</style>

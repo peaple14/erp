@@ -1,38 +1,137 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>제품 수정</title>
 </head>
-<body>
-<h1>제품 수정</h1>
+
+<body class="product-edit">
 <form th:object="${product}" method="post" th:action="@{/product_edit_ok}">
     <input type="hidden" th:field="*{id}" />
 
-    <p><strong>제품명:</strong> <input type="text" th:field="*{productname}" /></p>
-    <p><strong>제품코드:</strong> <input type="text" th:field="*{productcode}" /></p>
-    <p><strong>재고량:</strong> <input type="text" th:field="*{count}" /></p>
-    <p><strong>제품가격:</strong> <input type="text" th:field="*{price}" /></p>
-    <p><strong>제품가격:</strong> <input type="text" th:field="*{makecompany}" /></p>
-
-    <div>
+    <h1>제품 수정</h1>
+    <hr>
+    <div class="form-group">
+        <label for="productname">제품명:</label>
+        <input type="text" id="productname" th:field="*{productname}" required>
+    </div>
+    <div class="form-group">
+        <label for="productcode">제품코드:</label>
+        <input type="text" id="productcode" th:field="*{productcode}" required>
+    </div>
+    <div class="form-group">
+        <label for="count">재고량:</label>
+        <input type="text" id="count" th:field="*{count}" required>
+    </div>
+    <div class="form-group">
+        <label for="price">제품가격:</label>
+        <input type="text" id="price" th:field="*{price}" required>
+    </div>
+    <div class="form-group">
         <label for="makecompany">제조업체:</label>
         <!-- 드롭다운 목록 -->
-        <select id="makecompany" name="makecompany" required>
+        <select id="makecompany" name="makecompany" th:field="*{makecompany.id}" required>
             <option value="" selected disabled>제조업체 선택</option>
-            <th:block th:each="company, iterStat : ${companies}">
+            <th:block th:each="company : ${companies}">
                 <option th:value="${company.id}" th:text="${company.companyName}"
-                        th:selected="${iterStat.index == product.makecompany.getId()-1}"></option>
+                        th:selected="${company.id == product.makecompany.id}"></option>
             </th:block>
         </select>
+    </div>
+    <div class="form-group">
+        <label for="makeday">제조년도:</label>
+        <input type="datetime-local" id="makeday" th:field="*{makeday}" required>
+    </div>
         <div>
             <label for="makeday">제조년도:</label>
-            <input type="month" id="makeday" name="makeday" required th:value="${#temporals.format(product.makeday, 'yyyy-MM')}" />
+            <input type="month"  name="makeday" required th:value="${#temporals.format(product.makeday, 'yyyy-MM')}" />
         </div>
 
-        <input type="submit" value="수정">
+    <input type="submit" value="수정" class="btn btn-primary">
+    <a href="/product_list" class="back-link">뒤로 가기</a>
 </form>
-<a href="/product_list">뒤로 가기</a>
 </body>
+
 </html>
+
+<style>
+    /* styles.css */
+
+    /* 제품 수정 페이지 스타일 */
+    body.product-edit {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    .product-edit h1 {
+        font-size: 24px;
+        margin: 0 0 20px 0;
+    }
+
+    .product-edit form {
+        background-color: #fff;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        margin: 20px auto;
+        border-radius: 5px;
+    }
+
+    .product-edit .form-group {
+        margin-bottom: 20px;
+    }
+
+    .product-edit label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .product-edit input[type="text"],
+    .product-edit input[type="datetime-local"] {
+        width: calc(100% - 22px);
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .product-edit select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .product-edit input[type="submit"] {
+        padding: 10px 20px;
+        font-size: 15px;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        display: inline-block;
+    }
+
+    .product-edit input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+
+    .product-edit .back-link {
+        text-decoration: none;
+        color: #007bff;
+        font-size: 16px;
+        float: right;
+    }
+
+    .product-edit .back-link:hover {
+        text-decoration: underline;
+    }
+
+</style>
