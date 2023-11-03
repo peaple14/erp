@@ -12,6 +12,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("templates/product")
 public class ProductController {
 
     private final ProductService productService;
