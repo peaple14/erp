@@ -30,7 +30,7 @@ public class CompanyEntity {
     private int moneyRecieve; // 미수금 (0, 1) 받을게있으면 1
 
     @Column
-    private long money; // 받은 돈
+    private long money; // 받을 돈
 
 
     public static CompanyEntity toSaveEntity(CompanyDto companyDto) {
