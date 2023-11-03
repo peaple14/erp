@@ -15,6 +15,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("templates/faq/problem")
 public class ProblemController {
 
     private final ProblemService problemService;
