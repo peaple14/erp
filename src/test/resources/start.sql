@@ -4,6 +4,16 @@ VALUES
     ('333', '444', 'Admin', 'ADMIN');
 
 
+-- Company 테이블에 데이터를 추가하는 SQL 쿼리
+INSERT INTO Company (companyName, companyVip, companyTel, status, moneyRecieve, money)
+VALUES ('김회사', 'ㅈㅈ', '333', 'receive', 1, 0);
+
+INSERT INTO Company (companyName, companyVip, companyTel, status, moneyRecieve, money)
+VALUES ('주회사', 'ㄱ22', '2222', 'send', 1, 0);
+
+INSERT INTO Company (companyName, companyVip, companyTel, status, moneyRecieve, money)
+VALUES ('상회사', 'ㄷㄷㄷ', '23', 'send', 1, 0);
+
 
 INSERT INTO Product (productName, productCode, stockAmount, productPrice, manufacturer, manufacturingYearMonth, companyId)
 VALUES
