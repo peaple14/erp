@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>견적서 추가</title>
+</head>
+<body>
+<h1>견적서 추가</h1>
+<form action="/quote_add" method="post">
+    <div>
+        <label for="quotename">견적서 이름:</label>
+        <input type="text" id="quotename" name="quotename" required>
+    </div>
+    <div>
+        <label for="company">회사 선택:</label>
+        <select id="company" name="company" required>
+            <option value="" selected disabled>회사 선택</option>
+        </select>
+    </div>
+    <div>
+        <label for="product">제품 선택:</label>
+        <select id="product" name="product" required>
+            <option value="" selected disabled>제품 선택</option>
+            <!-- 제품 목록을 동적으로 렌더링 -->
+            <th:block th:each="product : ${products}">
+                <option th:value="${product.id}" th:text="${product.productName}" th:data-company-id="${product.company.id}"></option>
+            </th:block>
+        </select>
+    </div>
+    <div>
+        <label for="quantity">수량:</label>
+        <input type="number" id="quantity" name="quantity" required>
+    </div>
+    <div>
+        <label for="price">단위 단가:</label>
+        <input type="number" id="price" name="price" required>
+    </div>
+    <div>
+        <label for="createdAt">일자 선택:</label>
+        <input type="date" id="createdAt" name="createdAt" required>
+    </div>
+    <div>
+        <label for="totalprice">총 단가:</label>
+        <input type="number" id="totalprice" name="totalprice" required readonly>
+    </div>
+    <button type="submit">저장</button>
+</form>
+<script>
+    // 수량과 단위 단가가 변경될 때 총 단가를 계산
+    document.getElementById("quantity").addEventListener("input", calculateTotalPrice);
+    document.getElementById("price").addEventListener("input", calculateTotalPrice);
+
+    function calculateTotalPrice() {
+        const quantity = parseFloat(document.getElementById("quantity").value);
+        const price = parseFloat(document.getElementById("price").value);
+        const totalprice = quantity * price;
+        document.getElementById("totalprice").value = totalprice;
+    }
+
+    // 중복되지 않는 회사 목록 생성 및 드롭다운 업데이트
+    const products = /*[[${products}]]*/ [];
+    const companySelect = document.getElementById("company");
+
+    // 중복되지 않는 회사 id 목록 생성
+    const uniqueCompanyIds = [...new Set(products.map(product => product.getAttribute('data-company-id')))];
+
+    // 중복되지 않는 회사 id 목록을 기반으로 회사 목록 생성
+    uniqueCompanyIds.forEach(companyId => {
+        const companyOption = document.createElement("option");
+        companyOption.value = companyId;
+        const companyName = products.find(product => product.getAttribute('data-company-id') === companyId).text;
+        companyOption.text = companyName;
+        companySelect.appendChild(companyOption);
+    });
+</script>
+</body>
+</html>
