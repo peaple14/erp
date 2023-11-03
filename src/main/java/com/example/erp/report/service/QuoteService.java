@@ -36,9 +36,14 @@ public class QuoteService {
 
     //모든 회사 조회후 추가창에 넣기
     public List<CompanyEntity> getAllCompanies() {
-        return companyRepository.findAll();
+        List<CompanyEntity> receivedCompanies = companyRepository.findByStatus("receive"); //수주회사만 표시
+        List<CompanyEntity> sendCompanies = companyRepository.findByStatus("send"); //발주회사만 표시
+        System.out.println("recieve이거다:" + receivedCompanies);
+        System.out.println("send이거다:" + sendCompanies);
+        return receivedCompanies;
     }
 
+    //모든 상품 조회
     public List<ProductEntity> getAllProducts() {
         return productRepository.findAll();
     }

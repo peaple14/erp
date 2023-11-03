@@ -30,14 +30,11 @@ public class QuoteController {
     //견적서추가
     @GetMapping("/quote_add")
     public String quoteAdd(Model model) {
-        List<CompanyEntity> companies = quoteService.getAllCompanies();
         List<ProductEntity> products = quoteService.getAllProducts();
-
-        System.out.println("회사들" + companies);
         System.out.println("상품들" + products);
+        System.out.println("상품들" + products.get(0).getCompany());
 
         model.addAttribute("quoteDto", new QuoteDto());
-        model.addAttribute("companies",companies);
         model.addAttribute("products",products);
         return "report/quote/quote_add";
     }
