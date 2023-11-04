@@ -20,15 +20,16 @@ public class QuoteDto {
 
     public long id; //아이디pk
     private String quotename; //견적서이름
-//    private CompanyEntity company;//거래처,대표자,연락처 -> product안과 중복됨
     private ProductEntity product; //제품명,단위단가, //거래처,대표자,연락처
     private long quantity; //수량
     private long totalprice; //총단가
     private LocalDate createdat; //견적서일자
     private MemberEntity writer; // 작성자
     private int ischeck ; //최종확인 되었는지 안되었는지
-    private MemberEntity checkmember;
+    private MemberEntity checkmember; //누가 최종확인했는지
 
+
+    //메서드이름 다음부터 잘좀짓기
     public static QuoteDto quoteDto(QuoteEntity quoteEntity) {
         QuoteDto quoteDto = new QuoteDto();
         quoteDto.setId(quoteEntity.getId());
@@ -37,6 +38,7 @@ public class QuoteDto {
         quoteDto.setQuantity(quoteEntity.getQuantity());
         quoteDto.setTotalprice(quoteEntity.getTotalPrice());
         quoteDto.setCreatedat(quoteEntity.getCreatedAt());
+        quoteDto.setIscheck(quoteEntity.getIscheck());
         quoteDto.setWriter(quoteEntity.getMember());
         return quoteDto;
     }

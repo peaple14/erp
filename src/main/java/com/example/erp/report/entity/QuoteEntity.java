@@ -1,10 +1,8 @@
 package com.example.erp.report.entity;
 
-import com.example.erp.company.dto.CompanyDto;
-import com.example.erp.company.entity.CompanyEntity;
+
 import com.example.erp.member.entity.MemberEntity;
 import com.example.erp.product.entity.ProductEntity;
-import com.example.erp.report.dto.ExpendDto;
 import com.example.erp.report.dto.QuoteDto;
 import lombok.Data;
 
@@ -31,15 +29,15 @@ public class QuoteEntity {
     @Column
     private long totalPrice;
 
-    //지출결의서 일자선택
+    //견적서 일자선택
     @Column
     private LocalDate createdAt;
 
     //최종 확인되었는지 안되었는지
     @Column
-    private int ischeck ;
+    private int ischeck ;  //다음부터는 true/false 방식쓰기
 
-    //지출결의서 최종확인자
+    //견적서 최종확인자
     @ManyToOne
     @JoinColumn(name = "checkmember_id")
     private MemberEntity checkmember;
@@ -54,7 +52,7 @@ public class QuoteEntity {
     @JoinColumn(name = "product_id")
     private ProductEntity product;
 
-    //지출결의서 작성자
+    //견적서 작성자
     @ManyToOne
     @JoinColumn(name = "member_id")
     private MemberEntity member;
@@ -88,7 +86,7 @@ public class QuoteEntity {
     public void check_ok(QuoteDto quoteDto) {
         this.checkmember = quoteDto.getCheckmember();
         this.ischeck = 1;
-        System.out.println("여긴가:"+quoteDto);
+
     }
 
 }

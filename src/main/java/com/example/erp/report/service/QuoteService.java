@@ -31,6 +31,7 @@ public class QuoteService {
     @Transactional
     public List<QuoteDto> getAllQuotes() {
         List<QuoteEntity> quotes = quoteRepository.findAll();
+        System.out.println("0의범인은 어디인가: " + quotes);
         return quotes.stream()
                 .map(QuoteDto::quoteDto)
                 .collect(Collectors.toList());

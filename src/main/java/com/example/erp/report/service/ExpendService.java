@@ -2,6 +2,8 @@ package com.example.erp.report.service;
 
 import com.example.erp.company.entity.CompanyEntity;
 import com.example.erp.company.repository.CompanyRepository;
+import com.example.erp.member.entity.MemberEntity;
+import com.example.erp.member.repository.MemberRepository;
 import com.example.erp.product.entity.ProductEntity;
 import com.example.erp.product.repository.ProductRepository;
 import com.example.erp.report.dto.ExpendDto;
@@ -22,8 +24,8 @@ public class ExpendService {
     private final ExpendRepository expendRepository;
     private final CompanyRepository companyRepository;
     private final ProductRepository productRepository;
+    private final MemberRepository memberRepository;
 
-    // 지출 목록 조회
     @Transactional
     public List<ExpendDto> getAllExpends() {
         List<ExpendEntity> expends = expendRepository.findAll();
@@ -32,31 +34,30 @@ public class ExpendService {
                 .collect(Collectors.toList());
     }
 
-    // 모든 회사 조회
+    @Transactional
     public List<CompanyEntity> getAllCompanies() {
-        List<CompanyEntity> receivedCompanies = companyRepository.findByStatus("send"); //발주회사만 표시
-        return receivedCompanies;    }
+        List<CompanyEntity> receivedCompanies = companyRepository.findByStatus("receive");
+        List<CompanyEntity> sendCompanies = companyRepository.findByStatus("send");
+        return receivedCompanies;
+    }
 
-    // 모든 상품 조회
+    @Transactional
     public List<ProductEntity> getAllProducts() {
         return productRepository.findAll();
     }
 
-    // 지출 추가
     @Transactional
     public void save(ExpendDto expendDto) {
         ExpendEntity expendEntity = ExpendEntity.toSaveEntity(expendDto);
         expendRepository.save(expendEntity);
     }
 
-    // 지출 정보 조회
     @Transactional
     public ExpendDto findById(int id) {
         Optional<ExpendEntity> expendOptional = expendRepository.findById(id);
         return expendOptional.map(ExpendDto::expendDto).orElse(null);
     }
 
-    // 지출 수정
     @Transactional
     public void update(int id, ExpendDto expendDto) {
         Optional<ExpendEntity> expendOptional = expendRepository.findById(id);
@@ -66,5 +67,17 @@ public class ExpendService {
         });
     }
 
+    @Transactional
+    public void check_ok(int id, ExpendDto expendDto) {
+        Optional<ExpendEntity> expendOptional = expendRepository.findById(id);
+        expendOptional.ifPresent(expendEntity -> {
+            expendEntity.check_ok(expendDto);
+            expendRepository.save(expendEntity);
+        });
+    }
 
+    @Transactional
+    public MemberEntity getMember(String id) {
+        return memberRepository.findByUserId(id).orElse(null);
+    }
 }
