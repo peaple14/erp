@@ -1,10 +1,12 @@
 package com.example.erp.report.controller;
 
+import com.example.erp.company.dto.CompanyDto;
 import com.example.erp.company.entity.CompanyEntity;
 import com.example.erp.company.service.CompanyService;
 import com.example.erp.member.entity.MemberEntity;
 import com.example.erp.product.entity.ProductEntity;
 import com.example.erp.report.dto.QuoteDto;
+import com.example.erp.report.entity.QuoteEntity;
 import com.example.erp.report.service.QuoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -19,6 +21,7 @@ import java.util.List;
 public class QuoteController {
 
     private final QuoteService quoteService;
+    private final CompanyService companyService;
 
     //리스트띄우기
     @GetMapping("/quote_list")
@@ -73,12 +76,25 @@ public class QuoteController {
         return "redirect:/quote_list";
     }
 
+
+    //결제완료시 미수금,수주거래 변동.
     @GetMapping ("/quote_check_ok/{id}")
     public String check_ok(@PathVariable int id, HttpSession session,@ModelAttribute QuoteDto quoteDto){
-        System.out.println("결제완료됨." + id);
-        System.out.println("로그인 세션 정보: " + session.getAttribute("loginId"));
+//        System.out.println("결제완료됨." + id);
+//        System.out.println("로그인 세션 정보: " + session.getAttribute("loginId"));
         quoteDto.setCheckmember(quoteService.getMember((String) session.getAttribute("loginId")));
         quoteDto.setIscheck(1);
+        ///////////////////////////////////
+
+        QuoteEntity quoteEntity = QuoteEntity.toSaveEntity(quoteService.findById((int) quoteDto.id)); //모둔 넣어서 견적서 완성본 만들기
+
+//        System.out.println("null아닌게 맞나?:" + quoteEntity);
+        CompanyEntity companyEntity = quoteEntity.getProduct().getCompany();//회사 업데이트 준비
+        companyEntity.setMoney((int) (quoteEntity.getTotalPrice() + companyEntity.getMoney())); //견적서에서 추가된 돈과 원래있던 미수금
+        companyEntity.setMoneyRecieve(1);//미수금 받을거 있다는뜻
+
+        //회사 미수금 증가
+        companyService.update(companyEntity.getId(), CompanyDto.toCompanyDto(companyEntity));
         quoteService.check_ok(id,quoteDto);
         return "redirect:/quote_list";
     }

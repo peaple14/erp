@@ -2,6 +2,7 @@ package com.example.erp.report.service;
 
 import com.example.erp.company.entity.CompanyEntity;
 import com.example.erp.company.repository.CompanyRepository;
+import com.example.erp.company.service.CompanyService;
 import com.example.erp.member.entity.MemberEntity;
 import com.example.erp.member.repository.MemberRepository;
 import com.example.erp.product.dto.ProductDto;
@@ -78,7 +79,7 @@ public class QuoteService {
             quoteRepository.save(quoteEntity);
         });
     }
-
+    //결제완료
     @Transactional
     public void check_ok(int id, QuoteDto quoteDto) {
         Optional<QuoteEntity> quoteOptional = quoteRepository.findById(id);
@@ -93,5 +94,7 @@ public class QuoteService {
     public MemberEntity getMember(String id) {
         return memberRepository.findByUserId(id).orElse(null); //없을시 null반환.
     }
+
+
 
 }

@@ -27,10 +27,10 @@ public class CompanyEntity {
     private String status; // 발주회사인지, 수주회사인지 (receive, send)
 
     @Column
-    private int moneyRecieve = 0; // 미수금 (0, 1) 받을게있으면 0
+    private int moneyRecieve ; // 미수금 (0, 1) 받을게있으면 1
 
     @Column
-    private int money = 0 ; // 받을 돈
+    private int money ; // 받을 돈
 
 
     public static CompanyEntity toSaveEntity(CompanyDto companyDto) {
@@ -53,5 +53,7 @@ public class CompanyEntity {
         this.moneyRecieve = companyDto.getMoneyRecieve();
         this.money = companyDto.getMoney();
     }
+
+
 
 }

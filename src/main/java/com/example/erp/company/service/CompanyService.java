@@ -36,6 +36,8 @@ public class CompanyService {
     @Transactional
     public void save(CompanyDto companyDto) {
         CompanyEntity companyEntity = CompanyEntity.toSaveEntity(companyDto);
+        companyEntity.setMoneyRecieve(1);
+        companyEntity.setMoney(0);
         companyRepository.save(companyEntity);
     }
 
