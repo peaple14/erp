@@ -47,7 +47,8 @@
                 <a th:href="@{'/expend_memo/' + ${expend.id}}">자세히 보기</a>
             </td>
             <td>
-                <a th:href="@{'/expend_edit/' + ${expend.id}}">수정</a>
+                <span th:if="${expend.ischeck == 1}">결제 완료</span>
+                <span th:if="${expend.ischeck == 0}"> <a th:href="@{'/expend_edit/' + ${expend.id}}">수정</a></span>
             </td>
             <td>
                 <a th:if="${expend.ischeck == 0}" th:href="@{'/expend_check_ok/' + ${expend.id}}"

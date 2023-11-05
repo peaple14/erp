@@ -62,8 +62,6 @@ public class ExpendEntity {
         this.totalPrice = expendDto.getTotalprice();
         this.createdAt = expendDto.getCreatedat();
         this.product = expendDto.getProduct();
-        this.member = expendDto.getWriter();
-        this.checkmember = expendDto.getCheckmember();
         this.ischeck = expendDto.getIscheck();
     }
 

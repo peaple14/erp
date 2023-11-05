@@ -1,8 +1,7 @@
 package com.example.erp.report.dto;
 
 
-import com.example.erp.company.dto.CompanyDto;
-import com.example.erp.company.entity.CompanyEntity;
+
 import com.example.erp.member.entity.MemberEntity;
 import com.example.erp.product.entity.ProductEntity;
 import com.example.erp.report.entity.QuoteEntity;

@@ -60,14 +60,17 @@ public class ExpendController {
 
     @GetMapping("/expend_edit/{id}")
     public String expendEdit(Model model, @PathVariable int id) {
+        List<ProductEntity> products = expendService.getAllProducts();
         ExpendDto expendDto = expendService.findById(id);
         model.addAttribute("expendDto", expendDto);
+        model.addAttribute("products", products);
         System.out.println("수정데이터값들:" + expendDto);
         return "report/expend/expend_edit";
     }
 
     @PostMapping("/expend_edit_ok")
     public String expendEditOk(@RequestParam(name = "id") int id, @ModelAttribute ExpendDto expendDto) {
+        System.out.println("수정후확인용:" + expendDto);
         expendService.update(id, expendDto);
         return "redirect:/expend_list";
     }
@@ -77,6 +80,13 @@ public class ExpendController {
         System.out.println("결제완료됨." + id);
         System.out.println("로그인 세션 정보: " + session.getAttribute("loginId"));
         expendDto.setCheckmember(expendService.getMember((String) session.getAttribute("loginId")));
+
+
+        if (!"ADMIN".equals(expendDto.getCheckmember().getUserauthority())) {
+            return "redirect:/expend_list";
+        }
+
+
         expendDto.setIscheck(1);
         expendService.check_ok(id, expendDto);
         return "redirect:/expend_list";

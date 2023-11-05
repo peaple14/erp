@@ -82,6 +82,7 @@ public class QuoteService {
     //결제완료
     @Transactional
     public void check_ok(int id, QuoteDto quoteDto) {
+
         Optional<QuoteEntity> quoteOptional = quoteRepository.findById(id);
         quoteOptional.ifPresent(quoteEntity -> {
             quoteEntity.check_ok(quoteDto);
@@ -94,6 +95,7 @@ public class QuoteService {
     public MemberEntity getMember(String id) {
         return memberRepository.findByUserId(id).orElse(null); //없을시 null반환.
     }
+
 
 
 

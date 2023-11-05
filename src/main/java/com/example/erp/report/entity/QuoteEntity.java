@@ -77,8 +77,6 @@ public class QuoteEntity {
         this.totalPrice  = quoteDto.getTotalprice();
         this.createdAt = quoteDto.getCreatedat();
         this.product = quoteDto.getProduct();
-        this.member = quoteDto.getWriter();
-        this.checkmember = quoteDto.getCheckmember();
         this.ischeck = quoteDto.getIscheck();
     }
 

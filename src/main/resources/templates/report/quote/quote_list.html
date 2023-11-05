@@ -47,7 +47,8 @@
                 <a th:href="@{'/quote_memo/' + ${quote.id}}">자세히 보기</a>
             </td>
             <td>
-                <a th:href="@{'/quote_edit/' + ${quote.id}}">수정</a>
+                <span th:if="${quote.ischeck == 1}">결제 완료</span>
+                <span th:if="${quote.ischeck == 0}"> <a th:href="@{'/quote_edit/' + ${quote.id}}">수정</a></span>
             </td>
             <td>
                 <a th:if="${quote.ischeck == 0}" th:href="@{'/quote_check_ok/' + ${quote.id}}"

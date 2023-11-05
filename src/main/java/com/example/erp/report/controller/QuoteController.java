@@ -64,6 +64,8 @@ public class QuoteController {
 
     @GetMapping("/quote_edit/{id}")
     public String quoteEdit(Model model, @PathVariable int id) {
+        List<ProductEntity> products = quoteService.getAllProducts();
+        model.addAttribute("products", products);
         QuoteDto quoteDto = quoteService.findById(id);
         model.addAttribute("quoteDto", quoteDto);
         System.out.println("수정데이터값들:" + quoteDto);
@@ -72,6 +74,7 @@ public class QuoteController {
 
     @PostMapping("/quote_edit_ok")
     public String quoteEditOk(@RequestParam(name = "id") int id, @ModelAttribute QuoteDto quoteDto) {
+        System.out.println("수정후:" + quoteDto);
         quoteService.update(id, quoteDto);
         return "redirect:/quote_list";
     }
@@ -80,9 +83,18 @@ public class QuoteController {
     //결제완료시 미수금,수주거래 변동.
     @GetMapping ("/quote_check_ok/{id}")
     public String check_ok(@PathVariable int id, HttpSession session,@ModelAttribute QuoteDto quoteDto){
+
 //        System.out.println("결제완료됨." + id);
 //        System.out.println("로그인 세션 정보: " + session.getAttribute("loginId"));
         quoteDto.setCheckmember(quoteService.getMember((String) session.getAttribute("loginId")));
+        System.out.println("권한:" + quoteDto.getCheckmember().getUserauthority());
+
+        if (!"ADMIN".equals(quoteDto.getCheckmember().getUserauthority())) {
+            return "redirect:/quote_list";
+        }
+
+
+
         quoteDto.setIscheck(1);
         ///////////////////////////////////
 
