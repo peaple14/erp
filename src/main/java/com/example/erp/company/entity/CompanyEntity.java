@@ -26,9 +26,8 @@ public class CompanyEntity {
     @Column
     private String status; // 발주회사인지, 수주회사인지 (receive, send)
 
-
     @Column
-    private int money ; // 받을 돈
+    private long money ; // 받을 돈
 
 
     public static CompanyEntity toSaveEntity(CompanyDto companyDto) {

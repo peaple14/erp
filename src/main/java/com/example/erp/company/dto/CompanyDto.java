@@ -15,7 +15,7 @@ public class CompanyDto {
     private String companyVip;
     private String companyTel;
     private String status;
-    private int money;
+    private long money;
 
     public static CompanyDto toCompanyDto(CompanyEntity companyEntity) {
         CompanyDto companyDto = new CompanyDto();

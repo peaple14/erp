@@ -59,4 +59,13 @@ public class CompanyService {
                 .orElseThrow(() -> new EntityNotFoundException("회사: " + id + " 를 찾을 수 없습니다."));
         companyEntity.update(companyDto);
     }
+
+    @Transactional
+    public void companymoney(long id, long money) {
+        CompanyEntity companyEntity = companyRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("회사: " + id + " 를 찾을 수 없습니다."));
+        long currentMoney = companyEntity.getMoney();
+        companyEntity.setMoney(currentMoney - money);
+        companyEntity.update(CompanyDto.toCompanyDto(companyEntity));
+    }
 }
