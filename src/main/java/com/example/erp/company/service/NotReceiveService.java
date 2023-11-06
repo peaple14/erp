@@ -2,6 +2,7 @@ package com.example.erp.company.service;
 
 import com.example.erp.company.dto.NotReceiveDto;
 import com.example.erp.company.entity.CompanyEntity;
+import com.example.erp.company.repository.NotReceiveRepository;
 import com.example.erp.report.dto.QuoteDto;
 import com.example.erp.report.entity.QuoteEntity;
 import com.example.erp.report.repository.QuoteRepository;
@@ -74,10 +75,19 @@ public class NotReceiveService {
 
     }
 
-    @Scheduled
-    public void test(){
+    @Scheduled(cron = "0 0 0 1 */3 ?") //3달에 1번되도록. Cron 표현식씀.
+    public void test () {
         System.out.println("test");
     }
+
+
+
+
+//    //삭제용
+//    @Transactional
+//    public void goodsDelete(Long id){
+//        NotReceiveRepository.deleteById(id);
+//    }
 
 
 }

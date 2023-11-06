@@ -1,7 +1,6 @@
 package com.example.erp.company.entity;
 
 import com.example.erp.company.dto.CompanyDto;
-import com.example.erp.member.entity.MemberEntity;
 import lombok.Data;
 
 import javax.persistence.*;

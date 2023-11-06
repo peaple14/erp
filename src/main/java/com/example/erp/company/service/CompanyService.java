@@ -68,4 +68,6 @@ public class CompanyService {
         companyEntity.setMoney(currentMoney - money);
         companyEntity.update(CompanyDto.toCompanyDto(companyEntity));
     }
+
+
 }

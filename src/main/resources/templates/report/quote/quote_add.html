@@ -1,8 +1,3 @@
-<!--회사 선택시 그 회사에서 파는 물품만 뜨도록 하고싶음.-->
-<!--만약 회사선택안하고 제품선택시 회사선택후 제품선택하라고 함.-->
-<!--단위단가는 그 제품의 가격이 뜨게하면좋겠음.-->
-<!--들어오는 값들은 log에 남도록 하겠음.-->
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -21,16 +16,16 @@
         <label for="company">회사 선택:</label>
         <select id="company" name="company" required>
             <option value="" selected disabled>회사 선택</option>
+            <!-- 회사 목록을 동적으로 렌더링 -->
+            <th:block th:each="company : ${companies}">
+                <option th:value="${company.companyName}" th:text="${company.companyName}"></option>
+            </th:block>
         </select>
     </div>
     <div>
         <label for="product">제품 선택:</label>
         <select id="product" name="product" required>
             <option value="" selected disabled>제품 선택</option>
-            <!-- 제품 목록을 동적으로 렌더링 -->
-            <th:block th:each="product : ${products}">
-                <option th:value="${product.id}" th:text="${product.productName}"></option>
-            </th:block>
         </select>
     </div>
     <div>
@@ -66,6 +61,7 @@
     // 중복되지 않는 회사 목록 생성 및 드롭다운 업데이트
     const products = [[${products}]]; // 상품 목록
     const companySelect = document.getElementById("company");
+    const productSelect = document.getElementById("product");
 
     const uniqueCompanies = [...new Set(products.map(product => product.company.companyName))];
 
@@ -74,6 +70,20 @@
         option.value = companyName;
         option.text = companyName;
         companySelect.appendChild(option);
+    });
+
+    companySelect.addEventListener("change", function() {
+        // 선택한 회사에 해당하는 제품만 필터링하여 렌더링
+        const selectedCompany = this.value;
+        productSelect.innerHTML = '<option value="" selected disabled>제품 선택</option>';
+        products.forEach(function(product) {
+            if (product.company.companyName === selectedCompany) {
+                const option = document.createElement("option");
+                option.value = product.id;
+                option.text = product.productName;
+                productSelect.appendChild(option);
+            }
+        });
     });
 </script>
 </body>
