@@ -18,7 +18,6 @@
         <th>회사 대표</th>
         <th>거래처 연락처</th>
         <th>상태(우리가보내주는 send=수주회사,recieve=발주회사로 표시)</th>
-        <th>미수금(0=받을게없다, 1=받을게있다)</th>
         <th>받을 돈</th>
     </tr>
     </thead>
@@ -31,7 +30,6 @@
         <td th:text="${company.companyVip}"></td>
         <td th:text="${company.companyTel}"></td>
         <td th:text="${company.status}"></td>
-        <td th:text="${company.moneyRecieve}"></td>
         <td th:text="${company.money}"></td>
     </tr>
     </tbody>

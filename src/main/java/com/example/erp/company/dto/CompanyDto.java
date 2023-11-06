@@ -15,7 +15,6 @@ public class CompanyDto {
     private String companyVip;
     private String companyTel;
     private String status;
-    private int moneyRecieve;
     private int money;
 
     public static CompanyDto toCompanyDto(CompanyEntity companyEntity) {
@@ -25,7 +24,6 @@ public class CompanyDto {
         companyDto.setCompanyVip(companyEntity.getCompanyVip());
         companyDto.setCompanyTel(companyEntity.getCompanyTel());
         companyDto.setStatus(companyEntity.getStatus());
-        companyDto.setMoneyRecieve(companyEntity.getMoneyRecieve());
         companyDto.setMoney(companyEntity.getMoney());
 
         return companyDto;

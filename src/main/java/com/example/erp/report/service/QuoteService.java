@@ -61,6 +61,7 @@ public class QuoteService {
     @Transactional
     public void save(QuoteDto quoteDto) {
         QuoteEntity quoteEntity = QuoteEntity.toSaveEntity(quoteDto);
+        quoteEntity.setReceive_money(0);//현재 받은돈이 없다는뜻.
         quoteRepository.save(quoteEntity);
     }
 

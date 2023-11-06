@@ -1,7 +1,9 @@
 package com.example.erp.company.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UnpaidService {
+@RequiredArgsConstructor
+public class NotReceiveService {
 }

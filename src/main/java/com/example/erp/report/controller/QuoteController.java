@@ -36,7 +36,7 @@ public class QuoteController {
     @GetMapping("/quote_add")
     public String quoteAdd(Model model) {
         List<ProductEntity> products = quoteService.getAllProducts();
-
+        System.out.println(products);
         model.addAttribute("quoteDto", new QuoteDto());
         model.addAttribute("products", products);
         return "report/quote/quote_add";
@@ -86,6 +86,7 @@ public class QuoteController {
 
 //        System.out.println("결제완료됨." + id);
 //        System.out.println("로그인 세션 정보: " + session.getAttribute("loginId"));
+        //권한이 admin인사람만 하도록.
         quoteDto.setCheckmember(quoteService.getMember((String) session.getAttribute("loginId")));
         System.out.println("권한:" + quoteDto.getCheckmember().getUserauthority());
 
@@ -93,17 +94,14 @@ public class QuoteController {
             return "redirect:/quote_list";
         }
 
-
-
         quoteDto.setIscheck(1);
         ///////////////////////////////////
 
-        QuoteEntity quoteEntity = QuoteEntity.toSaveEntity(quoteService.findById((int) quoteDto.id)); //모둔 넣어서 견적서 완성본 만들기
+        //나중에 service로 옮기기.
+        QuoteEntity quoteEntity = QuoteEntity.toSaveEntity(quoteService.findById((int) quoteDto.id)); //모두 넣어서 견적서 완성본 만들기
 
-//        System.out.println("null아닌게 맞나?:" + quoteEntity);
         CompanyEntity companyEntity = quoteEntity.getProduct().getCompany();//회사 업데이트 준비
         companyEntity.setMoney((int) (quoteEntity.getTotalPrice() + companyEntity.getMoney())); //견적서에서 추가된 돈과 원래있던 미수금
-        companyEntity.setMoneyRecieve(1);//미수금 받을거 있다는뜻
 
         //회사 미수금 증가
         companyService.update(companyEntity.getId(), CompanyDto.toCompanyDto(companyEntity));
