@@ -8,4 +8,12 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class NotReceiveDto {
+    //list에서 보여주는용도.
+
+    private long id;
+    private String companyName;
+    private String status;
+    private int money; //받을돈
+
+
 }

@@ -75,6 +75,7 @@ public class QuoteService {
     //견적서 수정
     @Transactional
     public void update(int id, QuoteDto quoteDto) {
+        System.out.println("id는:" + id + "업데이트하러온것: " + quoteDto);
         Optional<QuoteEntity> quoteOptional = quoteRepository.findById(id);
         quoteOptional.ifPresent(quoteEntity -> {
             quoteEntity.update(quoteDto);
