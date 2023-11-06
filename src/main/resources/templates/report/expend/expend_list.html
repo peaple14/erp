@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>견적서 리스트</title>
+</head>
+<body class="expend-list">
+<div class="expend-container">
+    <h1>견적서 리스트
+        <a class="expend-button btn btn-primary" href="/expend_add" role="button">견적서 추가</a>
+    </h1>
+    <table class="expend-table table table-hover">
+        <thead class="thead-dark">
+        <tr>
+            <th>ID</th>
+            <th>견적서 이름</th>
+            <th>회사 이름</th>
+            <th>제품명</th>
+            <th>수량</th>
+            <th>총 단가</th>
+            <th>견적서 일자</th>
+            <th>작성자</th>
+            <th>최종 확인 여부</th>
+            <th>자세히</th>
+            <th>수정</th>
+            <th>결제 완료</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="expend : ${expends}">
+            <td th:text="${expend.id}"></td>
+            <td>
+                <a th:text="${expend.expendname}"></a>
+            </td>
+            <td th:text="${expend.product.company.companyName}"></td>
+            <td th:text="${expend.product.productName}"></td>
+            <td th:text="${expend.quantity}"></td>
+            <td th:text="${expend.totalprice}"></td>
+            <td th:text="${expend.createdat}"></td>
+            <td th:text="${expend.writer.userName}"></td>
+            <td>
+                <span th:if="${expend.ischeck == 1}">확인됨</span>
+                <span th:if="${expend.ischeck == 0}">미확인</span>
+            </td>
+            <td>
+                <a th:href="@{'/expend_memo/' + ${expend.id}}">자세히 보기</a>
+            </td>
+            <td>
+                <span th:if="${expend.ischeck == 1}">결제 완료</span>
+                <span th:if="${expend.ischeck == 0}"> <a th:href="@{'/expend_edit/' + ${expend.id}}">수정</a></span>
+            </td>
+            <td>
+                <a th:if="${expend.ischeck == 0}" th:href="@{'/expend_check_ok/' + ${expend.id}}"
+                   class="expend-check-button btn btn-success">결제 완료</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
+
+<style>
+    /* 견적서 리스트 페이지 스타일 */
+
+    body.expend-list {
+        font-family: Arial, sans-serif;
+        position: relative;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    .expend-container {
+        background-color: #fff;
+        margin: 20px;
+        padding: 20px;
+        border-radius: 5px;
+        text-align: center;
+    }
+
+    .expend-title {
+        font-size: 30px;
+        margin: 0 0 20px 0;
+    }
+
+    .expend-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .expend-table th, .expend-table td {
+        border-bottom: 1px solid #dddddd;
+        padding: 10px;
+        text-align: left;
+    }
+
+    .expend-table th {
+        background-color: #f0f0f0;
+    }
+
+    .expend-button {
+        display: inline-block;
+        position: absolute;
+        top: 180px; /* 조정 필요 */
+        right: 110px; /* 조정 필요 */
+        padding: 10px 20px;
+        font-size: 16px;
+        text-align: center;
+        text-decoration: none;
+        background-color: #666666;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .expend-button:hover {
+        background-color: #333333;
+    }
+
+    .expend-check-button {
+        margin-right: 10px;
+    }
+</style>
