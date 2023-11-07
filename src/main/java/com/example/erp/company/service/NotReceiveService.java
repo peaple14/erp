@@ -2,7 +2,10 @@ package com.example.erp.company.service;
 
 import com.example.erp.company.dto.NotReceiveDto;
 import com.example.erp.company.entity.CompanyEntity;
+import com.example.erp.company.entity.NotReceiveEntity;
 import com.example.erp.company.repository.NotReceiveRepository;
+import com.example.erp.product.dto.ProductDto;
+import com.example.erp.product.entity.ProductEntity;
 import com.example.erp.report.dto.QuoteDto;
 import com.example.erp.report.entity.QuoteEntity;
 import com.example.erp.report.repository.QuoteRepository;
@@ -12,9 +15,11 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +28,7 @@ public class NotReceiveService {
     private final QuoteRepository quoteRepository;
     private final QuoteService quoteService;
     private final CompanyService companyService;
+    private final NotReceiveRepository notReceiveRepository;
 
 
     //견적서,회사테이블에서 넣은돈만큼 처리.
@@ -47,8 +53,10 @@ public class NotReceiveService {
                 filteredQuote.setReceive_money(money- filteredQuote.getReceive_money());//받은돈-받아야하는돈
                 filteredQuote.setReceive_money(filteredQuote.getTotalPrice());//받을돈 = 받은돈으로 만듦.
                 quoteService.update(filteredQuote.getId(),QuoteDto.quoteDto(filteredQuote));//업데이트
-                companyService.companymoney(filteredQuote.getProduct().getCompany().getId(),money);
+                companyService.companymoney(filteredQuote.getProduct().getCompany().getId(),money);//초과로받을시 마이너스로.
+                n_recieveDelete((long) filteredQuote.getId());//다냈으니 미수금 리스트에서
                 System.out.println("낸돈 더많음:" + QuoteDto.quoteDto(filteredQuote));
+
                 continue; //아직 낼돈있으니 계속.
             }
 
@@ -57,6 +65,7 @@ public class NotReceiveService {
                 quoteService.update(filteredQuote.getId(),QuoteDto.quoteDto(filteredQuote));//업데이트
                 companyService.companymoney(filteredQuote.getProduct().getCompany().getId(),money);
                 money = money-money; //0원으로.
+                n_recieveDelete((long) filteredQuote.getId());//다냈으니 미수금 리스트에서
                 System.out.println("낸돈 딱맞음:" + QuoteDto.quoteDto(filteredQuote));
                 break; //낼돈없으니 끝냄
             }
@@ -75,19 +84,44 @@ public class NotReceiveService {
 
     }
 
-    @Scheduled(cron = "0 0 0 1 */3 ?") //3달에 1번되도록. Cron 표현식씀.
-    public void test () {
-        System.out.println("test");
+
+//    @Scheduled(fixedRate = 5000) // 5초에 한번
+    @Scheduled(cron = "0 0 0 * * ?")// 매일매일 하루에1번씩
+    public void auto_not_receive() {
+        notReceiveRepository.deleteAll();//중복추가 방지
+        LocalDate currentDate = LocalDate.now();//현재날짜
+        LocalDate golist = currentDate.minusMonths(3);// 3개월지나면 리스트로
+        List<QuoteEntity> quoteEntities = quoteRepository.findAll();
+
+        List<QuoteEntity> after3 = quoteEntities.stream()
+                .filter(quote -> quote.getCreatedAt().isBefore(golist)//3개월이 지난것만 넣기
+                        && quote.getReceive_money() != quote.getTotalPrice())//미수금 안낸것만.
+                .collect(Collectors.toList());
+        List<NotReceiveEntity> notReceiveEntities = after3.stream()//저장용
+                .map(quote -> NotReceiveEntity.toSaveEntity(quote))
+                .collect(Collectors.toList());
+
+        notReceiveRepository.saveAll(notReceiveEntities);
+        System.out.println("현재 날짜는: " + LocalDate.now());
+
     }
 
+    //삭제용
+    @Transactional
+    public void n_recieveDelete(Long id){
+        if (notReceiveRepository.findById(id) != null) {//찾는게 미수금목록에 있을시
+            notReceiveRepository.deleteById(id);
+        }
+    }
 
-
-
-//    //삭제용
-//    @Transactional
-//    public void goodsDelete(Long id){
-//        NotReceiveRepository.deleteById(id);
-//    }
+    //모든제품 리스트에 띄우기
+    public List<NotReceiveDto> getallNReceive() {
+        // NotReceiveRepository에서 모든 미수금 데이터를 가져와서 Dto로 변환하여 반환
+        List<NotReceiveDto> notReceiveList = notReceiveRepository.findAll().stream()
+                .map(NotReceiveDto::tonotReceiveDto)
+                .collect(Collectors.toList());
+        return notReceiveList;
+    }
 
 
 }

@@ -16,7 +16,7 @@ public class QuoteEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int id; //실수로 int함.
 
     @Column
     private String quotename;

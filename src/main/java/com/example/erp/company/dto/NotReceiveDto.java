@@ -1,6 +1,5 @@
 package com.example.erp.company.dto;
 
-import com.example.erp.company.entity.CompanyEntity;
 import com.example.erp.company.entity.NotReceiveEntity;
 import com.example.erp.report.entity.QuoteEntity;
 import lombok.Data;
@@ -15,13 +14,13 @@ public class NotReceiveDto {
 
     private int id;
     private long receiveMoney;
-    private QuoteEntity quote;
+    private String company;
 
-    public static NotReceiveDto notReceiveDto(NotReceiveEntity notReceiveEntity) {
+    public static NotReceiveDto tonotReceiveDto(NotReceiveEntity notReceiveEntity) {
         NotReceiveDto notReceiveDto = new NotReceiveDto();
         notReceiveDto.setId(notReceiveEntity.getId());
-        notReceiveDto.setReceiveMoney(notReceiveEntity.getReceiveMoney());
-        notReceiveDto.setQuote(notReceiveEntity.getQuote());
+        notReceiveDto.setCompany(notReceiveEntity.getQuote().getProduct().getCompany().getCompanyName());
+        notReceiveDto.setReceiveMoney(notReceiveEntity.getQuote().getReceive_money());
         return notReceiveDto;
     }
 
