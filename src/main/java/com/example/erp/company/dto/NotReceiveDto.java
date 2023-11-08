@@ -12,10 +12,10 @@ import lombok.ToString;
 public class NotReceiveDto {
     //list에서 보여주는용도.
 
-    private int id;
+    private long id;
     private long receiveMoney;//받은돈
     private String company; //회사이름
-    private long company_id; //회사 아이디값
+    private Long company_id; //회사 아이디값
     private long not_receive_money;//미수금
 
     public static NotReceiveDto tonotReceiveDto(NotReceiveEntity notReceiveEntity) {

@@ -15,7 +15,7 @@ public class NotReceiveEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
 
     @ManyToOne

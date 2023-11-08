@@ -1,11 +1,8 @@
 package com.example.erp.company.service;
 
 import com.example.erp.company.dto.NotReceiveDto;
-import com.example.erp.company.entity.CompanyEntity;
 import com.example.erp.company.entity.NotReceiveEntity;
 import com.example.erp.company.repository.NotReceiveRepository;
-import com.example.erp.product.dto.ProductDto;
-import com.example.erp.product.entity.ProductEntity;
 import com.example.erp.report.dto.QuoteDto;
 import com.example.erp.report.entity.QuoteEntity;
 import com.example.erp.report.repository.QuoteRepository;
@@ -19,6 +16,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,16 +31,17 @@ public class NotReceiveService {
 
     //견적서,회사테이블에서 넣은돈만큼 처리.
     @Transactional
-    public void setlist(Long id, Long money) {
+    public void money_ok(Long id, Long money) {
         List<QuoteEntity> quotes = quoteRepository.findAll(); // 모든 quotes 가져오기
         List<QuoteEntity> filteredQuotes = new ArrayList<>(); // 일치하는 항목을 저장할 리스트
         for (QuoteEntity quote : quotes) {
             if (quote.getProduct().getCompany().getId() == id && quote.getCheckmember()!=null && quote.getReceive_money()!= quote.getTotalPrice() ) {//아이디가 같고,체킹이되었으며,돈이 지불되지않은것.
                 filteredQuotes.add(quote); //일치하는것만 추가
             }
+            System.out.println("현재 처리해야할것:" + filteredQuotes);
         }
         if (filteredQuotes == null) {
-
+            System.out.println("이상한 id값 가져옴.");
         }
         filteredQuotes.sort(Comparator.comparing(QuoteEntity::getCreatedAt));//오래된것부터 정렬
 
@@ -109,8 +108,9 @@ public class NotReceiveService {
     //삭제용
     @Transactional
     public void n_recieveDelete(Long id){
-        if (notReceiveRepository.findById(id) != null) {//찾는게 미수금목록에 있을시
-            notReceiveRepository.deleteById(id);
+        Optional<NotReceiveEntity> entityOptional = notReceiveRepository.findById(id);
+        if (entityOptional.isPresent()) {
+            notReceiveRepository.delete(entityOptional.get());
         }
     }
 
