@@ -87,14 +87,22 @@ public class NotReceiveService {
 //    @Scheduled(fixedRate = 5000) // 5초에 한번
     @Scheduled(cron = "0 0 0 * * ?")// 매일매일 하루에1번씩
     public void auto_not_receive() {
-        notReceiveRepository.deleteAll();//중복추가 방지
+//        notReceiveRepository.deleteAll();//중복추가 방지 -> 안들어간것만 들어가도록 수정.
+
+        //find by Quoteid 해서 찾은다음 넘어가기, 만약 없을시
+        //현재:전부지우고,전부찾아서 전부중에 비교후 집어넣기
+        //후:3개월지남&&안에없는것만 찾아서 넣기 -> findbyid가 필요한가?
+
+
         LocalDate currentDate = LocalDate.now();//현재날짜
         LocalDate golist = currentDate.minusMonths(3);// 3개월지나면 리스트로
         List<QuoteEntity> quoteEntities = quoteRepository.findAll();
 
+
         List<QuoteEntity> after3 = quoteEntities.stream()
                 .filter(quote -> quote.getCreatedAt().isBefore(golist)//3개월이 지난것만 넣기
-                        && quote.getReceive_money() != quote.getTotalPrice())//미수금 안낸것만.
+                        && quote.getReceive_money() != quote.getTotalPrice() //미수금 안낸것만.
+                        && notReceiveRepository.findByQuote(quote).isEmpty())//안에없는것
                 .collect(Collectors.toList());
         List<NotReceiveEntity> notReceiveEntities = after3.stream()//저장용
                 .map(quote -> NotReceiveEntity.toSaveEntity(quote))
@@ -102,8 +110,8 @@ public class NotReceiveService {
 
         notReceiveRepository.saveAll(notReceiveEntities);
         System.out.println("현재 날짜는: " + LocalDate.now());
-
     }
+
 
     //삭제용
     @Transactional

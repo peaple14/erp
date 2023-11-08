@@ -29,6 +29,7 @@ public class CompanyEntity {
     private long money ; // 받을 돈
 
 
+
     public static CompanyEntity toSaveEntity(CompanyDto companyDto) {
         CompanyEntity companyEntity = new CompanyEntity();
         companyEntity.setCompanyName(companyDto.getCompanyName());
