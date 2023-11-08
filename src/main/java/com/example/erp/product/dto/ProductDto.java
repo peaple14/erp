@@ -17,7 +17,7 @@ public class ProductDto {
     public long id; //아이디pk
     private String productname;//제품명
     private String productcode;//제품코드
-    private String count; //재고량
+    private long count ; //재고량
     private long price; //제품가격
     private CompanyEntity makecompany; //제조업체
     private YearMonth makeday; //제조년도
