@@ -41,6 +41,7 @@ public class CompanyService {
     }
 
     // 회사 상세 정보
+    @Transactional
     public CompanyDto findById(long id) {
         Optional<CompanyEntity> optionalCompanyEntity = companyRepository.findById(id);
         if (optionalCompanyEntity.isPresent()) {

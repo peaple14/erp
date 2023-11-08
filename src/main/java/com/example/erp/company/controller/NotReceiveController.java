@@ -1,10 +1,15 @@
 package com.example.erp.company.controller;
 
+import com.example.erp.company.dto.NotReceiveDto;
 import com.example.erp.company.service.NotReceiveService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 
 @Controller
@@ -28,3 +33,4 @@ public class NotReceiveController {
         return "company/not_receive_list";
     }
 }
+

@@ -24,7 +24,7 @@
         </thead>
         <tbody>
         <tr th:each="company : ${companies}">
-            <td th:text="${company.id}"></td>
+            <td id= company_id th:text="${company.id}"></td>
             <td>
                 <a th:text="${company.companyName}" th:href="@{'/company_memo/' + ${company.id}}"></a>
             </td>
@@ -33,43 +33,44 @@
             <td th:text="${company.status}"></td>
             <td th:text="${company.money}"></td>
             <td>
-                <input type="text" id="paymentAmount" placeholder="입금액">
-                <input type="hidden" id="companyId" th:value="${company.id}">
+                <input type="text" class="paymentAmount" data-company-id="${company.id}" placeholder="입금액">
+                <button class="sendPayment">입금</button>
             </td>
-            <td>
-                <button onclick="sendPayment()">입금</button>
-            </td>
+
         </tr>
         </tbody>
     </table>
 </div>
 <script>
-    function sendPayment() {
-        var paymentAmount = document.getElementById("paymentAmount").value;
-        var companyId = document.getElementById("companyId").value;
+    $(document).ready(function() {
+        $(".sendPayment").click(function() {
+            var money = $(this).closest("tr").find(".paymentAmount").val();
+            var companyId = $(this).closest("tr").find("td#company_id").text(); // 해당 행의 ID 값을 가져옵니다.
 
-        // 입력값을 정수로 변환
-        paymentAmount = parseInt(paymentAmount);
+            // 입력값을 정수로 변환
+            money = parseInt(money);
+            companyId = parseInt(companyId)
+            var data = {
+                receiveMoney: money,
+                company_id: companyId
+            };
 
-        var data = {
-            paymentAmount: paymentAmount,
-            companyId: companyId
-        };
-
-        $.ajax({
-            url: "/ccc",
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify(data),
-            success: function(response) {
-                alert("입금이 처리되었습니다.");
-                location.reload(); // 페이지 새로고침
-            },
-            error: function() {
-                alert("입금 처리 중 오류가 발생했습니다.");
-            }
+            $.ajax({
+                url: "/ccc",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function(response) {
+                    alert("입금이 확인 되었습니다.");
+                    location.reload(); // 페이지 새로고침
+                },
+                error: function() {
+                    alert("입금 처리 중 오류가 발생했습니다.");
+                }
+            });
         });
-    }
+    });
+
 </script>
 </body>
 </html>

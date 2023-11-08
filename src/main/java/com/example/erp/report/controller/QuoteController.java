@@ -47,7 +47,7 @@ public class QuoteController {
         // 추가: HTML 폼에서 입력한 데이터를 로그로 출력
         System.out.println("견적서 추가 폼 제출 데이터: " + quoteDto);
         System.out.println("로그인 세션 정보: " + session.getAttribute("loginId"));
-
+        quoteDto.setLocation(0);//
         quoteDto.setWriter(quoteService.getMember((String) session.getAttribute("loginId")));
         quoteService.save(quoteDto);
 
@@ -91,10 +91,10 @@ public class QuoteController {
         System.out.println("권한:" + quoteDto.getCheckmember().getUserauthority());
 
         if (!"ADMIN".equals(quoteDto.getCheckmember().getUserauthority())) {
+            System.out.println("권한이 안됨");
             return "redirect:/quote_list";
         }
-
-        quoteDto.setIscheck(1);
+        System.out.println("권한이됨");
         ///////////////////////////////////
 
         //나중에 service로 옮기기.

@@ -87,7 +87,7 @@ public class ExpendController {
         }
 
 
-        expendDto.setIscheck(1);
+
         expendService.check_ok(id, expendDto);
         return "redirect:/expend_list";
     }
