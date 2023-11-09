@@ -33,9 +33,11 @@ public class ProductController {
     }
 
     @PostMapping("/product_add")
-    public String productAdd(ProductDto productDto) {
+    public String productAdd(ProductDto productDto, Model model) {
         productService.save(productDto);
-        return "redirect:/product_list";
+        List<ProductDto> products = productService.getAllProducts();
+        model.addAttribute("products", products);
+        return "product/product_list";
     }
 
     @GetMapping("/product_memo/{id}")
@@ -60,6 +62,6 @@ public class ProductController {
     @PostMapping("/product_edit_ok")
     public String productEditOk(@RequestParam(name = "id") Long id, @ModelAttribute ProductDto productDto) {
         productService.update(id, productDto);
-        return "redirect:/product_list";
+        return "product/product_list";
     }
 }

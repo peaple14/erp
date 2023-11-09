@@ -25,7 +25,7 @@ public class QuoteDto {
     private long receivemoney; //받은돈
     private LocalDate createdat; //견적서일자
     private MemberEntity writer; // 작성자
-    private int ischeck ; //최종확인 되었는지 안되었는지
+    private int ischeck; //최종확인 되었는지 안되었는지
     private MemberEntity checkmember; //누가 최종확인했는지
 
 

@@ -46,7 +46,7 @@ public class QuoteController {
     }
 
     @PostMapping("/quote_add")
-    public String quoteAdd(@ModelAttribute QuoteDto quoteDto, HttpSession session) {
+    public String quoteAdd(@ModelAttribute QuoteDto quoteDto, Model model,HttpSession session) {
         // 추가: HTML 폼에서 입력한 데이터를 로그로 출력
         System.out.println("견적서 추가 폼 제출 데이터: " + quoteDto);
         System.out.println("로그인 세션 정보: " + session.getAttribute("loginId"));
@@ -54,7 +54,9 @@ public class QuoteController {
         quoteDto.setWriter(quoteService.getMember((String) session.getAttribute("loginId")));
         quoteService.save(quoteDto);
 
-        return "redirect:/quote_list";
+        model.addAttribute("quotes", quoteService.getAllQuotes());
+
+        return "report/quote/quote_list";
     }
 
     @GetMapping("/quote_memo/{id}")

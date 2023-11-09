@@ -29,9 +29,11 @@ public class CompanyController {
     }
 
     @PostMapping("/company_add")
-    public String companyAdd(CompanyDto companyDto) {
+    public String companyAdd(CompanyDto companyDto, Model model) {
         companyService.save(companyDto);
-        return "redirect:/company_list";
+        List<CompanyDto> companies = companyService.getAllCompanies();
+        model.addAttribute("companies", companies);
+        return "company/company_list";
     }
 
     @GetMapping("/company_memo/{id}")

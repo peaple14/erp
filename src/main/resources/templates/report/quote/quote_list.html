@@ -21,11 +21,16 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="quote:${quoteList}">
+        <tr th:each="quote:${quotes}">
             <td th:text="${quote.id}"></td>
-            <td><a th:href="@{|/admin/quote/${quote.id}|}" th:text="${quote.quoteTitle}"></a></td>
-            <td th:text="${quote.inputCorrespondent}"></td>
-            <td th:text="*{#temporals.format(notice.noticeCreatedTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+            <td><a th:href="@{|/admin/quote/${quote.id}|}" th:text="${quote.quotename}"></a></td>
+            <td th:text="${quote.product}"></td>
+            <td th:text="${quote.quantity}"></td>
+            <td th:text="${quote.totalprice}"></td>
+            <td th:text="${quote.writer}"></td>
+            <td th:text="${quote.checkmember}"></td>
+            <td th:text="*{#temporals.format(quote.createdat,'yyyy-MM-dd HH:mm:ss')}"></td>
+
         </tr>
         </tbody>
     </table>
