@@ -27,10 +27,10 @@ public class CompanyEntity {
     private String status; // 발주회사인지, 수주회사인지 (receive, send)
 
     @Column
-    private int moneyRecieve; // 미수금 (0, 1) 받을게있으면 1
+    private int moneyRecieve = 0; // 미수금 (0, 1) 받을게있으면 1
 
     @Column
-    private long money; // 받은 돈
+    private long money = 0; // 받은 돈
 
 
     public static CompanyEntity toSaveEntity(CompanyDto companyDto) {
