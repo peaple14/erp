@@ -11,7 +11,6 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("templates/report/expend_report")
 public class ExpendController {
 
     private final ExpendService expendService;

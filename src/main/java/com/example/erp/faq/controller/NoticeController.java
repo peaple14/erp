@@ -15,7 +15,6 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("templates/faq/notice")
 public class NoticeController {
 
     private final NoticeSerivce noticeSerivce;

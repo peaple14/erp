@@ -18,7 +18,6 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("templates/report/quote")
 public class QuoteController {
 
     private final QuoteService quoteService;

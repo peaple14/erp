@@ -16,7 +16,6 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("templates/member")
 public class MemberController {
 
     private final LoginService loginService;
