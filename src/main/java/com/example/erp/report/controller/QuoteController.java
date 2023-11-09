@@ -4,6 +4,7 @@ import com.example.erp.company.dto.CompanyDto;
 import com.example.erp.company.entity.CompanyEntity;
 import com.example.erp.company.service.CompanyService;
 import com.example.erp.member.entity.MemberEntity;
+import com.example.erp.member.service.SseService;
 import com.example.erp.product.entity.ProductEntity;
 import com.example.erp.report.dto.QuoteDto;
 import com.example.erp.report.entity.QuoteEntity;
@@ -21,7 +22,7 @@ import java.util.List;
 public class QuoteController {
 
     private final QuoteService quoteService;
-    private final CompanyService companyService;
+    private final SseService sseService;
 
     //리스트띄우기
     @GetMapping("/quote_list")
@@ -51,8 +52,13 @@ public class QuoteController {
         quoteDto.setWriter(quoteService.getMember((String) session.getAttribute("loginId")));
         quoteService.save(quoteDto);
 
+        //알림 보내기용
+        sseService.sendNotification("quote-added", "새로운 견적서가 추가되었습니다.");
+
         return "redirect:/quote_list";
     }
+
+
 
     @GetMapping("/quote_memo/{id}")
     public String quoteInfo(Model model, @PathVariable int id) {
@@ -93,19 +99,9 @@ public class QuoteController {
             return "redirect:/quote_list";
         }
         System.out.println("권한이됨");
-        ///////////////////////////////////
 
         //미수금 처리들 하기
         quoteService.mesugm(id, quoteDto);
-        //나중에 service로 옮기기. ->오류 대비용 삭제안해둠.
-//        QuoteEntity quoteEntity = QuoteEntity.toSaveEntity(quoteService.findById((int) quoteDto.id)); //모두 넣어서 견적서 완성본 만들기
-//
-//        CompanyEntity companyEntity = quoteEntity.getProduct().getCompany();//회사 업데이트 준비
-//        companyEntity.setMoney((int) (quoteEntity.getTotalPrice() + companyEntity.getMoney())); //견적서에서 추가된 돈과 원래있던 미수금
-//
-//        //회사 미수금 증가
-//        companyService.update(companyEntity.getId(), CompanyDto.toCompanyDto(companyEntity));
-//        quoteService.check_ok(id,quoteDto);
         return "redirect:/quote_list";
     }
 }
