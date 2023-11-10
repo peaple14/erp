@@ -23,17 +23,15 @@
         <label for="companyTel">거래처 연락처:</label>
         <input type="text" id="companyTel" name="companyTel" required>
     </div>
-        <label for="status">회사분류(수주,발주):</label>
+    <div class="form-group">
         <select id="status" name="status" required>
             <option value="receive">receive</option>
             <option value="send">send</option>
         </select>
     </div>
-    <div>
-        <input type="hidden" id="moneyRecieve" name="moneyRecieve" value="1" required>
-        <input type="hidden" id="money" name="money" value="0" required>
+
     </div>
-    <button type="submit" class="btn btn-primary" onclick="loadTab('/company_list','tabCompanyList')">저장</button>
+    <button type="submit" class="btn btn-primary">저장</button>
 </form>
 
 </body>

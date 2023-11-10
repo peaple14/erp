@@ -1,124 +1,76 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>회사 리스트</title>
+    <!-- 메타태그 및 스타일 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body class="quote-list">
-
 <div class="quote-container">
-<h1>회사 리스트
-    <a class="quote-button btn btn-primary" onclick="loadTab('/company_add', 'tabCompanyList')" role="button">회사 추가</a>
-</h1>
-<table class="quote-table table table-hover">
-    <thead class="thead-dark">
-    <tr>
-        <th>ID</th>
-        <th>회사 이름</th>
-        <th>회사 대표</th>
-        <th>거래처 연락처</th>
-        <th>상태</th>
-        <th>미수금</th>
-        <th>받은 돈</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="company : ${companies}">
-        <td th:text="${company.id}"></td>
-        <td>
-            <a th:text="${company.companyName}" th:href="@{'/company_memo/' + ${company.id}}"></a>
-        </td>
-        <td th:text="${company.companyVip}"></td>
-        <td th:text="${company.companyTel}"></td>
-        <td th:text="${company.status}"></td>
-        <td th:text="${company.moneyRecieve}"></td>
-        <td th:text="${company.money}"></td>
-    </tr>
-    </tbody>
-</table>
-</div>
+    <h1>회사 리스트
+        <a class="quote-button btn btn-primary" href="/company_add" role="button">회사 추가</a>
+    </h1>
+    <table class="quote-table table table-hover">
+        <thead class="thead-dark">
+        <tr>
+            <th>ID</th>
+            <th>회사 이름</th>
+            <th>회사 대표</th>
+            <th>거래처 연락처</th>
+            <th>상태(우리가보내주는 send=수주회사,recieve=발주회사로 표시)</th>
+            <th>받을 돈</th>
+            <th>입금액</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="company : ${companies}">
+            <td id= company_id th:text="${company.id}"></td>
+            <td>
+                <a th:text="${company.companyName}" th:href="@{'/company_memo/' + ${company.id}}"></a>
+            </td>
+            <td th:text="${company.companyVip}"></td>
+            <td th:text="${company.companyTel}"></td>
+            <td th:text="${company.status}"></td>
+            <td th:text="${company.money}"></td>
+            <td>
+                <input type="text" class="paymentAmount" data-company-id="${company.id}" placeholder="입금액">
+                <button class="sendPayment">입금</button>
+            </td>
 
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script>
+    $(document).ready(function() {
+        $(".sendPayment").click(function() {
+            var money = $(this).closest("tr").find(".paymentAmount").val();
+            var companyId = $(this).closest("tr").find("td#company_id").text(); // 해당 행의 ID 값을 가져옵니다.
+
+            // 입력값을 정수로 변환
+            money = parseInt(money);
+            companyId = parseInt(companyId)
+            var data = {
+                receiveMoney: money,
+                company_id: companyId
+            };
+
+            $.ajax({
+                url: "/ccc",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function(response) {
+                    alert("입금이 확인 되었습니다.");
+                    location.reload(); // 페이지 새로고침
+                },
+                error: function() {
+                    alert("입금 처리 중 오류가 발생했습니다.");
+                }
+            });
+        });
+    });
+
+</script>
 </body>
 </html>
-
-<style>
-    /* 견적서 리스트 페이지 스타일 */
-
-    body.quote-list {
-        font-family: Arial, sans-serif;
-        position: relative;
-        background-color: #f4f4f4;
-        margin: 0;
-        padding: 0;
-    }
-
-    .quote-container {
-        background-color: #fff;
-        margin: 0;
-        padding: 20px;
-        border-radius: 5px;
-        text-align: center;
-    }
-
-    .quote-title {
-        font-size: 30px;
-        margin: 0 0 20px 0;
-    }
-
-    .quote-table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    .quote-table th, .quote-table td {
-        border-bottom: 1px solid #dddddd;
-        padding: 10px;
-        text-align: left;
-    }
-
-    .quote-table th {
-        background-color: #f0f0f0;
-    }
-
-    .quote-button {
-        display: inline-block;
-        position: absolute;
-        top: 180px; /* 조정 필요 */
-        right: 110px; /* 조정 필요 */
-        padding: 10px 20px;
-        font-size: 16px;
-        text-align: center;
-        text-decoration: none;
-        background-color: #666666;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-
-    .quote-button:hover {
-        background-color: #333333;
-    }
-
-    /*.quote-table th:first-child,*/
-    /*.quote-table td:first-child {*/
-    /*    width: 10%;*/
-    /*}*/
-
-    /*.quote-table th:nth-child(2),*/
-    /*.quote-table td:nth-child(2) {*/
-    /*    width: 65%;*/
-    /*}*/
-
-    /*.quote-table th:nth-child(3),*/
-    /*.quote-table td:nth-child(3) {*/
-    /*    width: 10%;*/
-    /*}*/
-
-    /*.quote-table th:nth-child(4),*/
-    /*.quote-table td:nth-child(4) {*/
-    /*    width: 15%;*/
-    /*}*/
-</style>

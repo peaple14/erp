@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>지출결의서 수정</title>
+</head>
+<body>
+<h1>지출결의서 수정</h1>
+<form action="/expend_edit_ok" method="post">
+    <input type="hidden" id="id" name="id" th:value="${expendDto.id}">
+    <input type="hidden" id="ischeck" name="ischeck" th:value="${expendDto.ischeck}" />
+
+    <div>
+        <label for="expendname">지출결의서 이름:</label>
+        <input type="text" id="expendname" name="expendname" th:value="${expendDto.expendname}" required>
+    </div>
+    <div>
+        <label for="expendDto.company">회사 선택:</label>
+        <select id="expendDto.company" name="company" required>
+            <option value="" selected disabled>회사 선택</option>
+            <th:block th:each="product : ${products}">
+                <option th:value="${expendDto.id}" th:text="${expendDto.product.company.companyName}" th:selected="${expendDto.product.company != null && product.company.id == expendDto.product.company.id}"></option>
+            </th:block>
+        </select>
+    </div>
+    <div>
+        <label for="expendDto.product">제품 선택:</label>
+        <select id="expendDto.product" name="product" required>
+            <option value="" selected disabled>제품 선택</option>
+            <th:block th:each="product : ${products}">
+                <option th:value="${product.id}" th:text="${product.productName}" th:selected="${expendDto.product != null && product.id == expendDto.product.id}"></option>
+            </th:block>
+        </select>
+    </div>
+    <div>
+        <label for="quantity">수량:</label>
+        <input type="number" id="quantity" name="quantity" th:value="${expendDto.quantity}" required>
+    </div>
+    <div>
+        <label for="price">단위 단가:</label>
+        <input type="number" id="price" name="price" th:value="${expendDto.product.price}" required>
+    </div>
+    <div>
+        <label for="createdAt">일자 선택:</label>
+        <input type="date" id="createdAt" name="createdat" th:value="${#temporals.format(expendDto.createdat, 'yyyy-MM-dd')}" required>
+    </div>
+    <div>
+        <label for="totalprice">총 단가:</label>
+        <input type="number" id="totalprice" name="totalprice" th:value="${expendDto.totalprice}" required readonly>
+    </div>
+    <button type="submit">수정</button>
+</form>
+<script th:inline="javascript">
+    // 수량과 단위 단가가 변경될 때 총 단가를 계산
+    document.getElementById("quantity").addEventListener("input", calculateTotalPrice);
+    document.getElementById("price").addEventListener("input", calculateTotalPrice);
+
+    function calculateTotalPrice() {
+        const quantity = parseFloat(document.getElementById("quantity").value);
+        const price = parseFloat(document.getElementById("price").value);
+        const totalprice = quantity * price;
+        document.getElementById("totalprice").value = totalprice;
+    }
+</script>
+</body>
+</html>

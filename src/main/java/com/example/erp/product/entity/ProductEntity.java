@@ -14,23 +14,23 @@ import java.time.YearMonth;
 public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
+    private Long id;
+    //제품이름
     @Column
     private String productName;
-
+    //제품코드
     @Column
     private String productCode;
-
+    //재고량
     @Column
-    private String count;
-
+    private long count;
+    //가격
     @Column
     private long price;
-
+    //제조일자
     @Column
     private YearMonth makeDay;
-
+    //만든회사
     @ManyToOne
     @JoinColumn
     private CompanyEntity company;
@@ -41,7 +41,7 @@ public class ProductEntity {
         ProductEntity productEntity = new ProductEntity();
         productEntity.setProductName(productDto.getProductname());
         productEntity.setProductCode(productDto.getProductcode());
-        productEntity.setCount(productDto.getCount());
+        productEntity.setCount(0);
         productEntity.setPrice(productDto.getPrice());
         productEntity.setCompany(productDto.getMakecompany());
         productEntity.setMakeDay(productDto.getMakeday());
@@ -51,7 +51,6 @@ public class ProductEntity {
 
     public void update(ProductDto productDto) {
         this.productName = productDto.getProductname();
-        this.productCode = productDto.getProductcode();
         this.count = productDto.getCount();
         this.price = productDto.getPrice();
         this.company = productDto.getMakecompany();

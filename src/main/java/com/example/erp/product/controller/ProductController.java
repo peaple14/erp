@@ -48,6 +48,8 @@ public class ProductController {
     public String productEdit(Model model, @PathVariable long id) {
         List<CompanyEntity> companies = productService.getAllCompanies();
         ProductDto productDto = productService.findById(id);
+//        System.out.println("compaies란 무엇인가:" + companies);
+//        System.out.println("productDto란 무엇인가:" + productDto);
         model.addAttribute("product", productDto);
         model.addAttribute("companies", companies);
 
