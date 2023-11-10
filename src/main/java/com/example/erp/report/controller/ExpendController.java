@@ -15,7 +15,6 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("templates/report/expend_report")
 public class ExpendController {
 
     private final ExpendService expendService;
@@ -26,7 +25,7 @@ public class ExpendController {
         List<ExpendDto> expends = expendService.getAllExpends();
         model.addAttribute("expends", expends);
         System.out.println("지출결의서 리스트띄우기:" + expends);
-        return "report/expend_report/expend_list";
+        return "report/expend/expend_list";
     }
 
     // 지출결의서 추가
@@ -36,7 +35,7 @@ public class ExpendController {
 
         model.addAttribute("expendDto", new ExpendDto());
         model.addAttribute("products", products);
-        return "report/expend_report/expend_add";
+        return "report/expend/expend_add";
     }
 
     @PostMapping("/expend_add")
@@ -56,7 +55,7 @@ public class ExpendController {
         ExpendDto expendDto = expendService.findById(id);
         model.addAttribute("expend", expendDto);
         System.out.println("자세히보기에 들어오는 데이터:" + expendDto);
-        return "report/expend_report/expend_memo";
+        return "report/expend/expend_memo";
     }
 
     @GetMapping("/expend_edit/{id}")
@@ -66,7 +65,7 @@ public class ExpendController {
         model.addAttribute("expendDto", expendDto);
         model.addAttribute("products", products);
         System.out.println("수정데이터값들:" + expendDto);
-        return "report/expend_report/expend_edit";
+        return "report/expend/expend_edit";
     }
 
     @PostMapping("/expend_edit_ok")
@@ -88,7 +87,7 @@ public class ExpendController {
         }
 
 
-        expendDto.setIscheck(1);
+
         expendService.check_ok(id, expendDto);
         return "redirect:/expend_list";
     }

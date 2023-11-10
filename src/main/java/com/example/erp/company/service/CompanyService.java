@@ -31,6 +31,7 @@ public class CompanyService {
 
     //리스트띄어주기
 
+
     // 회사 추가
     @Transactional
     public void save(CompanyDto companyDto) {
@@ -40,6 +41,7 @@ public class CompanyService {
     }
 
     // 회사 상세 정보
+    @Transactional
     public CompanyDto findById(long id) {
         Optional<CompanyEntity> optionalCompanyEntity = companyRepository.findById(id);
         if (optionalCompanyEntity.isPresent()) {

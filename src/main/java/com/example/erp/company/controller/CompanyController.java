@@ -11,7 +11,6 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("templates/company")
 public class CompanyController {
 
     private final CompanyService companyService;
@@ -29,11 +28,9 @@ public class CompanyController {
     }
 
     @PostMapping("/company_add")
-    public String companyAdd(CompanyDto companyDto, Model model) {
+    public String companyAdd(CompanyDto companyDto) {
         companyService.save(companyDto);
-        List<CompanyDto> companies = companyService.getAllCompanies();
-        model.addAttribute("companies", companies);
-        return "company/company_list";
+        return "redirect:/company_list";
     }
 
     @GetMapping("/company_memo/{id}")

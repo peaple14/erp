@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>견적서 리스트</title>
 </head>
-<body class="quote-list">
-<div class="quote-container">
+<body class="expend-list">
+<div class="expend-container">
     <h1>견적서 리스트
-        <a class="quote-button btn btn-primary" href="/quote_add" role="button">견적서 추가</a>
+        <a class="expend-button btn btn-primary" href="/expend_add" role="button">견적서 추가</a>
     </h1>
-    <table class="quote-table table table-hover">
+    <table class="expend-table table table-hover">
         <thead class="thead-dark">
         <tr>
             <th>ID</th>
@@ -28,31 +28,31 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="quote : ${quotes}">
-            <td th:text="${quote.id}"></td>
+        <tr th:each="expend : ${expends}">
+            <td th:text="${expend.id}"></td>
             <td>
-                <a th:text="${quote.quotename}"></a>
+                <a th:text="${expend.expendname}"></a>
             </td>
-            <td th:text="${quote.product.company.companyName}"></td>
-            <td th:text="${quote.product.productName}"></td>
-            <td th:text="${quote.quantity}"></td>
-            <td th:text="${quote.totalprice}"></td>
-            <td th:text="${quote.createdat}"></td>
-            <td th:text="${quote.writer.userName}"></td>
+            <td th:text="${expend.product.company.companyName}"></td>
+            <td th:text="${expend.product.productName}"></td>
+            <td th:text="${expend.quantity}"></td>
+            <td th:text="${expend.totalprice}"></td>
+            <td th:text="${expend.createdat}"></td>
+            <td th:text="${expend.writer.userName}"></td>
             <td>
-                <span th:if="${quote.checkmember != null}">확인됨</span>
-                <span th:if="${quote.checkmember == null}">미확인</span>
-            </td>
-            <td>
-                <a th:href="@{'/quote_memo/' + ${quote.id}}">자세히 보기</a>
+                <span th:if="${expend.ischeck == 1}">확인됨</span>
+                <span th:if="${expend.ischeck == 0}">미확인</span>
             </td>
             <td>
-                <span th:if="${quote.checkmember != null}">결제 완료</span>
-                <span th:if="${quote.checkmember == null}"> <a th:href="@{'/quote_edit/' + ${quote.id}}">수정</a></span>
+                <a th:href="@{'/expend_memo/' + ${expend.id}}">자세히 보기</a>
             </td>
             <td>
-                <a th:if="${quote.checkmember == null}" th:href="@{'/quote_check_ok/' + ${quote.id}}"
-                   class="quote-check-button btn btn-success">결제 완료</a>
+                <span th:if="${expend.ischeck == 1}">결제 완료</span>
+                <span th:if="${expend.ischeck == 0}"> <a th:href="@{'/expend_edit/' + ${expend.id}}">수정</a></span>
+            </td>
+            <td>
+                <a th:if="${expend.ischeck == 0}" th:href="@{'/expend_check_ok/' + ${expend.id}}"
+                   class="expend-check-button btn btn-success">결제 완료</a>
             </td>
         </tr>
         </tbody>
@@ -64,7 +64,7 @@
 <style>
     /* 견적서 리스트 페이지 스타일 */
 
-    body.quote-list {
+    body.expend-list {
         font-family: Arial, sans-serif;
         position: relative;
         background-color: #f4f4f4;
@@ -72,7 +72,7 @@
         padding: 0;
     }
 
-    .quote-container {
+    .expend-container {
         background-color: #fff;
         margin: 20px;
         padding: 20px;
@@ -80,27 +80,27 @@
         text-align: center;
     }
 
-    .quote-title {
+    .expend-title {
         font-size: 30px;
         margin: 0 0 20px 0;
     }
 
-    .quote-table {
+    .expend-table {
         width: 100%;
         border-collapse: collapse;
     }
 
-    .quote-table th, .quote-table td {
+    .expend-table th, .expend-table td {
         border-bottom: 1px solid #dddddd;
         padding: 10px;
         text-align: left;
     }
 
-    .quote-table th {
+    .expend-table th {
         background-color: #f0f0f0;
     }
 
-    .quote-button {
+    .expend-button {
         display: inline-block;
         position: absolute;
         top: 180px; /* 조정 필요 */
@@ -117,11 +117,11 @@
         transition: background-color 0.3s;
     }
 
-    .quote-button:hover {
+    .expend-button:hover {
         background-color: #333333;
     }
 
-    .quote-check-button {
+    .expend-check-button {
         margin-right: 10px;
     }
 </style>

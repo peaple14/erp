@@ -10,11 +10,12 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
     <link rel="stylesheet" href="styles.css"> <!-- 스타일 시트 연결 -->
 </head>
 
 <body class="product-add">
-<form action="/templates/product/product_add" method="post">
+<form action="/product_add" method="post">
     <h1>제품 추가</h1>
     <hr>
     <div class="form-group">
@@ -22,14 +23,7 @@
         <input type="text" id="productname" name="productname" required>
     </div>
     <div class="form-group">
-        <label for="productcode">제품코드:</label>
-        <input type="text" id="productcode" name="productcode" required>
-    </div>
-    <div class="form-group">
-    <div>
-        <label for="count">재고량:</label>
-        <input type="text" id="count" name="count" required>
-    </div>
+
     <div class="form-group">
         <label for="price">제품가격:</label>
         <input type="text" id="price" name="price" required>

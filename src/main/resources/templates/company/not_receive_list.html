@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>미수금 리스트</title>
+</head>
+<body>
+    <h1>미수금 리스트</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>회사</th>
+                <th>받은 돈</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="notReceive : ${notReceiveList}">
+                <td th:text="${notReceive.id}"></td>
+                <td th:text="${notReceive.company}"></td>
+                <td th:text="${notReceive.receiveMoney}"></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

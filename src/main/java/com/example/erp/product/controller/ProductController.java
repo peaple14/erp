@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("templates/product")
 @RequiredArgsConstructor
 public class ProductController {
 
@@ -33,11 +32,9 @@ public class ProductController {
     }
 
     @PostMapping("/product_add")
-    public String productAdd(ProductDto productDto, Model model) {
+    public String productAdd(ProductDto productDto) {
         productService.save(productDto);
-        List<ProductDto> products = productService.getAllProducts();
-        model.addAttribute("products", products);
-        return "product/product_list";
+        return "redirect:/product_list";
     }
 
     @GetMapping("/product_memo/{id}")
@@ -62,6 +59,6 @@ public class ProductController {
     @PostMapping("/product_edit_ok")
     public String productEditOk(@RequestParam(name = "id") Long id, @ModelAttribute ProductDto productDto) {
         productService.update(id, productDto);
-        return "product/product_list";
+        return "redirect:/product_list";
     }
 }

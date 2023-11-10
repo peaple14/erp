@@ -1,66 +1,68 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!--수정값들도 들어오는건 로그로 들어오게 해뒀음. add로 추가할수있었던것만 수정하면됨.-->
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>견적서 수정</title>
 </head>
 <body>
-<div class="container">
-    <h1 class="mt-4">견적서 편집</h1>
-    <form>
-        <div class="form-group">
-            <label for="quoteTitle">견적서 제목</label>
-            <input type="text" class="form-control" id="quoteTitle" placeholder="견적서 제목">
-        </div>
-        <div class="form-group">
-            <label for="inputCorrespondent">거래처</label>
-            <select class="form-control" id="inputCorrespondent">
-                <option value="거래처1">거래처1</option>
-                <option value="거래처2">거래처2</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="inputCorrespondentName">거래처 대표자</label>
-            <input type="text" class="form-control" id="inputCorrespondentName" placeholder="거래처 대표자" disabled>
-        </div>
-        <div class="form-group">
-            <label for="inputCorrespondentPhone">거래처 연락처</label>
-            <input type="text" class="form-control" id="inputCorrespondentPhone" placeholder="거래처 연락처" disabled>
-        </div>
-        <div class="form-group">
-            <label for="productName">제품명</label>
-            <select class="form-control" id="productName">
-                <!-- 해당 회사에 속하는 상품만 보이도록 수정 필요 -->
-                <option value="상품1">상품1</option>
-                <option value="상품2">상품2</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="productPrice">단위 단가</label>
-            <input type="text" class="form-control" id="productPrice"  disabled>
-        </div>
-        <div class="form-group">
-            <label for="productQuantity">수량</label>
-            <input type="text" class="form-control" id="productQuantity" placeholder="수량">
-        </div>
-        <div class="form-group">
-            <label for="totalPrice">총 단가</label>
-            <input type="text" class="form-control" id="totalPrice" disabled>
-        </div>
-        <div class="form-group">
-            <label for="writer">작성자</label>
-            <input type="text" class="form-control" id="writer"  disabled>
-        </div>
-        <button type="submit" class="btn btn-primary">저장</button>
-    </form>
-</div>
+<h1>견적서 수정</h1>
+<form action="/quote_edit_ok" method="post">
+    <input type="hidden" id="id" name="id" th:value="${quoteDto.id}">
+    <input type="hidden" id="checkmember" name="checkmember" th:value="${quoteDto.checkmember}" />
+    <div>
+        <label for="quotename">견적서 이름:</label>
+        <input type="text" id="quotename" name="quotename" th:value="${quoteDto.quotename}" required>
+    </div>
+    <div>
+        <label for="quoteDto.company">회사 선택:</label>
+        <select id="quoteDto.company" name="company" required>
+            <option value="" selected disabled>회사 선택</option>
+            <th:block th:each="product : ${products}">
+                <option th:value="${quoteDto.id}" th:text="${quoteDto.product.company.companyName}" th:selected="${quoteDto.product.company != null && product.company.id == quoteDto.product.company.id}"></option>
+            </th:block>
+        </select>
+    </div>
+    <div>
+        <label for="quoteDto.product">제품 선택:</label>
+        <select id="quoteDto.product" name="product" required>
+            <option value="" selected disabled>제품 선택</option>
+            <th:block th:each="product : ${products}">
+                <option th:value="${quoteDto.product.id}" th:text="${quoteDto.product.productName}" th:selected="${quoteDto.product != null && product.id == quoteDto.product.id}"></option>
+            </th:block>
+        </select>
+    </div>
+    <div>
+        <label for="quantity">수량:</label>
+        <input type="number" id="quantity" name="quantity" th:value="${quoteDto.quantity}" required>
+    </div>
+    <div>
+        <label for="price">단위 단가:</label>
+        <input type="number" id="price" name="price" th:value="${quoteDto.product.price}" required>
+    </div>
+    <div>
+        <label for="createdAt">일자 선택:</label>
+        <input type="date" id="createdAt" name="createdat" th:value="${#temporals.format(quoteDto.createdat, 'yyyy-MM-dd')}" required>
+    </div>
+    <div>
+        <label for="totalprice">총 단가:</label>
+        <input type="number" id="totalprice" name="totalprice" th:value="${quoteDto.totalprice}" required readonly>
+    </div>
+    <button type="submit">수정</button>
+</form>
+<script th:inline="javascript">
+    // 수량과 단위 단가가 변경될 때 총 단가를 계산
+    document.getElementById("quantity").addEventListener("input", calculateTotalPrice);
+    document.getElementById("price").addEventListener("input", calculateTotalPrice);
 
-<!-- jQuery and Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+    function calculateTotalPrice() {
+        const quantity = parseFloat(document.getElementById("quantity").value);
+        const price = parseFloat(document.getElementById("price").value);
+        const totalprice = quantity * price;
+        document.getElementById("totalprice").value = totalprice;
+    }
+</script>
 </body>
 </html>

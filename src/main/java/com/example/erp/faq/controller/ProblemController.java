@@ -1,5 +1,6 @@
 package com.example.erp.faq.controller;
 
+
 import com.example.erp.faq.dto.NoticeDto;
 import com.example.erp.faq.dto.ProblemDto;
 import com.example.erp.faq.service.ProblemService;
@@ -14,10 +15,10 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("templates/faq/problem")
 public class ProblemController {
 
     private final ProblemService problemService;
+
 
     //고객불만접수 리스트 보여주기용(처음들어왔을때)
     @GetMapping("/problem_list")
@@ -42,6 +43,7 @@ public class ProblemController {
         return "redirect:/problem_list"; //글추가 끝나고 갈페이지입니다.
     }
 
+
     //공지사항 세부정보
     @GetMapping("/problem_memo/{id}")
     public String n_memo(Model model, @PathVariable long id) {
@@ -63,4 +65,6 @@ public class ProblemController {
         problemService.update(id,problemDto);
         return "redirect:problem_list";
     }
+
+
 }

@@ -122,37 +122,37 @@ function changeSidebar(menu) {
     if (menu === 'menu1') {
         sidebarContent = `
         <ul class="sidebar-links">
-            <li><a href="#" onclick="addTab('제품관리', '/templates/product/product_list')">제품관리</a></li>
+            <li><a href="#" onclick="addTab('제품관리', '/product_list')">제품관리</a></li>
         </ul>
     `;
     } else if (menu === 'menu2') {
         sidebarContent = `
         <ul class="sidebar-links">
-            <li><a href="#" onclick="addTab('발주 거래처', '/templates/company/company_list')">발주 거래처</a></li>
-            <li><a href="#" onclick="addTab('수주 거래처', '/templates/company/company_add')">수주 거래처</a></li>
-            <li><a href="#" onclick="addTab('미수금', '/templates/company/company_list')">미수금</a></li>
+            <li><a href="#" onclick="addTab('발주 거래처', '/company_list')">발주 거래처</a></li>
+            <li><a href="#" onclick="addTab('수주 거래처', '/company_add')">수주 거래처</a></li>
+            <li><a href="#" onclick="addTab('미수금', '/company_list')">미수금</a></li>
         </ul>
     `;
     } else if (menu === 'menu3') {
         sidebarContent = `
                     <ul class="sidebar-links">
-                        <li><a href="#" onclick="addTab('견적서관리','/templates/report/quote/quote_list')">견적서관리</a></li>
-                        <li><a href="#" onclick="addTab('지출결의서','/templates/report/expend_report/expend_list')">지출결의서</a></li>
+                        <li><a href="#" onclick="addTab('견적서관리','/quote_list')">견적서관리</a></li>
+                        <li><a href="#" onclick="addTab('지출결의서','/expend_list')">지출결의서</a></li>
                     </ul>
                 `;
     } else if (menu === 'menu4') {
         sidebarContent = `
                     <ul class="sidebar-links">
-                        <li><a href="#" onclick="addTab('주문현황','/templates/order/order_list')">주문현황</a></li>
-                        <li><a href="#" onclick="addTab('발주', '/templates/faq/notice/notice_add')">발주</a></li>
+                        <li><a href="#" onclick="addTab('주문현황','/order_list')">주문현황</a></li>
+                        <li><a href="#" onclick="addTab('발주', '/notice_add')">발주</a></li>
                         <li><a href="#" onclick="addTab('수주')">수주</a></li>
                     </ul>
                 `;
     } else if (menu === 'menu5') {
         sidebarContent = `
                     <ul class="sidebar-links">
-                        <li><a href="#" onclick="addTab('고객불만접수','/templates/faq/problem/problem_list')">고객불만접수</a></li>
-                        <li><a href="#" onclick="addTab('공지사항','/templates/faq/notice/notice_list')">공지사항</a></li>
+                        <li><a href="#" onclick="addTab('고객불만접수','/problem_list')">고객불만접수</a></li>
+                        <li><a href="#" onclick="addTab('공지사항','/notice_list')">공지사항</a></li>
                     </ul>
                 `;
     }
