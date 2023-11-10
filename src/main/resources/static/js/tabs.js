@@ -1,4 +1,7 @@
-function showTab(tabId) {
+// 각 탭의 로드된 페이지를 저장할 객체
+var loadedPages = {};
+
+function showTab(tabId, pageUrl) {
     // 모든 탭 내용을 숨김
     var tabContents = document.querySelectorAll('.tab-content');
     for (var i = 0; i < tabContents.length; i++) {
@@ -9,8 +12,35 @@ function showTab(tabId) {
     var selectedTab = document.getElementById(tabId);
     if (selectedTab) {
         selectedTab.style.display = 'block';
+
+        // 페이지가 이미 로드되었는지 확인하고, 로드되지 않았다면 로드
+        if (!loadedPages[tabId]) {
+            loadTab(pageUrl, tabId);
+        }
     }
 }
+
+function loadTab(pageUrl, tabId) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            var tabContents = document.getElementById('tabContents');
+            tabContents.innerHTML = this.responseText;
+
+            // 추가: 탭 내부의 스크립트를 실행
+            var scripts = tabContents.querySelectorAll('script');
+            scripts.forEach(function(script) {
+                eval(script.innerHTML);
+            });
+
+            // 페이지가 로드되었음을 표시
+            loadedPages[tabId] = true;
+        }
+    };
+    xhttp.open("GET", pageUrl, true);
+    xhttp.send();
+}
+
 
 function addTab(tabName, pageUrl) {
     // 새로운 탭 생성
@@ -53,23 +83,7 @@ function addTab(tabName, pageUrl) {
     }
 }
 
-function loadTab(pageUrl) {
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            var tabContents = document.getElementById('tabContents');
-            tabContents.innerHTML = this.responseText;
 
-            // 추가: 탭 내부의 스크립트를 실행
-            var scripts = tabContents.querySelectorAll('script');
-            scripts.forEach(function(script) {
-                eval(script.innerHTML);
-            });
-        }
-    };
-    xhttp.open("GET", pageUrl, true);
-    xhttp.send();
-}
 
 
 
@@ -108,37 +122,37 @@ function changeSidebar(menu) {
     if (menu === 'menu1') {
         sidebarContent = `
         <ul class="sidebar-links">
-            <li><a href="#" onclick="addTab('제품관리', '/templates/product/product_list')">제품관리</a></li>
+            <li><a href="#" onclick="addTab('제품관리', '/product_list')">제품관리</a></li>
         </ul>
     `;
     } else if (menu === 'menu2') {
         sidebarContent = `
         <ul class="sidebar-links">
-            <li><a href="#" onclick="addTab('발주 거래처', '/templates/company/company_list')">발주 거래처</a></li>
-            <li><a href="#" onclick="addTab('수주 거래처', '/templates/company/company_list')">수주 거래처</a></li>
-            <li><a href="#" onclick="addTab('미수금', '/templates/company/company_list')">미수금</a></li>
+            <li><a href="#" onclick="addTab('발주 거래처', '/company_list')">발주 거래처</a></li>
+            <li><a href="#" onclick="addTab('수주 거래처', '/company_add')">수주 거래처</a></li>
+            <li><a href="#" onclick="addTab('미수금', '/company_list')">미수금</a></li>
         </ul>
     `;
     } else if (menu === 'menu3') {
         sidebarContent = `
                     <ul class="sidebar-links">
-                        <li><a href="#" onclick="addTab('견적서관리','/templates/report/quote/quote_list')">견적서관리</a></li>
-                        <li><a href="#" onclick="addTab('지출결의서','/templates/report/expend_report/expend_list')">지출결의서</a></li>
+                        <li><a href="#" onclick="addTab('견적서관리','/quote_list')">견적서관리</a></li>
+                        <li><a href="#" onclick="addTab('지출결의서','/expend_list')">지출결의서</a></li>
                     </ul>
                 `;
     } else if (menu === 'menu4') {
         sidebarContent = `
                     <ul class="sidebar-links">
-                        <li><a href="#" onclick="addTab('주문현황','/templates/order/order_list')">주문현황</a></li>
-                        <li><a href="#" onclick="addTab('발주')">발주</a></li>
+                        <li><a href="#" onclick="addTab('주문현황','/order_list')">주문현황</a></li>
+                        <li><a href="#" onclick="addTab('발주', '/notice_add')">발주</a></li>
                         <li><a href="#" onclick="addTab('수주')">수주</a></li>
                     </ul>
                 `;
     } else if (menu === 'menu5') {
         sidebarContent = `
                     <ul class="sidebar-links">
-                        <li><a href="#" onclick="addTab('고객불만접수','/templates/faq/problem/problem_list')">고객불만접수</a></li>
-                        <li><a href="#" onclick="addTab('공지사항','/templates/faq/notice/notice_list')">공지사항</a></li>
+                        <li><a href="#" onclick="addTab('고객불만접수','/problem_list')">고객불만접수</a></li>
+                        <li><a href="#" onclick="addTab('공지사항','/notice_list')">공지사항</a></li>
                     </ul>
                 `;
     }

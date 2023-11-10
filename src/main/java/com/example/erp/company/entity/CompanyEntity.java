@@ -1,7 +1,6 @@
 package com.example.erp.company.entity;
 
 import com.example.erp.company.dto.CompanyDto;
-import com.example.erp.member.entity.MemberEntity;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -27,10 +26,8 @@ public class CompanyEntity {
     private String status; // 발주회사인지, 수주회사인지 (receive, send)
 
     @Column
-    private int moneyRecieve; // 미수금 (0, 1) 받을게있으면 1
+    private long money ; // 받을 돈
 
-    @Column
-    private long money; // 받은 돈
 
 
     public static CompanyEntity toSaveEntity(CompanyDto companyDto) {
@@ -39,7 +36,6 @@ public class CompanyEntity {
         companyEntity.setCompanyVip(companyDto.getCompanyVip());
         companyEntity.setCompanyTel(companyDto.getCompanyTel());
         companyEntity.setStatus(companyDto.getStatus());
-        companyEntity.setMoneyRecieve(companyDto.getMoneyRecieve());
         companyEntity.setMoney(companyDto.getMoney());
 
         return companyEntity;
@@ -50,8 +46,9 @@ public class CompanyEntity {
         this.companyVip = companyDto.getCompanyVip();
         this.companyTel = companyDto.getCompanyTel();
         this.status = companyDto.getStatus();
-        this.moneyRecieve = companyDto.getMoneyRecieve();
         this.money = companyDto.getMoney();
     }
+
+
 
 }

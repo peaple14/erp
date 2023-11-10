@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 
 
 @Entity
-@Table(name = "expense_table")
+//@Table(name = "expense_table")
 public class ExpenseReportentity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

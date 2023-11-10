@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>지출결의서 상세 정보</title>
+</head>
+<body class="expend-memo">
+<div class="expend-container">
+  <h1>지출결의서 상세 정보</h1>
+  <table class="expend-table table table-hover">
+    <tr>
+      <th>ID</th>
+      <td th:text="${expend.id}"></td>
+    </tr>
+    <tr>
+      <th>지출결의서 이름</th>
+      <td th:text="${expend.expendname}"></td>
+    </tr>
+    <tr>
+      <th>제품명</th>
+      <td th:text="${expend.product.productName}"></td>
+    </tr>
+    <tr>
+      <th>수량</th>
+      <td th:text="${expend.quantity}"></td>
+    </tr>
+    <tr>
+      <th>총 단가</th>
+      <td th:text="${expend.totalprice}"></td>
+    </tr>
+    <tr>
+      <th>지출결의서 일자</th>
+      <td th:text="${expend.createdat}"></td>
+    </tr>
+    <tr>
+      <th>작성자</th>
+      <td th:text="${expend.writer.userName}"></td>
+    </tr>
+    <tr>
+      <th>최종 확인 여부</th>
+      <td>
+        <span th:if="${expend.ischeck == 1}">확인됨</span>
+        <span th:if="${expend.ischeck == 0}">미확인</span>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>
+</html>

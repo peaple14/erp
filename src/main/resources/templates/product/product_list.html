@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>제품 리스트</title>
+    <script>
+        var eventSource = new EventSource('/sse-endpoint');
+        eventSource.onmessage = function(event) {
+            var message = event.data;
+            console.log(event.data);
+            // 메시지 처리 논리를 추가합니다.
+        };
+    </script>
 </head>
 <body class="quote-list">
 <div class="quote-container">
@@ -53,7 +61,7 @@
 
     .quote-container {
         background-color: #fff;
-        margin: 0;
+        margin: 20px;
         padding: 20px;
         border-radius: 5px;
         text-align: center;
@@ -100,23 +108,4 @@
         background-color: #333333;
     }
 
-    /*.quote-table th:first-child,*/
-    /*.quote-table td:first-child {*/
-    /*    width: 10%;*/
-    /*}*/
-
-    /*.quote-table th:nth-child(2),*/
-    /*.quote-table td:nth-child(2) {*/
-    /*    width: 65%;*/
-    /*}*/
-
-    /*.quote-table th:nth-child(3),*/
-    /*.quote-table td:nth-child(3) {*/
-    /*    width: 10%;*/
-    /*}*/
-
-    /*.quote-table th:nth-child(4),*/
-    /*.quote-table td:nth-child(4) {*/
-    /*    width: 15%;*/
-    /*}*/
 </style>
