@@ -96,7 +96,7 @@ public class QuoteController {
     //결제완료시 미수금,수주거래 변동.
     @GetMapping ("/quote_check_ok/{id}")
     public String check_ok(@PathVariable int id, HttpSession session,@ModelAttribute QuoteDto quoteDto){
-        
+
         //권한이 admin인사람만 하도록.
         quoteDto.setCheckmember(quoteService.getMember((String) session.getAttribute("loginId")));
         System.out.println("권한:" + quoteDto.getCheckmember().getUserauthority());
