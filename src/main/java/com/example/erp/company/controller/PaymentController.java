@@ -26,7 +26,6 @@ public class PaymentController {
         notReceiveService.money_ok(company_id,moneyAsLong);
         System.out.println("money: " + moneyAsLong);
         System.out.println("회사아이디: " + company_id);
-        System.out.println("오긴옴");
         // request에서 필요한 데이터를 처리합니다.
         return ResponseEntity.ok("입금 처리가 확인 되었습니다.");
     }

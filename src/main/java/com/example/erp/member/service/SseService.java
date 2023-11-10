@@ -29,8 +29,9 @@ public class SseService {
                 emitter.send(SseEmitter.event()
                         .name(eventName)
                         .data(message));
-            } catch (IOException e) {
+            } catch (Exception e) {
                 // 예외 처리
+                e.printStackTrace();
             }
         }
     }

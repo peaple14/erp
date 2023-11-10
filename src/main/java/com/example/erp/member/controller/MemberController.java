@@ -32,10 +32,10 @@ public class MemberController {
     }
 
     //로그인시도
-    @PostMapping("login")
+    @PostMapping("main")
     public String logins(@ModelAttribute LoginDto loginDto, HttpSession session, BindingResult bindingResult){
         if (bindingResult.hasErrors()) {//에러날시
-            return "redirect:/login"; //첫화면으로
+            return "redirect:/main"; //첫화면으로
         }
         System.out.println("로그인테스트 첨 온것" + loginDto);
         MemberDto loginResult = loginService.login(loginDto);
@@ -66,7 +66,7 @@ public class MemberController {
     // 알림 보내기용
     @PostMapping("/send-sse")
     public void sendSSE() {
-        sseService.sendNotification("quote-added", "새로운 견적서가 추가되었습니다!");
+        sseService.sendNotification("quote-added", "새로운 견적서가 추가되었습니다.");
     }
 
     // 메세지 보내기용
@@ -86,8 +86,4 @@ public class MemberController {
             session.removeAttribute("sseEmitter");
         });
     }
-
-
-
-
 }

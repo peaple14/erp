@@ -10,10 +10,15 @@ public class SSEController {
     @GetMapping("/sse-endpoint")
     public SseEmitter sseEndpoint() {
         SseEmitter emitter = new SseEmitter();
-        System.out.println("실행은 되었다." + emitter);
+        try{
 
-        // 클라이언트에 대한 처리 또는 메시지 전송
+            System.out.println("실행은 되었다." + emitter);
 
+            // 클라이언트에 대한 처리 또는 메시지 전송
+
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
         return emitter;
     }
 }

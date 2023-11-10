@@ -40,20 +40,27 @@ public class QuoteController {
         System.out.println(products);
         model.addAttribute("quoteDto", new QuoteDto());
         model.addAttribute("products", products);
+        //알림 보내기용
+        sseService.sendNotification("quote-added", "새로운 견적서가 추가되었습니다.");
+
         return "report/quote/quote_add";
+
+
     }
 
     @PostMapping("/quote_add")
     public String quoteAdd(@ModelAttribute QuoteDto quoteDto, HttpSession session) {
         // 추가: HTML 폼에서 입력한 데이터를 로그로 출력
-        System.out.println("견적서 추가 폼 제출 데이터: " + quoteDto);
-        System.out.println("로그인 세션 정보: " + session.getAttribute("loginId"));
+//        System.out.println("견적서 추가 폼 제출 데이터: " + quoteDto);
+//        System.out.println("로그인 세션 정보: " + session.getAttribute("loginId"));
         quoteDto.setLocation(0);//
         quoteDto.setWriter(quoteService.getMember((String) session.getAttribute("loginId")));
         quoteService.save(quoteDto);
 
-        //알림 보내기용
-        sseService.sendNotification("quote-added", "새로운 견적서가 추가되었습니다.");
+//        //알림 보내기용
+//        sseService.sendNotification("quote-added", "새로운 견적서가 추가되었습니다.");
+
+
 
         return "redirect:/quote_list";
     }
@@ -64,7 +71,7 @@ public class QuoteController {
     public String quoteInfo(Model model, @PathVariable int id) {
         QuoteDto quoteDto = quoteService.findById(id);
         model.addAttribute("quote", quoteDto);
-        System.out.println("자세히보기에 들어오는 데이터:" + quoteDto);
+//        System.out.println("자세히보기에 들어오는 데이터:" + quoteDto);
         return "report/quote/quote_memo";
     }
 
