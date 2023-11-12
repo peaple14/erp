@@ -16,7 +16,7 @@ public class QuoteEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int id; //실수로 int함.
 
     @Column
     private String quotename;
@@ -33,11 +33,14 @@ public class QuoteEntity {
     @Column
     private LocalDate createdAt;
 
-    //최종 확인되었는지 안되었는지
+    //배달전,배달중,배달완료 = 0,1,2
     @Column
-    private int ischeck ;  //다음부터는 true/false 방식쓰기
+    private int location;  //현재 배송지 위치
 
-    //견적서 최종확인자
+    @Column
+    private long receive_money; //받은돈들. 나중에 총단가와 비교할것.
+
+    //견적서 최종확인자 -> 굳이 이걸 join했어야했나? 그냥 멤버id적었음 되지 않았는가?
     @ManyToOne
     @JoinColumn(name = "checkmember_id")
     private MemberEntity checkmember;
@@ -52,7 +55,7 @@ public class QuoteEntity {
     @JoinColumn(name = "product_id")
     private ProductEntity product;
 
-    //견적서 작성자
+    //견적서 작성자 -> 굳이 이걸 join했어야했나? 그냥 멤버id적었음 되지 않았는가?
     @ManyToOne
     @JoinColumn(name = "member_id")
     private MemberEntity member;
@@ -65,7 +68,6 @@ public class QuoteEntity {
         quoteEntity.setCreatedAt(quoteDto.getCreatedat());
         quoteEntity.setProduct(quoteDto.getProduct());
         quoteEntity.setMember(quoteDto.getWriter());
-        quoteEntity.setIscheck(quoteDto.getIscheck());
         return quoteEntity;
     }
 
@@ -77,13 +79,13 @@ public class QuoteEntity {
         this.totalPrice  = quoteDto.getTotalprice();
         this.createdAt = quoteDto.getCreatedat();
         this.product = quoteDto.getProduct();
-        this.ischeck = quoteDto.getIscheck();
+        this.location = quoteDto.getLocation();
     }
 
     //결제완료용
     public void check_ok(QuoteDto quoteDto) {
         this.checkmember = quoteDto.getCheckmember();
-        this.ischeck = 1;
+        this.location = 0;
 
     }
 

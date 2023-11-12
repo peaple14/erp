@@ -30,7 +30,7 @@ public class ExpendEntity {
     private LocalDate createdAt;
 
     @Column
-    private int ischeck;
+    private int location;
 
     @ManyToOne
     @JoinColumn(name = "checkmember_id")
@@ -52,7 +52,6 @@ public class ExpendEntity {
         expendEntity.setCreatedAt(expendDto.getCreatedat());
         expendEntity.setProduct(expendDto.getProduct());
         expendEntity.setMember(expendDto.getWriter());
-        expendEntity.setIscheck(expendDto.getIscheck());
         return expendEntity;
     }
 
@@ -62,11 +61,11 @@ public class ExpendEntity {
         this.totalPrice = expendDto.getTotalprice();
         this.createdAt = expendDto.getCreatedat();
         this.product = expendDto.getProduct();
-        this.ischeck = expendDto.getIscheck();
+//        this.location = expendDto.getIscheck();
     }
 
     public void check_ok(ExpendDto expendDto) {
         this.checkmember = expendDto.getCheckmember();
-        this.ischeck = 1;
+        this.location = 0;
     }
 }

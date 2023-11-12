@@ -23,7 +23,6 @@ public class ExpendDto {
     private long totalprice; // 총 단가
     private LocalDate createdat; // 지출결의서 일자
     private MemberEntity writer; // 작성자
-    private int ischeck; // 최종 확인 되었는지 안되었는지
     private MemberEntity checkmember; // 누가 최종 확인했는지
 
     public static ExpendDto expendDto(ExpendEntity expendEntity) {
@@ -34,7 +33,6 @@ public class ExpendDto {
         expendDto.setQuantity(expendEntity.getQuantity());
         expendDto.setTotalprice(expendEntity.getTotalPrice());
         expendDto.setCreatedat(expendEntity.getCreatedAt());
-        expendDto.setIscheck(expendEntity.getIscheck());
         expendDto.setWriter(expendEntity.getMember());
         return expendDto;
     }

@@ -36,12 +36,12 @@ public class CompanyService {
     @Transactional
     public void save(CompanyDto companyDto) {
         CompanyEntity companyEntity = CompanyEntity.toSaveEntity(companyDto);
-        companyEntity.setMoneyRecieve(1);
         companyEntity.setMoney(0);
         companyRepository.save(companyEntity);
     }
 
     // 회사 상세 정보
+    @Transactional
     public CompanyDto findById(long id) {
         Optional<CompanyEntity> optionalCompanyEntity = companyRepository.findById(id);
         if (optionalCompanyEntity.isPresent()) {
@@ -60,4 +60,15 @@ public class CompanyService {
                 .orElseThrow(() -> new EntityNotFoundException("회사: " + id + " 를 찾을 수 없습니다."));
         companyEntity.update(companyDto);
     }
+
+    @Transactional
+    public void companymoney(long id, long money) {
+        CompanyEntity companyEntity = companyRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("회사: " + id + " 를 찾을 수 없습니다."));
+        long currentMoney = companyEntity.getMoney();
+        companyEntity.setMoney(currentMoney - money);
+        companyEntity.update(CompanyDto.toCompanyDto(companyEntity));
+    }
+
+
 }

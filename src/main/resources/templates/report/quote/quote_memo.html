@@ -42,8 +42,8 @@
     <tr>
       <th>최종 확인 여부</th>
       <td>
-        <span th:if="${quote.ischeck == 1}">확인됨</span>
-        <span th:if="${quote.ischeck == 0}">미확인</span>
+        <span th:if="${quote.checkmember != null}">확인됨</span>
+        <span th:if="${quote.checkmember == null}">미확인</span>
       </td>
     </tr>
   </table>

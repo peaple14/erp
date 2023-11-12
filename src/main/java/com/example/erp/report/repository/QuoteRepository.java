@@ -5,5 +5,6 @@
     import org.springframework.stereotype.Repository;
 
     @Repository
+
     public interface QuoteRepository extends JpaRepository<QuoteEntity, Integer> {
     }

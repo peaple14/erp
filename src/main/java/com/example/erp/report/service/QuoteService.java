@@ -1,5 +1,6 @@
 package com.example.erp.report.service;
 
+import com.example.erp.company.dto.CompanyDto;
 import com.example.erp.company.entity.CompanyEntity;
 import com.example.erp.company.repository.CompanyRepository;
 import com.example.erp.company.service.CompanyService;
@@ -28,12 +29,12 @@ public class QuoteService {
     private final CompanyRepository companyRepository;
     private final ProductRepository productRepository;
     private final MemberRepository memberRepository;
+    private final CompanyService companyService;
 
     //견적서조회
     @Transactional
     public List<QuoteDto> getAllQuotes() {
         List<QuoteEntity> quotes = quoteRepository.findAll();
-        System.out.println("0의범인은 어디인가: " + quotes);
         return quotes.stream()
                 .map(QuoteDto::quoteDto)
                 .collect(Collectors.toList());
@@ -61,6 +62,7 @@ public class QuoteService {
     @Transactional
     public void save(QuoteDto quoteDto) {
         QuoteEntity quoteEntity = QuoteEntity.toSaveEntity(quoteDto);
+        quoteEntity.setReceive_money(0);//현재 받은돈이 없다는뜻.
         quoteRepository.save(quoteEntity);
     }
 
@@ -74,6 +76,7 @@ public class QuoteService {
     //견적서 수정
     @Transactional
     public void update(int id, QuoteDto quoteDto) {
+        System.out.println("id는:" + id + "업데이트하러온것: " + quoteDto);
         Optional<QuoteEntity> quoteOptional = quoteRepository.findById(id);
         quoteOptional.ifPresent(quoteEntity -> {
             quoteEntity.update(quoteDto);
@@ -97,6 +100,23 @@ public class QuoteService {
         return memberRepository.findByUserId(id).orElse(null); //없을시 null반환.
     }
 
+    //미수금
+    @Transactional
+    public String mesugm(int id ,QuoteDto quoteDto) {//이름짓기 이슈->나중에 리펙터링해서 바꾸기
+
+        //나중에 service로 옮기기.
+        QuoteEntity quoteEntity = QuoteEntity.toSaveEntity(findById((int) quoteDto.id)); //모두 넣어서 견적서 완성본 만들기
+
+        CompanyEntity companyEntity = quoteEntity.getProduct().getCompany();//회사 업데이트 준비
+        companyEntity.setMoney((int) (quoteEntity.getTotalPrice() + companyEntity.getMoney())); //견적서에서 추가된 돈과 원래있던 미수금
+
+        //회사 미수금 증가
+        companyService.update(companyEntity.getId(), CompanyDto.toCompanyDto(companyEntity));
+        check_ok(id,quoteDto);
+
+        return "됨";
+
+    }
 
 
 

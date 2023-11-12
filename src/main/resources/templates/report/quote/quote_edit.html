@@ -11,7 +11,7 @@
 <h1>견적서 수정</h1>
 <form action="/quote_edit_ok" method="post">
     <input type="hidden" id="id" name="id" th:value="${quoteDto.id}">
-    <input type="hidden" id="ischeck" name="ischeck" th:value="${quoteDto.ischeck}" />
+    <input type="hidden" id="checkmember" name="checkmember" th:value="${quoteDto.checkmember}" />
     <div>
         <label for="quotename">견적서 이름:</label>
         <input type="text" id="quotename" name="quotename" th:value="${quoteDto.quotename}" required>
