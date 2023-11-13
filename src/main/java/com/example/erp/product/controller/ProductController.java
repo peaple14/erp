@@ -33,6 +33,7 @@ public class ProductController {
 
     @PostMapping("/product_add")
     public String productAdd(ProductDto productDto) {
+        System.out.println("추가됨" + productDto);
         productService.save(productDto);
         return "redirect:/product_list";
     }
