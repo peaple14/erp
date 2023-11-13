@@ -17,7 +17,7 @@ public class InitData {
 
     private final MemberRepository memberRepository;
 
-
+    //계정데이터 추가용.
     @PostConstruct
     public void init() {
         if (memberRepository.count() == 0) { // 데이터가 없을 경우에만 초기화

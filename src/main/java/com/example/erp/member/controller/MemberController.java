@@ -3,9 +3,9 @@ package com.example.erp.member.controller;
 import com.example.erp.member.dto.LoginDto;
 import com.example.erp.member.dto.MemberDto;
 import com.example.erp.member.service.LoginService;
-import com.example.erp.member.service.SseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -13,9 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Controller
@@ -23,7 +20,7 @@ import java.util.List;
 public class MemberController {
 
     private final LoginService loginService;
-    private final SseService sseService;
+
 
     //로그인폼
     @GetMapping("/")
@@ -33,7 +30,7 @@ public class MemberController {
 
     //로그인시도
     @PostMapping("main")
-    public String logins(@ModelAttribute LoginDto loginDto, HttpSession session, BindingResult bindingResult){
+    public String logins(@ModelAttribute LoginDto loginDto, HttpSession session, BindingResult bindingResult, Model model){
         if (bindingResult.hasErrors()) {//에러날시
             return "redirect:/main"; //첫화면으로
         }
@@ -43,7 +40,7 @@ public class MemberController {
         if (loginResult != null) {
             session.setAttribute("loginId", loginResult.getUserId());
             session.setAttribute("loginName", loginResult.getUserName());
-            startSSESubscription(session); // 알림보내기용 sse추가
+            model.addAttribute("authority", loginResult.getUserauthority()); // 모델에 권한 추가
             System.out.println("로그인 성공");
             return "/index";
         } else {
@@ -63,27 +60,4 @@ public class MemberController {
         return "redirect:index";
     }
 
-    // 알림 보내기용
-    @PostMapping("/send-sse")
-    public void sendSSE() {
-        sseService.sendNotification("quote-added", "새로운 견적서가 추가되었습니다.");
-    }
-
-    // 메세지 보내기용
-    private void startSSESubscription(HttpSession session) {
-        SseEmitter emitter = new SseEmitter();
-        sseService.addEmitter(emitter);
-        session.setAttribute("sseEmitter", emitter);
-
-        emitter.onCompletion(() -> {
-            sseService.removeEmitter(emitter);
-            session.removeAttribute("sseEmitter");
-        });
-
-        emitter.onTimeout(() -> {
-            emitter.complete();
-            sseService.removeEmitter(emitter);
-            session.removeAttribute("sseEmitter");
-        });
-    }
 }
