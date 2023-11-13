@@ -42,10 +42,7 @@ public class QuoteController {
         model.addAttribute("products", products);
         //알림 보내기용
         sseService.sendNotification("quote-added", "새로운 견적서가 추가되었습니다.");
-
         return "report/quote/quote_add";
-
-
     }
 
     @PostMapping("/quote_add")
