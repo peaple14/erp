@@ -24,7 +24,6 @@ public class NoticeController {
     @GetMapping("/notice_list")
     public String listNotices(Model model) {
         List<NoticeDto> notice = noticeSerivce.getAllNotices();
-        System.out.println("내용:" + notice);
         model.addAttribute("notice", notice);
         return "faq/notice/notice_list";  //공지사항 리스트 띄어주기용
     }

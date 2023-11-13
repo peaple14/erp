@@ -4,7 +4,7 @@ import com.example.erp.company.dto.CompanyDto;
 import com.example.erp.company.entity.CompanyEntity;
 import com.example.erp.company.service.CompanyService;
 import com.example.erp.member.entity.MemberEntity;
-import com.example.erp.member.service.SseService;
+import com.example.erp.member.service.NotificationService;
 import com.example.erp.product.entity.ProductEntity;
 import com.example.erp.report.dto.QuoteDto;
 import com.example.erp.report.entity.QuoteEntity;
@@ -22,8 +22,7 @@ import java.util.List;
 public class QuoteController {
 
     private final QuoteService quoteService;
-    private final SseService sseService;
-
+    private final NotificationService notificationService;
     //리스트띄우기
     @GetMapping("/quote_list")
     public String listQuotes(Model model) {
@@ -40,25 +39,15 @@ public class QuoteController {
         System.out.println(products);
         model.addAttribute("quoteDto", new QuoteDto());
         model.addAttribute("products", products);
-        //알림 보내기용
-        sseService.sendNotification("quote-added", "새로운 견적서가 추가되었습니다.");
         return "report/quote/quote_add";
     }
 
     @PostMapping("/quote_add")
     public String quoteAdd(@ModelAttribute QuoteDto quoteDto, HttpSession session) {
-        // 추가: HTML 폼에서 입력한 데이터를 로그로 출력
-//        System.out.println("견적서 추가 폼 제출 데이터: " + quoteDto);
-//        System.out.println("로그인 세션 정보: " + session.getAttribute("loginId"));
         quoteDto.setLocation(0);//
         quoteDto.setWriter(quoteService.getMember((String) session.getAttribute("loginId")));
+        notificationService.sendToClient(1L, "견적서가 추가되었습니다."); //로그인된 모든 admin에게 알람.
         quoteService.save(quoteDto);
-
-//        //알림 보내기용
-//        sseService.sendNotification("quote-added", "새로운 견적서가 추가되었습니다.");
-
-
-
         return "redirect:/quote_list";
     }
 
@@ -78,13 +67,11 @@ public class QuoteController {
         model.addAttribute("products", products);
         QuoteDto quoteDto = quoteService.findById(id);
         model.addAttribute("quoteDto", quoteDto);
-        System.out.println("수정데이터값들:" + quoteDto);
         return "report/quote/quote_edit";
     }
 
     @PostMapping("/quote_edit_ok")
     public String quoteEditOk(@RequestParam(name = "id") int id, @ModelAttribute QuoteDto quoteDto) {
-        System.out.println("수정후:" + quoteDto);
         quoteService.update(id, quoteDto);
         return "redirect:/quote_list";
     }
