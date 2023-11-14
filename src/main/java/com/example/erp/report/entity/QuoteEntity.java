@@ -55,17 +55,17 @@ public class QuoteEntity {
     @JoinColumn(name = "member_id")
     private MemberEntity member;
 
-    @Column
-    private Double latitude; //회사 위도(받을장소)
-
-    @Column
-    private Double longitude; //회사 경도(받을장소)
-
-    @Column
-    private Double GoSlatitude; //출발 위도(출발장소)
-
-    @Column
-    private Double Golongitude; //출발 경도(출발장소)
+    //    @Column
+    //    private Double latitude; //회사 위도(받을장소)
+    //
+    //    @Column
+    //    private Double longitude; //회사 경도(받을장소)
+    //
+    //    @Column
+    //    private Double GoSlatitude; //출발 위도(출발장소)
+    //
+    //    @Column
+    //    private Double Golongitude; //출발 경도(출발장소)
 
     public static QuoteEntity toSaveEntity(QuoteDto quoteDto) {
         QuoteEntity quoteEntity = new QuoteEntity();

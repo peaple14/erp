@@ -6,9 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회사 추가</title>
     <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=520eefe9a26b8b1ec6d77a0a8d0a439d"></script>
-    <!-- YOUR_API_KEY를 실제 카카오 맵 API 키로 변경해주세요 -->
     <style>
-        /* 추가된 스타일 */
         #mapModal {
             display: none;
             position: fixed;
@@ -36,6 +34,42 @@
             right: 10px;
             cursor: pointer;
         }
+
+        /* 추가된 스타일 */
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        div {
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 
@@ -56,70 +90,69 @@
         <input type="text" id="companyTel" name="companyTel" required>
     </div>
     <div>
+        <label for="status">거래 상태:</label>
         <select id="status" name="status" required>
             <option value="receive">receive</option>
             <option value="send">send</option>
         </select>
     </div>
 
-    <!-- 수정된 부분 -->
-    <button type="button" onclick="openMapModal()">지도 보기</button>
-
-    <div id="mapModal">
-        <div class="modal-content">
-            <span class="close" onclick="closeMapModal()">&times;</span>
-            <div id="map" style="width: 300px; height: 200px;"></div>
-        </div>
+    <div>
+        <label for="postcode">우편번호:</label>
+        <input type="text" id="postcode" name="postcode" placeholder="우편번호" readonly>
+        <input type="button" onclick="execDaumPostcode()" value="우편번호 찾기" required>
+    </div>
+    <div>
+        <label for="roadAddress">도로명주소:</label>
+        <input type="text" id="roadAddress" name="roadAddress" placeholder="도로명주소" readonly>
+        <span id="guide" style="color:#999;display:none"></span>
+    </div>
+    <div>
+        <label for="detailAddress">상세주소:</label>
+        <input type="text" id="detailAddress" name="detailAddress" placeholder="상세주소">
     </div>
 
-    <!-- 수정된 부분 -->
     <button type="submit">저장</button>
 </form>
 
-<!-- 수정된 부분 -->
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
-    function openMapModal() {
-        document.getElementById('mapModal').style.display = 'block';
-        displayMap();
-    }
+    function execDaumPostcode() {
+        new daum.Postcode({
+            oncomplete: function (data) {
+                var roadAddr = data.roadAddress;
+                var extraRoadAddr = '';
 
-    function closeMapModal() {
-        document.getElementById('mapModal').style.display = 'none';
-    }
+                if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+                    extraRoadAddr += data.bname;
+                }
 
-    function displayMap() {
-        // 카카오맵 API 초기화
-        kakao.maps.load(() => {
-            const container = document.getElementById('map');
-            const options = {
-                center: new kakao.maps.LatLng(37.5665, 126.9780),  // 초기 지도 중심 좌표 (서울)
-                level: 5  // 초기 지도 확대 레벨
-            };
+                if (data.buildingName !== '' && data.apartment === 'Y') {
+                    extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                }
 
-            const map = new kakao.maps.Map(container, options);
+                if (extraRoadAddr !== '') {
+                    extraRoadAddr = ' (' + extraRoadAddr + ')';
+                }
 
-            // 첫 번째 마커가 표시될 위치입니다
-            const markerPosition1 = new kakao.maps.LatLng(37.5665, 126.9780);
+                document.getElementById('postcode').value = data.zonecode;
+                document.getElementById("roadAddress").value = roadAddr;
 
-            // 첫 번째 마커를 생성합니다
-            const marker1 = new kakao.maps.Marker({
-                position: markerPosition1
-            });
-
-            // 첫 번째 마커가 지도 위에 표시되도록 설정합니다
-            marker1.setMap(map);
-
-            // 두 번째 마커가 표시될 위치입니다
-            const markerPosition2 = new kakao.maps.LatLng(37.5485, 127.9940);
-
-            // 두 번째 마커를 생성합니다
-            const marker2 = new kakao.maps.Marker({
-                position: markerPosition2
-            });
-
-            // 두 번째 마커가 지도 위에 표시되도록 설정합니다
-            marker2.setMap(map);
-        });
+                var guideTextBox = document.getElementById("guide");
+                if (data.autoRoadAddress) {
+                    var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
+                    guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
+                    guideTextBox.style.display = 'block';
+                } else if (data.autoJibunAddress) {
+                    var expJibunAddr = data.autoJibunAddress;
+                    guideTextBox.innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
+                    guideTextBox.style.display = 'block';
+                } else {
+                    guideTextBox.innerHTML = '';
+                    guideTextBox.style.display = 'none';
+                }
+            }
+        }).open();
     }
 </script>
 </body>
