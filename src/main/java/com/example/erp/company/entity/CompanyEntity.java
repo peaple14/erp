@@ -28,6 +28,16 @@ public class CompanyEntity {
     @Column
     private long money ; // 받을 돈
 
+    @Column
+    private String postcode; //우편번호
+
+    @Column
+    private String detailAddress; //상세주소
+
+    @Column
+    private String roadAddress; //도로명주소
+
+
 
 
     public static CompanyEntity toSaveEntity(CompanyDto companyDto) {
@@ -37,7 +47,9 @@ public class CompanyEntity {
         companyEntity.setCompanyTel(companyDto.getCompanyTel());
         companyEntity.setStatus(companyDto.getStatus());
         companyEntity.setMoney(companyDto.getMoney());
-
+        companyEntity.setPostcode(companyDto.getPostcode());
+        companyEntity.setDetailAddress(companyDto.getDetailAddress());
+        companyEntity.setRoadAddress(companyDto.getRoadAddress());
         return companyEntity;
     }
 
@@ -47,6 +59,9 @@ public class CompanyEntity {
         this.companyTel = companyDto.getCompanyTel();
         this.status = companyDto.getStatus();
         this.money = companyDto.getMoney();
+        this.postcode = companyDto.getPostcode();
+        this.detailAddress = companyDto.getDetailAddress();
+        this.roadAddress = companyDto.getRoadAddress();
     }
 
 

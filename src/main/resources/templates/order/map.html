@@ -25,6 +25,28 @@
         };
 
         const map = new kakao.maps.Map(container, options);
+
+        // 첫 번째 마커가 표시될 위치입니다
+        const markerPosition1 = new kakao.maps.LatLng(37.5665, 126.9780);
+
+        // 첫 번째 마커를 생성합니다
+        const marker1 = new kakao.maps.Marker({
+            position: markerPosition1
+        });
+
+        // 첫 번째 마커가 지도 위에 표시되도록 설정합니다
+        marker1.setMap(map);
+
+        // 두 번째 마커가 표시될 위치입니다
+        const markerPosition2 = new kakao.maps.LatLng(37.5485, 127.9940);
+
+        // 두 번째 마커를 생성합니다
+        const marker2 = new kakao.maps.Marker({
+            position: markerPosition2
+        });
+
+        // 두 번째 마커가 지도 위에 표시되도록 설정합니다
+        marker2.setMap(map);
     });
 </script>
 </body>
