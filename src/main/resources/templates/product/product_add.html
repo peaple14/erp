@@ -43,10 +43,32 @@
     </div>
     <!-- hidden 필드로 선택한 회사의 id를 보냅니다 -->
     <input type="hidden" id="selectedCompanyId" name="selectedCompanyId">
-    <button type="submit" class="btn btn-primary">저장</button>
+    <button type="button" class="btn btn-primary" onclick="loadTab()">저장</button>
     <a href="/product_list">뒤로 가기</a>
     </div>
 </form>
+
+<script>
+
+    function fn_test() {
+        /*
+        * 폼 데이터를 AJAX송신하는 코드
+        * */
+
+        var data = {};
+        fetch('/product_add', {
+            method  : 'POST',
+            body    : JSON.stringify(data)
+        })
+            .then((response) => response.json())
+            .then((result) => {
+                if(result.result == 'OK') {
+                    loadTab('product_list');
+                }
+            })
+
+    }
+</script>
 
 </body>
 

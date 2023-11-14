@@ -1,5 +1,8 @@
 // 각 탭의 로드된 페이지를 저장할 객체
 var loadedPages = {};
+var dataPackget = {
+
+}
 
 function showTab(tabId, pageUrl) {
     // 모든 탭 내용을 숨김
@@ -12,6 +15,7 @@ function showTab(tabId, pageUrl) {
     var selectedTab = document.getElementById(tabId);
     if (selectedTab) {
         selectedTab.style.display = 'block';
+        selectedTabId = pageUrl;
 
         // 페이지가 이미 로드되었는지 확인하고, 로드되지 않았다면 로드
         if (!loadedPages[tabId]) {
@@ -29,7 +33,7 @@ function loadTab(pageUrl, tabId) {
 
             // 추가: 탭 내부의 스크립트를 실행
             var scripts = tabContents.querySelectorAll('script');
-            scripts.forEach(function(script) {
+            Array.from(scripts).forEach(function(script) {
                 eval(script.innerHTML);
             });
 
@@ -38,7 +42,24 @@ function loadTab(pageUrl, tabId) {
         }
     };
     xhttp.open("GET", pageUrl, true);
-    xhttp.send();
+    xhttp.send()
+    /* 나중에 참고
+    if(pageUrl === undefined) {
+        return;
+    }
+
+    fetch(pageUrl, { method: 'get' })
+        .then(function(response){
+            const data = await resposne.json();
+            response.text().then(function(html){
+                let html_dom = new DOMParser().parseFromString(html, 'text/html');
+                console.log(html_dom.body);
+
+                var tabContents = document.getElementById("tabContents");
+
+                tabContents.appendChild(html_dom.body);
+            })
+        });*/
 }
 
 
@@ -58,8 +79,24 @@ function addTab(tabName, pageUrl) {
         if (activeTab) {
             activeTab.classList.remove('active');
         }
+
+        if(selectedTabId == '/product_add') {
+            // save data code;;;
+            // jquery
+            var _data = {
+                product_name : $('input#productname').val(),
+
+
+
+
+            }
+
+            dataPackget[selectedTabId] = _data;
+            // localStorage, SessionStorage
+        }
+
         newTab.classList.add('active');
-        showTab(newTabId);
+        showTab(newTabId, pageUrl);
         loadTab(pageUrl); // 해당 부분을 추가
     });
 
@@ -76,7 +113,7 @@ function addTab(tabName, pageUrl) {
     // 처음 탭 추가 시, 활성화
     if (tabsContainer.childElementCount === 1) {
         newTab.classList.add('active');
-        showTab(newTabId);
+        showTab(newTabId, pageUrl);
 
         // 페이지 내용을 비동기적으로 로드
         loadTab(pageUrl, newTabId);

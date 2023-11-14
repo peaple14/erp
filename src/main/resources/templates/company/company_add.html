@@ -7,6 +7,14 @@
     <title>회사 추가</title>
 </head>
 
+<script>
+    const companyName = document.getElementById('companyName');
+
+    companyName.addEventListener('onblur', () => {
+        console.log('triggered')
+        localStorage.setItem('test', companyName.value)
+    })
+</script>
 <body class="company-add">
 <form action="/company_add" method="post">
     <h1>회사 추가</h1>
