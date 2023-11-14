@@ -45,20 +45,27 @@ public class QuoteEntity {
     @JoinColumn(name = "checkmember_id")
     private MemberEntity checkmember;
 
-//    //거래처,대표자,연락처 ,중복되서 제거
-//    @ManyToOne
-//    @JoinColumn(name = "company_id")
-//    private CompanyEntity company;
-
     //제품명,단위단가 , 거래처,대표자,연락처
     @ManyToOne
     @JoinColumn(name = "product_id")
     private ProductEntity product;
 
-    //견적서 작성자 -> 굳이 이걸 join했어야했나? 그냥 멤버id적었음 되지 않았는가?
+    //견적서 작성자
     @ManyToOne
     @JoinColumn(name = "member_id")
     private MemberEntity member;
+
+    @Column
+    private Double latitude; //회사 위도(받을장소)
+
+    @Column
+    private Double longitude; //회사 경도(받을장소)
+
+    @Column
+    private Double GoSlatitude; //출발 위도(출발장소)
+
+    @Column
+    private Double Golongitude; //출발 경도(출발장소)
 
     public static QuoteEntity toSaveEntity(QuoteDto quoteDto) {
         QuoteEntity quoteEntity = new QuoteEntity();

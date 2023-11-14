@@ -14,31 +14,7 @@
     <link rel="stylesheet" href="styles.css"> <!-- 스타일 시트 연결 -->
 
     <!-- jQuery 및 Ajax 스크립트 추가 -->
-    <script>
-        $(document).ready(function () {
-            // 폼 제출 이벤트 처리
-            $('form').submit(function (event) {
-                // 기본 제출 동작 막기
-                event.preventDefault();
 
-                // 폼 데이터 가져오기
-                var formData = $(this).serialize();
-
-                // Ajax를 사용하여 데이터 비동기적으로 전송
-                $.ajax({
-                    type: 'POST',
-                    url: '/product_add',  // 서버의 엔드포인트 URL로 변경해야 합니다.
-                    data: formData,
-                    success: function (response) {
-                        console.log('전송 성공');
-                    },
-                    error: function (error) {
-                        console.error('전송 실패:', error);
-                    }
-                });
-            });
-        });
-    </script>
 </head>
 
 <body class="product-add">

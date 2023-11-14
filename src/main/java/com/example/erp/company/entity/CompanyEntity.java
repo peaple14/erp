@@ -28,6 +28,13 @@ public class CompanyEntity {
     @Column
     private long money ; // 받을 돈
 
+    @Column
+    private Double latitude; //회사 위도
+
+    @Column
+    private Double longitude; //회사 경도
+
+
 
 
     public static CompanyEntity toSaveEntity(CompanyDto companyDto) {
