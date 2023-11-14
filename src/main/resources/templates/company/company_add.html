@@ -1,97 +1,127 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회사 추가</title>
+    <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=520eefe9a26b8b1ec6d77a0a8d0a439d"></script>
+    <!-- YOUR_API_KEY를 실제 카카오 맵 API 키로 변경해주세요 -->
+    <style>
+        /* 추가된 스타일 */
+        #mapModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 
-<body class="company-add">
+<body>
 <form action="/company_add" method="post">
     <h1>회사 추가</h1>
     <hr>
-    <div class="form-group">
+    <div>
         <label for="companyName">회사 이름:</label>
         <input type="text" id="companyName" name="companyName" required>
     </div>
-    <div class="form-group">
+    <div>
         <label for="companyVip">회사 대표:</label>
         <input type="text" id="companyVip" name="companyVip" required>
     </div>
-    <div class="form-group">
+    <div>
         <label for="companyTel">거래처 연락처:</label>
         <input type="text" id="companyTel" name="companyTel" required>
     </div>
-    <div class="form-group">
+    <div>
         <select id="status" name="status" required>
             <option value="receive">receive</option>
             <option value="send">send</option>
         </select>
     </div>
 
+    <!-- 수정된 부분 -->
+    <button type="button" onclick="openMapModal()">지도 보기</button>
+
+    <div id="mapModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeMapModal()">&times;</span>
+            <div id="map" style="width: 300px; height: 200px;"></div>
+        </div>
     </div>
-    <button type="submit" class="btn btn-primary">저장</button>
+
+    <!-- 수정된 부분 -->
+    <button type="submit">저장</button>
 </form>
 
+<!-- 수정된 부분 -->
+<script>
+    function openMapModal() {
+        document.getElementById('mapModal').style.display = 'block';
+        displayMap();
+    }
+
+    function closeMapModal() {
+        document.getElementById('mapModal').style.display = 'none';
+    }
+
+    function displayMap() {
+        // 카카오맵 API 초기화
+        kakao.maps.load(() => {
+            const container = document.getElementById('map');
+            const options = {
+                center: new kakao.maps.LatLng(37.5665, 126.9780),  // 초기 지도 중심 좌표 (서울)
+                level: 5  // 초기 지도 확대 레벨
+            };
+
+            const map = new kakao.maps.Map(container, options);
+
+            // 첫 번째 마커가 표시될 위치입니다
+            const markerPosition1 = new kakao.maps.LatLng(37.5665, 126.9780);
+
+            // 첫 번째 마커를 생성합니다
+            const marker1 = new kakao.maps.Marker({
+                position: markerPosition1
+            });
+
+            // 첫 번째 마커가 지도 위에 표시되도록 설정합니다
+            marker1.setMap(map);
+
+            // 두 번째 마커가 표시될 위치입니다
+            const markerPosition2 = new kakao.maps.LatLng(37.5485, 127.9940);
+
+            // 두 번째 마커를 생성합니다
+            const marker2 = new kakao.maps.Marker({
+                position: markerPosition2
+            });
+
+            // 두 번째 마커가 지도 위에 표시되도록 설정합니다
+            marker2.setMap(map);
+        });
+    }
+</script>
 </body>
 
 </html>
-
-<style>
-
-    body.company-add {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        margin: 0;
-        padding: 0;
-    }
-
-    .company-add h1 {
-        font-size: 24px;
-        margin: 0 0 20px 0;
-    }
-
-    .company-add form {
-        background-color: #fff;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-        padding: 20px;
-        margin: 20px auto;
-        border-radius: 5px;
-    }
-
-    .company-add .form-group {
-        margin-bottom: 20px;
-    }
-
-    .company-add label {
-        display: block;
-        font-weight: bold;
-        margin-bottom: 5px;
-    }
-
-    .company-add input[type="text"] {
-        width: calc(100% - 22px);
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-    }
-
-    .company-add button {
-        padding: 10px 20px;
-        font-size: 15px;
-        text-align: center;
-        text-decoration: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-    }
-
-    .company-add button:hover {
-        background-color: #0056b3;
-    }
-
-</style>
