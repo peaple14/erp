@@ -12,6 +12,9 @@
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
     <link rel="stylesheet" href="styles.css"> <!-- 스타일 시트 연결 -->
+
+    <!-- jQuery 및 Ajax 스크립트 추가 -->
+
 </head>
 
 <body class="product-add">
@@ -22,8 +25,6 @@
         <label for="productname">제품명:</label>
         <input type="text" id="productname" name="productname" required>
     </div>
-    <div class="form-group">
-
     <div class="form-group">
         <label for="price">제품가격:</label>
         <input type="text" id="price" name="price" required>
@@ -44,11 +45,9 @@
     </div>
     <!-- hidden 필드로 선택한 회사의 id를 보냅니다 -->
     <input type="hidden" id="selectedCompanyId" name="selectedCompanyId">
-    <button type="submit" class="btn btn-primary">저장</button>
+    <button type="submit" class="btn btn-primary" onclick="loadTab('product_list')">저장</button>
     <a href="/product_list">뒤로 가기</a>
-    </div>
 </form>
-
 </body>
 
 </html>

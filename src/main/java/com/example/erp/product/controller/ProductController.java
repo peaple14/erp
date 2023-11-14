@@ -4,6 +4,8 @@ import com.example.erp.company.entity.CompanyEntity;
 import com.example.erp.product.dto.ProductDto;
 import com.example.erp.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,9 +34,14 @@ public class ProductController {
     }
 
     @PostMapping("/product_add")
-    public String productAdd(ProductDto productDto) {
-        productService.save(productDto);
-        return "redirect:/product_list";
+    public ResponseEntity<String> productAdd(@RequestBody ProductDto productDto) {
+        try {
+            productService.save(productDto);
+            return new ResponseEntity<>("데이터가 성공적으로 저장되었습니다.", HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("데이터 저장 중 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/product_memo/{id}")
@@ -48,8 +55,6 @@ public class ProductController {
     public String productEdit(Model model, @PathVariable long id) {
         List<CompanyEntity> companies = productService.getAllCompanies();
         ProductDto productDto = productService.findById(id);
-//        System.out.println("compaies란 무엇인가:" + companies);
-//        System.out.println("productDto란 무엇인가:" + productDto);
         model.addAttribute("product", productDto);
         model.addAttribute("companies", companies);
 

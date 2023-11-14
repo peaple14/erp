@@ -4,17 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>제품 수정</title>
+
+    <!-- jQuery 스크립트 추가 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap CSS 라이브러리 추가 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
 <body>
 <h1>제품 수정</h1>
-<form th:object="${product}" method="post" th:action="@{/product_edit_ok}">
+<form id="editForm" th:object="${product}" method="post" th:action="@{/product_edit_ok}">
     <input type="hidden" th:field="*{id}" />
 
     <p><strong>제품명:</strong> <input type="text" th:field="*{productname}" /></p>
     <p><strong>재고량:</strong> <input type="text" th:field="*{count}" /></p>
     <p><strong>제품가격:</strong> <input type="text" th:field="*{price}" /></p>
 
-    <div>
+    <div class="form-group">
         <label for="makecompany">제조업체:</label>
         <!-- 드롭다운 목록 -->
         <select id="makecompany" name="makecompany" required>
@@ -24,13 +29,37 @@
                         th:selected="${iterStat.index == product.makecompany.getId()-1}"></option>
             </th:block>
         </select>
-        <div>
-            <label for="makeday">제조년도:</label>
-            <input type="month" id="makeday" name="makeday" required th:value="${#temporals.format(product.makeday, 'yyyy-MM')}" />
-        </div>
+    </div>
+    <div class="form-group">
+        <label for="makeday">제조년도:</label>
+        <input type="month" id="makeday" name="makeday" required th:value="${#temporals.format(product.makeday, 'yyyy-MM')}" />
+    </div>
 
-        <input type="submit" value="수정">
+    <input type="button" id="editBtn" onclick="loadTab('product_list')" value="수정">
 </form>
 <a href="/product_list">뒤로 가기</a>
+
+<!-- Ajax 스크립트 추가 -->
+<script>
+    $(document).ready(function () {
+        $('#editBtn').click(function () {
+            // 폼 데이터 가져오기
+            var formData = $('#editForm').serialize();
+
+            // Ajax를 사용하여 데이터 비동기적으로 전송
+            $.ajax({
+                type: 'POST',
+                url: '/product_edit_ok',  // 서버의 엔드포인트 URL로 변경해야 합니다.
+                data: formData,
+                success: function (response) {
+                    console.log('수정 성공');
+                },
+                error: function (error) {
+                    console.error('수정 실패:', error);
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>
