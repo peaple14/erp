@@ -46,8 +46,7 @@ public class QuoteService {
     public List<CompanyEntity> getAllCompanies() {
         List<CompanyEntity> receivedCompanies = companyRepository.findByStatus("receive"); //수주회사만 표시
         List<CompanyEntity> sendCompanies = companyRepository.findByStatus("send"); //발주회사만 표시
-        System.out.println("recieve이거다:" + receivedCompanies);
-        System.out.println("send이거다:" + sendCompanies);
+
         return receivedCompanies;
     }
 
@@ -76,7 +75,6 @@ public class QuoteService {
     //견적서 수정
     @Transactional
     public void update(int id, QuoteDto quoteDto) {
-        System.out.println("id는:" + id + "업데이트하러온것: " + quoteDto);
         Optional<QuoteEntity> quoteOptional = quoteRepository.findById(id);
         quoteOptional.ifPresent(quoteEntity -> {
             quoteEntity.update(quoteDto);

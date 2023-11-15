@@ -93,11 +93,9 @@ public class NotReceiveService {
         //현재:전부지우고,전부찾아서 전부중에 비교후 집어넣기
         //후:3개월지남&&안에없는것만 찾아서 넣기 -> findbyid가 필요한가?
 
-
         LocalDate currentDate = LocalDate.now();//현재날짜
         LocalDate golist = currentDate.minusMonths(3);// 3개월지나면 리스트로
         List<QuoteEntity> quoteEntities = quoteRepository.findAll();
-
 
         List<QuoteEntity> after3 = quoteEntities.stream()
                 .filter(quote -> quote.getCreatedAt().isBefore(golist)//3개월이 지난것만 넣기

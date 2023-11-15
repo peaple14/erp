@@ -28,7 +28,6 @@ public class QuoteController {
     public String listQuotes(Model model) {
         List<QuoteDto> quotes = quoteService.getAllQuotes();
         model.addAttribute("quotes", quotes);
-        System.out.println("quote 리스트띄우기:" + quotes);
         return "report/quote/quote_list";
     }
 

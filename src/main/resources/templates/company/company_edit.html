@@ -21,7 +21,6 @@
         <option value="receive">receive</option>
         <option value="send">send</option>
     </select>
-
     <div>
         <label for="postcode">우편번호:</label>
         <input type="text" id="postcode" name="postcode" placeholder="우편번호" th:value="${company.postcode}" readonly>
@@ -36,8 +35,6 @@
         <label for="detailAddress">상세주소:</label>
         <input type="text" id="detailAddress" name="detailAddress" placeholder="상세주소" th:value="${company.detailAddress}">
     </div>
-
-
     <input type="submit" value="수정">
     <a href="/company_list">뒤로 가기</a>
 </form>

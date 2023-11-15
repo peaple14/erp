@@ -11,14 +11,20 @@
             <tr>
                 <th>ID</th>
                 <th>회사</th>
+                <th>제품</th>
+                <th>총가격</th>
                 <th>받은 돈</th>
+                <th>날짜</th>
             </tr>
         </thead>
         <tbody>
             <tr th:each="notReceive : ${notReceiveList}">
                 <td th:text="${notReceive.id}"></td>
                 <td th:text="${notReceive.company}"></td>
+                <td th:text="${notReceive.product}"></td>
+                <td th:text="${notReceive.totalprice}"></td>
                 <td th:text="${notReceive.receiveMoney}"></td>
+                <td th:text="${notReceive.createdat}"></td>
             </tr>
         </tbody>
     </table>
