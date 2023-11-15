@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>견적서 리스트</title>
+    <title>지출결의서 리스트</title>
 </head>
 <body class="expend-list">
 <div class="expend-container">
-    <h1>견적서 리스트
-        <a class="expend-button btn btn-primary" href="/expend_add" role="button">견적서 추가</a>
+    <h1>지출결의서 리스트
+        <a class="expend-button btn btn-primary" href="/expend_add" role="button">지출결의서 추가</a>
     </h1>
     <table class="expend-table table table-hover">
         <thead class="thead-dark">
         <tr>
             <th>ID</th>
-            <th>견적서 이름</th>
+            <th>지출결의서 이름</th>
             <th>회사 이름</th>
             <th>제품명</th>
             <th>수량</th>
             <th>총 단가</th>
-            <th>견적서 일자</th>
+            <th>지출결의서 일자</th>
             <th>작성자</th>
             <th>최종 확인 여부</th>
             <th>자세히</th>
@@ -40,18 +40,18 @@
             <td th:text="${expend.createdat}"></td>
             <td th:text="${expend.writer.userName}"></td>
             <td>
-                <span th:if="${expend.ischeck == 1}">확인됨</span>
-                <span th:if="${expend.ischeck == 0}">미확인</span>
+                <span th:if="${expend.checkmember != null}">확인됨</span>
+                <span th:if="${expend.checkmember == null}">미확인</span>
             </td>
             <td>
                 <a th:href="@{'/expend_memo/' + ${expend.id}}">자세히 보기</a>
             </td>
             <td>
-                <span th:if="${expend.ischeck == 1}">결제 완료</span>
-                <span th:if="${expend.ischeck == 0}"> <a th:href="@{'/expend_edit/' + ${expend.id}}">수정</a></span>
+                <span th:if="${expend.checkmember != null}">결제 완료</span>
+                <span th:if="${expend.checkmember == null}"> <a th:href="@{'/expend_edit/' + ${expend.id}}">수정</a></span>
             </td>
             <td>
-                <a th:if="${expend.ischeck == 0}" th:href="@{'/expend_check_ok/' + ${expend.id}}"
+                <a th:if="${expend.checkmember == null}" th:href="@{'/expend_check_ok/' + ${expend.id}}"
                    class="expend-check-button btn btn-success">결제 완료</a>
             </td>
         </tr>
@@ -62,7 +62,7 @@
 </html>
 
 <style>
-    /* 견적서 리스트 페이지 스타일 */
+    /* 지출결의서 리스트 페이지 스타일 */
 
     body.expend-list {
         font-family: Arial, sans-serif;
