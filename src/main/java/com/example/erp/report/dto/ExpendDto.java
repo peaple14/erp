@@ -24,6 +24,12 @@ public class ExpendDto {
     private LocalDate createdat; // 지출결의서 일자
     private MemberEntity writer; // 작성자
     private MemberEntity checkmember; // 누가 최종 확인했는지
+    private String gopostcode; //출발우편번호
+    private String godetailAddress; //출발상세주소
+    private String goroadAddress; //출발도로명주소
+    private String endpostcode; //받을우편번호
+    private String enddetailAddress; //받을상세주소
+    private String endroadAddress; //받을도로명주소
 
     public static ExpendDto expendDto(ExpendEntity expendEntity) {
         ExpendDto expendDto = new ExpendDto();
@@ -33,6 +39,7 @@ public class ExpendDto {
         expendDto.setQuantity(expendEntity.getQuantity());
         expendDto.setTotalprice(expendEntity.getTotalPrice());
         expendDto.setCreatedat(expendEntity.getCreatedAt());
+        expendDto.setCheckmember(expendEntity.getCheckmember());
         expendDto.setWriter(expendEntity.getMember());
         return expendDto;
     }

@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import javax.persistence.Column;
 import java.time.LocalDate;
 
 @Data
@@ -26,6 +27,12 @@ public class QuoteDto {
     private MemberEntity writer; // 작성자
     private int location;//현재위치(나중에 배송중사용)
     private MemberEntity checkmember; //누가 최종확인했는지
+    private String gopostcode; //출발우편번호
+    private String godetailAddress; //출발상세주소
+    private String goroadAddress; //출발도로명주소
+    private String endpostcode; //받을우편번호
+    private String enddetailAddress; //받을상세주소
+    private String endroadAddress; //받을도로명주소
 
 
     //메서드이름 다음부터 잘좀짓기
@@ -41,6 +48,12 @@ public class QuoteDto {
         quoteDto.setLocation(quoteEntity.getLocation());
         quoteDto.setCheckmember(quoteEntity.getCheckmember());
         quoteDto.setWriter(quoteEntity.getMember());
+        quoteDto.setGopostcode(quoteEntity.getGopostcode());
+        quoteDto.setGoroadAddress(quoteEntity.getGoroadAddress());
+        quoteDto.setGodetailAddress(quoteEntity.getGodetailAddress());
+        quoteDto.setEndpostcode(quoteEntity.getEndpostcode());
+        quoteDto.setEndroadAddress(quoteEntity.getEndroadAddress());
+        quoteDto.setEnddetailAddress(quoteEntity.getEnddetailAddress());
         return quoteDto;
     }
 

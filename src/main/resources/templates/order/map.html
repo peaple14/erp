@@ -5,6 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kakao Map Example</title>
     <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=520eefe9a26b8b1ec6d77a0a8d0a439d"></script>
+    여기서
+    <script>
+        // 미리 등록한 Kakao API Key
+        const REST_API_KEY = '61179dca181c32e776412ff335b7c5dc';
+
+        // 검색할 주소
+        const query = '경남 창원시 마산회원구 내서읍 함마대로 2640';
+
+        // API 호출
+        fetch(`https://dapi.kakao.com/v2/local/search/address.json?query=${encodeURIComponent(query)}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `KakaoAK ${REST_API_KEY}`,
+            },
+        })
+            .then(response => response.json())
+            .then(data => {
+                // 결과를 콘솔에 출력
+                console.log('검색 결과:', data);
+            })
+            .catch(error => {
+                console.error('에러 발생:', error);
+            });
+    </script>
     <style>
         #map {
             width: 100%;

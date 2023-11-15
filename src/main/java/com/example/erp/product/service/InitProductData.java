@@ -27,14 +27,14 @@ public class InitProductData {
     @PostConstruct
     public void init() {
         if (productRepository.count() == 0) {
-            insertProduct("김제품",  100, 5000,  findById(1), YearMonth.of(2022, 1));
-            insertProduct("주제품",  150, 7000,  findById(2), YearMonth.of(2021, 12));
-            insertProduct("상제품",  90,  10000, findById(3), YearMonth.of(2022, 3));
-            insertProduct("박제품",  810,  20000, findById(4), YearMonth.of(2020, 9));
-            insertProduct("김제품",  630,  18000, findById(1), YearMonth.of(2019, 8));
-            insertProduct("주제품",  480,  32000, findById(2), YearMonth.of(2018, 5));
-            insertProduct("상제품",  580,  6000, findById(3), YearMonth.of(2018, 5));
-            insertProduct("박제품",  710,  8000, findById(4), YearMonth.of(2018, 5));
+            insertProduct("김제품1",  100, 5000,  findById(1), YearMonth.of(2022, 1));
+            insertProduct("주제품1",  150, 7000,  findById(2), YearMonth.of(2021, 12));
+            insertProduct("상제품1",  90,  10000, findById(3), YearMonth.of(2022, 3));
+            insertProduct("박제품1",  810,  20000, findById(4), YearMonth.of(2020, 9));
+            insertProduct("김제품2",  630,  18000, findById(1), YearMonth.of(2019, 8));
+            insertProduct("주제품2",  480,  32000, findById(2), YearMonth.of(2018, 5));
+            insertProduct("상제품2",  580,  6000, findById(3), YearMonth.of(2018, 5));
+            insertProduct("박제품2",  710,  8000, findById(4), YearMonth.of(2018, 5));
 
             System.out.println("제품 초기데이터 완료");
         } else {
