@@ -16,7 +16,7 @@ public class OrderController {
     private final QuoteService quoteService;
 
     //진행중인 주문
-    @GetMapping("/goorder_list")
+    @GetMapping("/go_order_list")
     public String goorder(Model model) {
         List<QuoteDto> quoteDto = quoteService.getgoQuotes(1);
         model.addAttribute("quotes", quoteDto);
@@ -24,7 +24,7 @@ public class OrderController {
     }
 
     //끝난 주문
-    @GetMapping("/endorder_list")
+    @GetMapping("/end_order_list")
     public String endorder(Model model) {
         List<QuoteDto> quoteDto = quoteService.getgoQuotes(2);
         model.addAttribute("quotes", quoteDto);
