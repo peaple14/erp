@@ -16,7 +16,7 @@ public class OrderController {
     private final QuoteService quoteService;
 
     //진행중인 주문
-    @GetMapping("/goorder_list")
+    @GetMapping("/go_order_list")
     public String listExpends(Model model) {
         List<QuoteDto> quoteDto = quoteService.getgoQuotes();
         System.out.println("이게되나" + quoteDto);
