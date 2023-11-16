@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kakao Map Example</title>
     <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=520eefe9a26b8b1ec6d77a0a8d0a439d"></script>
-    여기서
     <script>
         // 미리 등록한 Kakao API Key
         const REST_API_KEY = '61179dca181c32e776412ff335b7c5dc';
@@ -22,8 +21,29 @@
         })
             .then(response => response.json())
             .then(data => {
-                // 결과를 콘솔에 출력
+                // 확인용
                 console.log('검색 결과:', data);
+
+                // 결과 첫번째 좌표
+                const position = new kakao.maps.LatLng(data.documents[0].y, data.documents[0].x);
+
+                // 카카오맵 API 초기화
+                kakao.maps.load(() => {
+                    const container = document.getElementById('map');
+                    const options = {
+                        center: position,  // 검색된 위치로 지도 중심 설정
+                        level: 5  // 초기 지도 확대 레벨
+                    };
+
+                    const map = new kakao.maps.Map(container, options);
+
+                    // 검색된 위치에 마커 추가
+                    const marker = new kakao.maps.Marker({
+                        position: position
+                    });
+
+                    marker.setMap(map);
+                });
             })
             .catch(error => {
                 console.error('에러 발생:', error);
@@ -38,40 +58,5 @@
 </head>
 <body>
 <div id="map"></div>
-
-<script>
-    // 카카오맵 API 초기화
-    kakao.maps.load(() => {
-        const container = document.getElementById('map');
-        const options = {
-            center: new kakao.maps.LatLng(37.5665, 126.9780),  // 초기 지도 중심 좌표 (서울)
-            level: 5  // 초기 지도 확대 레벨
-        };
-
-        const map = new kakao.maps.Map(container, options);
-
-        // 첫 번째 마커가 표시될 위치입니다
-        const markerPosition1 = new kakao.maps.LatLng(37.5665, 126.9780);
-
-        // 첫 번째 마커를 생성합니다
-        const marker1 = new kakao.maps.Marker({
-            position: markerPosition1
-        });
-
-        // 첫 번째 마커가 지도 위에 표시되도록 설정합니다
-        marker1.setMap(map);
-
-        // 두 번째 마커가 표시될 위치입니다
-        const markerPosition2 = new kakao.maps.LatLng(37.5485, 127.9940);
-
-        // 두 번째 마커를 생성합니다
-        const marker2 = new kakao.maps.Marker({
-            position: markerPosition2
-        });
-
-        // 두 번째 마커가 지도 위에 표시되도록 설정합니다
-        marker2.setMap(map);
-    });
-</script>
 </body>
 </html>
