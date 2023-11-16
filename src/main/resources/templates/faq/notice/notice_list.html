@@ -19,13 +19,14 @@
         <tr th:each="notice : ${notice}">
             <td th:text="${notice.id}"></td>
             <td>
-                <a class="notice-link" th:text="${notice.noticeTitle}" th:href="@{'/notice_memo/' + ${notice.id}}"></a>
+                <a class="notice-link" th:text="${notice.noticeTitle}" th:attr="ad='notice_memo/' + ${notice.id}"
+                   onclick="loadTab(this.getAttribute('ad'))"></a>
             </td>
             <td th:text="${notice.writer}"></td>
             <td th:text="${notice.noticeCreatedTime}"></td>
         </tr>
     </table>
-    <a class="notice-button" href="/notice_add">글쓰기</a> <!-- 글쓰기 버튼 -->
+    <a class="notice-button" onclick="loadTab('notice_add')">글쓰기</a> <!-- 글쓰기 버튼 -->
 </div>
 </body>
 </html>
@@ -44,10 +45,8 @@
 
     .notice-container {
         background-color: #fff;
-        /*box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);*/
-        margin: 20px;
-        padding: 20px;
-        border-radius: 5px;
+        margin: 0;
+        padding: 0;
         text-align: center; /* 공지사항 제목 가운데 정렬 */
     }
 
@@ -96,7 +95,7 @@
         margin-top: 5px; /* 약간의 상단 간격 조정 */
         font-weight: bold;
         position: absolute;
-        top: 180px; /* 조정 필요 */
+        top: 5px; /* 조정 필요 */
         right: 110px; /* 조정 필요 */
     }
 

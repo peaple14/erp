@@ -36,7 +36,7 @@
         <input type="text" id="detailAddress" name="detailAddress" placeholder="상세주소" th:value="${company.detailAddress}">
     </div>
     <input type="submit" value="수정">
-    <a href="/company_list">뒤로 가기</a>
+    <a onclick="loadTab('company_list')">뒤로 가기</a>
 </form>
 
 </body>
@@ -102,10 +102,8 @@
 
     .company-edit form {
         background-color: #fff;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-        padding: 20px;
-        margin: 20px auto;
-        border-radius: 5px;
+        padding: 0;
+        margin-top: 20px;
     }
 
     .company-edit p {

@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>미수금 리스트</title>
+    <!-- 메타태그 및 스타일 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
-<body>
+<body class="quote-list">
+<div class="quote-container">
     <h1>미수금 리스트</h1>
-    <table>
-        <thead>
+    <table class="quote-table table table-hover">
+        <thead class="thead-dark">
             <tr>
                 <th>ID</th>
                 <th>회사</th>
@@ -28,5 +29,81 @@
             </tr>
         </tbody>
     </table>
+</div>
 </body>
 </html>
+<style>
+    body.quote-list {
+        font-family: Arial, sans-serif;
+        position: relative;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    .quote-container {
+        background-color: #fff;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+    }
+
+
+
+    .quote-table {
+        width: 100%;
+        border-collapse: collapse;
+
+    }
+
+    .quote-table th, .quote-table td {
+        border-bottom: 1px solid #dddddd;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .quote-table th {
+        background-color: #f0f0f0;
+    }
+
+    .quote-button {
+        display: inline-block;
+        position: absolute;
+        top: 5px; /* 조정 필요 */
+        right: 110px; /* 조정 필요 */
+        padding: 10px 20px;
+        font-size: 16px;
+        text-align: center;
+        text-decoration: none;
+        background-color: #666666;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .quote-button:hover {
+        background-color: #333333;
+    }
+
+    .paymentAmount {
+        width: 80px;
+        padding: 5px;
+        margin-right: 10px;
+    }
+
+    .sendPayment {
+        padding: 5px 10px;
+        font-size: 14px;
+        background-color: #28a745;
+        color: #fff;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+
+    .sendPayment:hover {
+        background-color: #218838;
+    }
+</style>

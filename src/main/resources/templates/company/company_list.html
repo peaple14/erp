@@ -7,7 +7,7 @@
 <body class="quote-list">
 <div class="quote-container">
     <h1>회사 리스트
-        <a class="quote-button btn btn-primary" href="/company_add" role="button">회사 추가</a>
+        <a class="quote-button btn btn-primary" onclick="loadTab('company_add')" role="button">회사 추가</a>
     </h1>
     <table class="quote-table table table-hover">
         <thead class="thead-dark">
@@ -16,7 +16,7 @@
             <th>회사 이름</th>
             <th>회사 대표</th>
             <th>거래처 연락처</th>
-            <th>상태(우리가보내주는 send=수주회사,recieve=발주회사로 표시)</th>
+            <th>상태</th>
             <th>받을 돈</th>
             <th>입금액</th>
             <th></th>
@@ -26,7 +26,8 @@
         <tr th:each="company : ${companies}">
             <td id= company_id th:text="${company.id}"></td>
             <td>
-                <a th:text="${company.companyName}" th:href="@{'/company_memo/' + ${company.id}}"></a>
+                <a class="product-link" th:text="${company.companyName}" th:attr="ad='/company_memo/' + ${company.id}"
+                   onclick="loadTab(this.getAttribute('ad'))"></a>
             </td>
             <td th:text="${company.companyVip}"></td>
             <td th:text="${company.companyTel}"></td>
@@ -76,3 +77,87 @@
 </script>
 </body>
 </html>
+<style>
+    body.quote-list {
+        font-family: Arial, sans-serif;
+        position: relative;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    .quote-container {
+        background-color: #fff;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+    }
+
+
+
+    .quote-table {
+        width: 100%;
+        border-collapse: collapse;
+
+    }
+
+    .quote-table th, .quote-table td {
+        border-bottom: 1px solid #dddddd;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .quote-table th {
+        background-color: #f0f0f0;
+    }
+
+    .quote-button {
+        display: inline-block;
+        position: absolute;
+        top: 5px; /* 조정 필요 */
+        right: 110px; /* 조정 필요 */
+        padding: 10px 20px;
+        font-size: 16px;
+        text-align: center;
+        text-decoration: none;
+        background-color: #666666;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .quote-button:hover {
+        background-color: #333333;
+    }
+
+    .paymentAmount {
+        width: 80px;
+        padding: 5px;
+        margin-right: 10px;
+    }
+
+    .sendPayment {
+        padding: 5px 10px;
+        font-size: 14px;
+        background-color: #28a745;
+        color: #fff;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+
+    .sendPayment:hover {
+        background-color: #218838;
+    }
+    .product-link {
+        color: #007bff; /* 링크 색상 */
+        cursor: pointer;
+    }
+
+    .product-link:hover {
+        color: #0056b3; /* 호버 시 링크 색상 변경 */
+        text-decoration: underline;
+    }
+</style>

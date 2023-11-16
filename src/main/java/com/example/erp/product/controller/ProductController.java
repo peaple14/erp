@@ -8,7 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -32,9 +34,23 @@ public class ProductController {
     }
 
     @PostMapping("/product_add")
-    public String productAdd(ProductDto productDto) {
+    @ResponseBody
+    public Map<String, Object> productAdd(ProductDto productDto) {
+        /*
         productService.save(productDto);
         return "redirect:/product_list";
+         */
+        Map<String, Object> resultMap = new HashMap<>();
+        try {
+            productService.save(productDto);
+            resultMap.put("result", "OK");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            resultMap.put("result", "NO");
+        }
+
+        return resultMap;
     }
 
     @GetMapping("/product_memo/{id}")
