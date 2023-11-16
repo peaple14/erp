@@ -22,6 +22,7 @@ public class MemberDto {
         memberDTO.setUserId(memberEntity.getUserId());
         memberDTO.setUserPass(memberEntity.getUserPass());
         memberDTO.setUserName(memberEntity.getUserName());
+        memberDTO.setUserauthority(memberEntity.getUserauthority());
         return memberDTO;
     }
 }

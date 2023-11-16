@@ -23,7 +23,6 @@ public class CompanyService {
     // 모든 회사 조회
     public List<CompanyDto> getAllCompanies() {
         List<CompanyEntity> companyEntities = companyRepository.findAll();
-        System.out.println("조회서비스: " + companyEntities);
         return companyEntities.stream()
                 .map(CompanyDto::toCompanyDto)
                 .collect(Collectors.toList());

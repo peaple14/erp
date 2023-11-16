@@ -1,105 +1,160 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회사 추가</title>
+    <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=520eefe9a26b8b1ec6d77a0a8d0a439d"></script>
+    <style>
+        #mapModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+
+        /* 추가된 스타일 */
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        div {
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 
-<script>
-    const companyName = document.getElementById('companyName');
-
-    companyName.addEventListener('onblur', () => {
-        console.log('triggered')
-        localStorage.setItem('test', companyName.value)
-    })
-</script>
-<body class="company-add">
+<body>
 <form action="/company_add" method="post">
     <h1>회사 추가</h1>
     <hr>
-    <div class="form-group">
+    <div>
         <label for="companyName">회사 이름:</label>
         <input type="text" id="companyName" name="companyName" required>
     </div>
-    <div class="form-group">
+    <div>
         <label for="companyVip">회사 대표:</label>
         <input type="text" id="companyVip" name="companyVip" required>
     </div>
-    <div class="form-group">
+    <div>
         <label for="companyTel">거래처 연락처:</label>
         <input type="text" id="companyTel" name="companyTel" required>
     </div>
-    <div class="form-group">
+    <div>
+        <label for="status">거래 상태:</label>
         <select id="status" name="status" required>
             <option value="receive">receive</option>
             <option value="send">send</option>
         </select>
     </div>
 
+    <div>
+        <label for="postcode">우편번호:</label>
+        <input type="text" id="postcode" name="postcode" placeholder="우편번호" readonly>
+        <input type="button" onclick="execDaumPostcode()" value="우편번호 찾기" required>
     </div>
-    <button type="submit" class="btn btn-primary" onclick="loadTab('company_list')">저장</button>
+    <div>
+        <label for="roadAddress">도로명주소:</label>
+        <input type="text" id="roadAddress" name="roadAddress" placeholder="도로명주소" readonly>
+        <span id="guide" style="color:#999;display:none"></span>
+    </div>
+    <div>
+        <label for="detailAddress">상세주소:</label>
+        <input type="text" id="detailAddress" name="detailAddress" placeholder="상세주소">
+    </div>
+
+    <button type="submit">저장</button>
 </form>
 
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+    function execDaumPostcode() {
+        new daum.Postcode({
+            oncomplete: function (data) {
+                var roadAddr = data.roadAddress;
+                var extraRoadAddr = '';
+
+                if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+                    extraRoadAddr += data.bname;
+                }
+
+                if (data.buildingName !== '' && data.apartment === 'Y') {
+                    extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                }
+
+                if (extraRoadAddr !== '') {
+                    extraRoadAddr = ' (' + extraRoadAddr + ')';
+                }
+
+                document.getElementById('postcode').value = data.zonecode;
+                document.getElementById("roadAddress").value = roadAddr;
+
+                var guideTextBox = document.getElementById("guide");
+                if (data.autoRoadAddress) {
+                    var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
+                    guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
+                    guideTextBox.style.display = 'block';
+                } else if (data.autoJibunAddress) {
+                    var expJibunAddr = data.autoJibunAddress;
+                    guideTextBox.innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
+                    guideTextBox.style.display = 'block';
+                } else {
+                    guideTextBox.innerHTML = '';
+                    guideTextBox.style.display = 'none';
+                }
+            }
+        }).open();
+    }
+</script>
 </body>
 
 </html>
-
-<style>
-
-    body.company-add {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        margin: 0;
-        padding: 0;
-    }
-
-    .company-add h1 {
-        font-size: 24px;
-        margin: 0 0 20px 0;
-    }
-
-    .company-add form {
-        background-color: #fff;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-        padding: 20px;
-        margin: 20px auto;
-        border-radius: 5px;
-    }
-
-    .company-add .form-group {
-        margin-bottom: 20px;
-    }
-
-    .company-add label {
-        display: block;
-        font-weight: bold;
-        margin-bottom: 5px;
-    }
-
-    .company-add input[type="text"] {
-        width: calc(100% - 22px);
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-    }
-
-    .company-add button {
-        padding: 10px 20px;
-        font-size: 15px;
-        text-align: center;
-        text-decoration: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-    }
-
-    .company-add button:hover {
-        background-color: #0056b3;
-    }
-
-</style>

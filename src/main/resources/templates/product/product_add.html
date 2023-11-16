@@ -11,6 +11,7 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
+    <link rel="stylesheet" href="styles.css"> <!-- 스타일 시트 연결 -->
 </head>
 
 <body class="product-add">
@@ -23,52 +24,30 @@
     </div>
     <div class="form-group">
 
-    <div class="form-group">
-        <label for="price">제품가격:</label>
-        <input type="text" id="price" name="price" required>
-    </div>
-    <div class="form-group">
-        <label for="makecompany">제조업체:</label>
-        <!-- 드롭다운 목록 -->
-        <select id="makecompany" name="makecompany" required>
-            <option value="" selected disabled>제조업체 선택</option>
-            <th:block th:each="company : ${companies}">
-                <option th:value="${company.id}" th:text="${company.companyName}"></option>
-            </th:block>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="makeday">제조년도:</label>
-        <input type="month" id="makeday" name="makeday" required>
-    </div>
-    <!-- hidden 필드로 선택한 회사의 id를 보냅니다 -->
-    <input type="hidden" id="selectedCompanyId" name="selectedCompanyId">
-    <button type="submit" class="btn btn-primary" onclick="loadTab('product_list')">저장</button>
-    <a onclick="loadTab('product_list')">뒤로 가기</a>
+        <div class="form-group">
+            <label for="price">제품가격:</label>
+            <input type="number" id="price" name="price" required>
+        </div>
+        <div class="form-group">
+            <label for="makecompany">제조업체:</label>
+            <!-- 드롭다운 목록 -->
+            <select id="makecompany" name="makecompany" required>
+                <option value="" selected disabled>제조업체 선택</option>
+                <th:block th:each="company : ${companies}">
+                    <option th:value="${company.id}" th:text="${company.companyName}"></option>
+                </th:block>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="makeday">제조년도:</label>
+            <input type="month" id="makeday" name="makeday" required>
+        </div>
+        <!-- hidden 필드로 선택한 회사의 id를 보냅니다 -->
+        <input type="hidden" id="selectedCompanyId" name="selectedCompanyId">
+        <button type="submit" class="btn btn-primary">저장</button>
+        <a href="/product_list">뒤로 가기</a>
     </div>
 </form>
-
-<script>
-
-    function fn_test() {
-        /*
-        * 폼 데이터를 AJAX송신하는 코드
-        * */
-
-        // var data = {};
-        // fetch('/product_add', {
-        //     method  : 'POST',
-        //     body    : JSON.stringify(data)
-        // })
-        //     .then((response) => response.json())
-        //     .then((result) => {
-        //         if(result.result == 'OK') {
-        //             loadTab('product_list');
-        //         }
-        //     })
-
-    }
-</script>
 
 </body>
 
@@ -82,7 +61,7 @@
     body.product-add {
         font-family: Arial, sans-serif;
         background-color: #f4f4f4;
-        margin-top: 20px;
+        margin: 0;
         padding: 0;
     }
 
@@ -93,9 +72,10 @@
 
     .product-add form {
         background-color: #fff;
-        padding: 0;
-        margin: 0;
-
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        margin: 20px auto;
+        border-radius: 5px;
     }
 
     .product-add .form-group {

@@ -17,6 +17,10 @@
         <p><strong>거래처 연락처:</strong> <span th:text="${company.companyTel}"></span></p>
         <p><strong>상태:</strong> <span th:text="${company.status}"></span></p>
         <p><strong>받을 돈:</strong> <span th:text="${company.money}"></span></p>
+        <p><strong>우편번호:</strong> <span th:text="${company.postcode}"></span></p>
+        <p><strong>도로명주소:</strong> <span th:text="${company.roadAddress}"></span></p>
+        <p><strong>상세주소:</strong> <span th:text="${company.detailAddress}"></span></p>
+
 
         <!-- 수정 버튼 추가 -->
         <a th:href="@{/company_edit/{id}(id=${company.id})}">수정</a>

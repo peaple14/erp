@@ -4,14 +4,17 @@ VALUES
     ('333', '444', 'Admin', 'ADMIN');
 
 -- Company 테이블에 데이터를 추가하는 SQL 쿼리
-INSERT INTO Company (companyName, companyVip, companyTel, status, moneyRecieve, money)
-VALUES ('김회사', '김사장', '333', 'receive', 1, 0);
+INSERT INTO Company (companyName, companyVip, companyTel, status,money,postcode,roadAddress,detailAddress)
+VALUES ('김회사', '김사장', '053-1111-1111', 'receive', 0 , '42829','대구 달서구 화암로 342','관리사무소');
 
-INSERT INTO Company (companyName, companyVip, companyTel, status, moneyRecieve, money)
-VALUES ('주회사', '주사장', '2222', 'send', 1, 0);
+INSERT INTO Company (companyName, companyVip, companyTel, status,  money,postcode,roadAddress,detailAddress)
+VALUES ('주회사', '주사장', '053-2222-2222', 'send', 0 ,'42672','대구 달서구 공원순환로 36','관리사무소');
 
-INSERT INTO Company (companyName, companyVip, companyTel, status, moneyRecieve, money)
-VALUES ('상회사', '상사장', '23', 'send', 1, 0);
+INSERT INTO Company (companyName, companyVip, companyTel, status,  money,postcode,roadAddress,detailAddress)
+VALUES ('상회사', '상사장', '02-3334-3333', 'send',0 ,'61187','광주 북구 우치로 77','2층');
+
+INSERT INTO Company (companyName, companyVip, companyTel, status,  money,postcode,roadAddress,detailAddress)
+VALUES ('박회사', '박사장', '02-4444-4444', 'send',0 '44701','울산 남구 돋질로 233','3층');
 
 INSERT INTO Product (productName, productCode, price, makeDay, company_id)
 VALUES

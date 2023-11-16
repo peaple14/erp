@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>견적서 리스트</title>
+  <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=520eefe9a26b8b1ec6d77a0a8d0a439d"></script>
+  <style>
+    #mapModal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgb(0, 0, 0);
+      background-color: rgba(0, 0, 0, 0.9);
+    }
+
+    #mapContainer {
+      position: relative;
+      margin: 5% auto;
+      padding: 20px;
+      width: 80%;
+      height: 80%;
+      background-color: #fefefe;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+      cursor: pointer;
+      /*x표시 보이기용*/
+      z-index: 3;
+    }
+  </style>
+</head>
+
+<body class="quote-list">
+<div class="quote-container">
+  <h1>견적서 리스트
+    <a class="quote-button btn btn-primary" href="/quote_add" role="button">견적서 추가</a>
+  </h1>
+  <table class="quote-table table table-hover">
+    <thead class="thead-dark">
+    <tr>
+      <th>ID</th>
+      <th>견적서 이름</th>
+      <th>회사 이름</th>
+      <th>제품명</th>
+      <th>총 단가</th>
+      <th>일자</th>
+      <th>현재위치</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="quote, rowStat : ${quotes}">
+      <td th:text="${quote.id}"></td>
+      <td>
+        <a th:text="${quote.quotename}"></a>
+      </td>
+      <td th:text="${quote.product.company.companyName}"></td>
+      <td th:text="${quote.product.productName}"></td>
+      <td th:text="${quote.totalprice}"></td>
+      <td th:text="${quote.createdat}"></td>
+      <td>
+        <!-- quote.goroadAddress와 quote.endroadAddress를 showMapModal 함수에 전달 -->
+        <a th:text="현재위치" href="#" th:goaddress="${quote.goroadAddress}" th:endaddress="${quote.endroadAddress}"
+           onclick="showMapModal(this.getAttribute('goaddress'), this.getAttribute('endaddress'))">현재위치</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 모달에 표시될 지도 부분 -->
+<div id="mapModal" onclick="closeMapModal()">
+  <div id="mapContainer" onclick="event.stopPropagation();">
+    <span class="close" onclick="closeMapModal()">&times;</span>
+    <!-- 여기에 Kakao 지도가 들어갈 공간 -->
+    <div id="map" style="width:100%; height:100%;"></div>
+    <!-- 내 위치 마커를 표시할 공간 -->
+    <div id="myLocationMarker"></div>
+  </div>
+</div>
+
+<script th:inline="javascript">
+  function showMapModal(startAddress, endAddress) {
+    // 모달을 표시
+    document.getElementById('mapModal').style.display = 'block';
+
+    const REST_API_KEY = '61179dca181c32e776412ff335b7c5dc';
+
+    // 주소를 이용하여 Kakao 지도 API 호출
+    function fetchAndInitializeMap(address, callback) {
+      fetch(`https://dapi.kakao.com/v2/local/search/address.json?query=${encodeURIComponent(address)}`, {
+        method: 'GET',
+        headers: new Headers({
+          'Authorization': `KakaoAK ${REST_API_KEY}`,
+        }),
+      })
+              .then(response => response.json())
+              .then(data => {
+                if (data.documents && data.documents.length > 0 && data.documents[0].x && data.documents[0].y) {
+                  const position = new kakao.maps.LatLng(data.documents[0].y, data.documents[0].x);
+                  callback(position);
+                } else {
+                  console.error('API 응답에서 좌표 정보를 찾을 수 없습니다.');
+                  alert('해당 주소의 좌표 정보를 찾을 수 없습니다.');
+                  closeMapModal(); // 모달 닫기
+                }
+              })
+              .catch(error => {
+                console.error('에러 발생:', error);
+              });
+    }
+
+    // 내 위치 마커를 표시하는 함수
+    function showMyLocationMarker(map) {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+          const myLocation = new kakao.maps.LatLng(position.coords.latitude, position.coords.longitude);
+
+          // 내 위치 마커 추가
+          const myLocationMarker = new kakao.maps.Marker({
+            position: myLocation,
+            image: new kakao.maps.MarkerImage('https://cdn-icons-png.flaticon.com/128/8587/8587894.png', new kakao.maps.Size(50,50)),
+          });
+
+          myLocationMarker.setMap(map);
+
+          // 지도 중심을 내 위치로 이동
+          map.setCenter(myLocation);
+        });
+      } else {
+        alert('현재 위치를 가져올 수 없습니다.');
+      }
+    }
+
+    // 출발지 좌표 가져오기
+    fetchAndInitializeMap(startAddress, function (startPosition) {
+      // 목적지 좌표 가져오기
+      fetchAndInitializeMap(endAddress, function (endPosition) {
+        // Kakao 지도 API 초기화
+        kakao.maps.load(() => {
+          const container = document.getElementById('map');
+          const options = {
+            center: startPosition,
+            level: 3,
+          };
+
+          const map = new kakao.maps.Map(container, options);
+
+          // 출발지 마커 추가
+          const startMarker = new kakao.maps.Marker({
+            position: startPosition,
+            image: new kakao.maps.MarkerImage('https://cdn3.iconfinder.com/data/icons/map-markers-1/512/market-64.png', new kakao.maps.Size(50, 50)),
+
+          });
+
+          startMarker.setMap(map);
+
+          // 도착지 마커 추가
+          const destinationMarker = new kakao.maps.Marker({
+            position: endPosition,
+            image: new kakao.maps.MarkerImage('https://cdn1.iconfinder.com/data/icons/flat-design-basic-set-5/24/flag-red-rally-256.png', new kakao.maps.Size(50, 50)),
+          });
+
+          destinationMarker.setMap(map);
+
+          // 내 위치 마커 표시
+          showMyLocationMarker(map);
+        });
+      });
+    });
+  }
+
+  function closeMapModal() {
+    // 모달을 숨김
+    document.getElementById('mapModal').style.display = 'none';
+  }
+</script>
+
+
+<style>
+  #map {
+    width: 100%;
+    height: 400px;
+  }
+</style>
+</body>
+
+</html>

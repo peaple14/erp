@@ -45,20 +45,33 @@ public class QuoteEntity {
     @JoinColumn(name = "checkmember_id")
     private MemberEntity checkmember;
 
-//    //거래처,대표자,연락처 ,중복되서 제거
-//    @ManyToOne
-//    @JoinColumn(name = "company_id")
-//    private CompanyEntity company;
-
     //제품명,단위단가 , 거래처,대표자,연락처
     @ManyToOne
     @JoinColumn(name = "product_id")
     private ProductEntity product;
 
-    //견적서 작성자 -> 굳이 이걸 join했어야했나? 그냥 멤버id적었음 되지 않았는가?
+    //견적서 작성자
     @ManyToOne
     @JoinColumn(name = "member_id")
     private MemberEntity member;
+
+    @Column
+    private String gopostcode; //출발우편번호
+
+    @Column
+    private String godetailAddress; //출발상세주소
+
+    @Column
+    private String goroadAddress; //출발도로명주소
+
+    @Column
+    private String endpostcode; //받을우편번호
+
+    @Column
+    private String enddetailAddress; //받을상세주소
+
+    @Column
+    private String endroadAddress; //받을도로명주소
 
     public static QuoteEntity toSaveEntity(QuoteDto quoteDto) {
         QuoteEntity quoteEntity = new QuoteEntity();
@@ -68,6 +81,12 @@ public class QuoteEntity {
         quoteEntity.setCreatedAt(quoteDto.getCreatedat());
         quoteEntity.setProduct(quoteDto.getProduct());
         quoteEntity.setMember(quoteDto.getWriter());
+        quoteEntity.setGopostcode(quoteDto.getGopostcode());
+        quoteEntity.setGoroadAddress(quoteDto.getGoroadAddress());
+        quoteEntity.setGodetailAddress(quoteDto.getGodetailAddress());
+        quoteEntity.setEndpostcode(quoteDto.getEndpostcode());
+        quoteEntity.setEndroadAddress(quoteDto.getEndroadAddress());
+        quoteEntity.setEnddetailAddress(quoteDto.getEnddetailAddress());
         return quoteEntity;
     }
 
@@ -80,6 +99,12 @@ public class QuoteEntity {
         this.createdAt = quoteDto.getCreatedat();
         this.product = quoteDto.getProduct();
         this.location = quoteDto.getLocation();
+        this.gopostcode=quoteDto.getGopostcode();
+        this.goroadAddress=quoteDto.getGoroadAddress();
+        this.godetailAddress=quoteDto.getGodetailAddress();
+        this.endpostcode=quoteDto.getEndpostcode();
+        this.endroadAddress=quoteDto.getEndroadAddress();
+        this.enddetailAddress=quoteDto.getEnddetailAddress();
     }
 
     //결제완료용

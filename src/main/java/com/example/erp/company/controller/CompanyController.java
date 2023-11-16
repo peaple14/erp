@@ -29,6 +29,7 @@ public class CompanyController {
 
     @PostMapping("/company_add")
     public String companyAdd(CompanyDto companyDto) {
+        System.out.println("추가되는것:" + companyDto);
         companyService.save(companyDto);
         return "redirect:/company_list";
     }

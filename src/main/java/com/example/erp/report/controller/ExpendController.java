@@ -24,7 +24,6 @@ public class ExpendController {
     public String listExpends(Model model) {
         List<ExpendDto> expends = expendService.getAllExpends();
         model.addAttribute("expends", expends);
-        System.out.println("지출결의서 리스트띄우기:" + expends);
         return "report/expend/expend_list";
     }
 
@@ -41,7 +40,6 @@ public class ExpendController {
     @PostMapping("/expend_add")
     public String expendAdd(@ModelAttribute ExpendDto expendDto, HttpSession session) {
         // 추가: HTML 폼에서 입력한 데이터를 로그로 출력
-        System.out.println("지출결의서 추가 폼 제출 데이터: " + expendDto);
         System.out.println("로그인 세션 정보: " + session.getAttribute("loginId"));
 
         expendDto.setWriter(expendService.getMember((String) session.getAttribute("loginId")));
@@ -80,14 +78,9 @@ public class ExpendController {
         System.out.println("결제완료됨." + id);
         System.out.println("로그인 세션 정보: " + session.getAttribute("loginId"));
         expendDto.setCheckmember(expendService.getMember((String) session.getAttribute("loginId")));
-
-
         if (!"ADMIN".equals(expendDto.getCheckmember().getUserauthority())) {
             return "redirect:/expend_list";
         }
-
-
-
         expendService.check_ok(id, expendDto);
         return "redirect:/expend_list";
     }
