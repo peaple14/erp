@@ -40,6 +40,18 @@ public class QuoteService {
                 .collect(Collectors.toList());
     }
 
+    //배송중인 견적서만 조회
+    @Transactional
+    public List<QuoteDto> getgoQuotes() {
+        List<QuoteEntity> quotes = quoteRepository.findAll();
+        List<QuoteDto> goQuotes = quotes.stream()
+                .filter(quoteEntity -> quoteEntity.getLocation() == 1)
+                .map(QuoteDto::quoteDto)
+                .collect(Collectors.toList());
+
+        return goQuotes;
+    }
+
 
     //모든 회사 조회후 추가창에 넣기
     @Transactional

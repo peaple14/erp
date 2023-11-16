@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>견적서 리스트</title>
+</head>
+<body class="quote-list">
+<div class="quote-container">
+  <h1>견적서 리스트
+    <a class="quote-button btn btn-primary" href="/quote_add" role="button">견적서 추가</a>
+  </h1>
+  <table class="quote-table table table-hover">
+    <thead class="thead-dark">
+    <tr>
+      <th>ID</th>
+      <th>견적서 이름</th>
+      <th>회사 이름</th>
+      <th>제품명</th>
+      <th>총 단가</th>
+      <th>일자</th>
+      <th>현재위치</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="quote, rowStat : ${quotes}">
+      <td th:text="${quote.id}"></td>
+      <td>
+        <a th:text="${quote.quotename}"></a>
+      </td>
+      <td th:text="${quote.product.company.companyName}"></td>
+      <td th:text="${quote.product.productName}"></td>
+      <td th:text="${quote.totalprice}"></td>
+      <td th:text="${quote.createdat}"></td>
+      <!-- 각 행에 대한 모달 창 -->
+      <td>
+        <button onclick="openModal(${rowStat.index})">현재 위치</button>
+        <div th:id="'myModal_' + ${rowStat.index}" class="modal">
+          <div class="modal-content">
+            <span class="close" onclick="closeModal(${rowStat.index})">&times;</span>
+            <p th:text="${quote.createdat}"></p>
+          </div>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 추가된 부분: 전역 모달 스타일 -->
+<div id="myModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeGlobalModal()">&times;</span>
+    <p id="modalContent"></p>
+  </div>
+</div>
+</body>
+<style>
+  /* 견적서 리스트 페이지 스타일 */
+  body.quote-list {
+    font-family: Arial, sans-serif;
+    position: relative;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+  }
+
+  .quote-container {
+    background-color: #fff;
+    margin: 20px;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+  }
+
+  .quote-title {
+    font-size: 30px;
+    margin: 0 0 20px 0;
+  }
+
+  .quote-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .quote-table th, .quote-table td {
+    border-bottom: 1px solid #dddddd;
+    padding: 10px;
+    text-align: left;
+  }
+
+  .quote-table th {
+    background-color: #f0f0f0;
+  }
+
+  .quote-button {
+    display: inline-block;
+    position: absolute;
+    top: 180px; /* 조정 필요 */
+    right: 110px; /* 조정 필요 */
+    padding: 10px 20px;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    background-color: #666666;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .quote-button:hover {
+    background-color: #333333;
+  }
+
+  .quote-check-button {
+    margin-right: 10px;
+  }
+
+  /* 모달 스타일 */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+  }
+
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+</style>
+<script th:inline="javascript">
+  function openModal(index) {
+    // 각 행의 모달 열기
+    var modal = document.getElementById('myModal_' + index);
+    modal.style.display = 'block';
+
+    // 전역 모달의 내용 업데이트
+    var globalModal = document.getElementById('myModal');
+    var modalContent = document.getElementById('modalContent');
+    modalContent.innerHTML = quote.createdat; // 또는 원하는 내용으로 변경
+    globalModal.style.display = 'block';
+  }
+
+  window.onclick = function(event) {
+    // 전역 모달 닫기
+    var globalModal = document.getElementById('myModal');
+    if (event.target === globalModal) {
+      globalModal.style.display = 'none';
+    }
+  };
+
+  function closeModal(index) {
+    // 각 행의 모달 닫기
+    var modal = document.getElementById('myModal_' + index);
+    modal.style.display = 'none';
+  };
+
+  function closeGlobalModal() {
+    // 전역 모달 닫기
+    var globalModal = document.getElementById('myModal');
+    globalModal.style.display = 'none';
+  }
+</script>
+</html>
