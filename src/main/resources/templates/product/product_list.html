@@ -27,7 +27,8 @@
     <tr th:each="product : ${products}">
         <td th:text="${product.id}"></td>
         <td>
-            <a th:text="${product.productname}" th:href="@{'/product_memo/' + ${product.id}}"></a>
+            <a th:text="${product.productname}" th:attr="ad='product_memo/' + ${product.id}"
+               onclick="loadTab(this.getAttribute('ad'))"></a>
         </td>
         <td th:text="${product.productcode}"></td>
         <td th:text="${product.count}"></td>
@@ -38,6 +39,7 @@
         </tbody>
 </table>
 </div>
+
 </body>
 </html>
 <script>
