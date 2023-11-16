@@ -27,10 +27,9 @@
     <tr th:each="product : ${products}">
         <td th:text="${product.id}"></td>
         <td>
-            <a class="product-link" th:text="${product.productname}" th:attr="ad='product_memo/' + ${product.id}"
+            <a th:text="${product.productname}" th:attr="ad='product_memo/' + ${product.id}"
                onclick="loadTab(this.getAttribute('ad'))"></a>
         </td>
-
         <td th:text="${product.productcode}"></td>
         <td th:text="${product.count}"></td>
         <td th:text="${product.price}"></td>
@@ -40,6 +39,7 @@
         </tbody>
 </table>
 </div>
+
 </body>
 </html>
 <script>
@@ -67,8 +67,9 @@
 
     .quote-container {
         background-color: #fff;
-        margin: 0;
-        padding: 0;
+        margin: 20px;
+        padding: 20px;
+        border-radius: 5px;
         text-align: center;
     }
 
@@ -95,7 +96,7 @@
     .quote-button {
         display: inline-block;
         position: absolute;
-        top: 5px; /* 조정 필요 */
+        top: 180px; /* 조정 필요 */
         right: 110px; /* 조정 필요 */
         padding: 10px 20px;
         font-size: 16px;
@@ -113,13 +114,4 @@
         background-color: #333333;
     }
 
-    .product-link {
-        color: #007bff; /* 링크 색상 */
-        cursor: pointer;
-    }
-
-    .product-link:hover {
-        color: #0056b3; /* 호버 시 링크 색상 변경 */
-        text-decoration: underline;
-    }
 </style>

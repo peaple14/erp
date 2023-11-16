@@ -42,10 +42,10 @@ public class QuoteService {
 
     //배송중인 견적서만 조회
     @Transactional
-    public List<QuoteDto> getgoQuotes() {
+    public List<QuoteDto> getgoQuotes(int location) {
         List<QuoteEntity> quotes = quoteRepository.findAll();
         List<QuoteDto> goQuotes = quotes.stream()
-                .filter(quoteEntity -> quoteEntity.getLocation() == 1)
+                .filter(quoteEntity -> quoteEntity.getLocation() == location)
                 .map(QuoteDto::quoteDto)
                 .collect(Collectors.toList());
 
