@@ -56,7 +56,7 @@ function loadTab(pageUrl, tabId, tabIdx) {
                     let html_dom = new DOMParser().parseFromString(html, 'text/html');
 
                     var tabContents = document.getElementById('tabContents');
-                    // tabContents.innerHTML = '';
+                    tabContents.innerHTML = '';
                     var temp = html_dom.body;
                     tabContents.appendChild(temp);
                     tabCounter++; // 탭이 생성될 때마다 카운터 증가
@@ -164,9 +164,8 @@ function changeSidebar(menu) {
     } else if (menu === 'menu2') {
         sidebarContent = `
         <ul class="sidebar-links">
-            <li><a href="#" onclick="addTab('발주 거래처', '/company_list')">발주 거래처</a></li>
-            <li><a href="#" onclick="addTab('수주 거래처', '/company_add')">수주 거래처</a></li>
-            <li><a href="#" onclick="addTab('미수금', '/company_list')">미수금</a></li>
+            <li><a href="#" onclick="addTab('거래처관리', '/company_list')">거래처관리</a></li>
+            <li><a href="#" onclick="addTab('미수금', '/not_receive_list')">미수금</a></li>
         </ul>
     `;
     } else if (menu === 'menu3') {
@@ -179,9 +178,8 @@ function changeSidebar(menu) {
     } else if (menu === 'menu4') {
         sidebarContent = `
                     <ul class="sidebar-links">
-                        <li><a href="#" onclick="addTab('주문현황','/order_list')">주문현황</a></li>
-                        <li><a href="#" onclick="addTab('발주', '/notice_add')">발주</a></li>
-                        <li><a href="#" onclick="addTab('수주')">수주</a></li>
+                        <li><a href="#" onclick="addTab('주문현황','/go_drder_list')">주문현황</a></li>
+                        <li><a href="#" onclick="addTab('주문완료', '/')">주문완료</a></li>
                     </ul>
                 `;
     } else if (menu === 'menu5') {

@@ -1,5 +1,3 @@
-/* 견적서 리스트 페이지 스타일 */
-
 body.quote-list {
     font-family: Arial, sans-serif;
     position: relative;
@@ -10,25 +8,24 @@ body.quote-list {
 
 .quote-container {
     background-color: #fff;
-    margin: 0;
-    padding: 0;
+    margin: 20px;
+    padding: 20px;
+    border-radius: 5px;
     text-align: center;
 }
 
-.quote-title {
-    font-size: 30px;
-    margin: 0 0 20px 0;
-}
+
 
 .quote-table {
     width: 100%;
     border-collapse: collapse;
+
 }
 
 .quote-table th, .quote-table td {
     border-bottom: 1px solid #dddddd;
     padding: 10px;
-    text-align: left;
+    text-align: center;
 }
 
 .quote-table th {
@@ -56,22 +53,22 @@ body.quote-list {
     background-color: #333333;
 }
 
-.quote-table th:first-child,
-.quote-table td:first-child {
-    width: 10%;
+.paymentAmount {
+    width: 80px;
+    padding: 5px;
+    margin-right: 10px;
 }
 
-.quote-table th:nth-child(2),
-.quote-table td:nth-child(2) {
-    width: 65%;
+.sendPayment {
+    padding: 5px 10px;
+    font-size: 14px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
 }
 
-.quote-table th:nth-child(3),
-.quote-table td:nth-child(3) {
-    width: 10%;
-}
-
-.quote-table th:nth-child(4),
-.quote-table td:nth-child(4) {
-    width: 15%;
+.sendPayment:hover {
+    background-color: #218838;
 }
