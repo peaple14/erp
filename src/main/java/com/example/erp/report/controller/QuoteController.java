@@ -73,6 +73,7 @@ public class QuoteController {
 
     @PostMapping("/quote_edit_ok")
     public String quoteEditOk(@RequestParam(name = "id") int id, @ModelAttribute QuoteDto quoteDto) {
+        notificationService.sendToClient(1L, quoteDto.getId() + "번 견적서가 수정되었습니다."); //로그인된 모든 admin에게 알람.
         quoteService.update(id, quoteDto);
         return "redirect:/quote_list";
     }
