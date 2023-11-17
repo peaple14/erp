@@ -108,6 +108,7 @@ public class QuoteEntity {
         this.gopostcode=quoteDto.getGopostcode();
         this.goroadAddress=quoteDto.getGoroadAddress();
         this.godetailAddress=quoteDto.getGodetailAddress();
+        this.endAt=quoteDto.getEndat();
         this.endpostcode=quoteDto.getEndpostcode();
         this.endroadAddress=quoteDto.getEndroadAddress();
         this.enddetailAddress=quoteDto.getEnddetailAddress();

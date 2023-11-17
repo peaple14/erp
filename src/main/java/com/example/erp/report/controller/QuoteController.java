@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -46,7 +47,7 @@ public class QuoteController {
     public String quoteAdd(@ModelAttribute QuoteDto quoteDto, HttpSession session) {
         quoteDto.setLocation(0);//
         quoteDto.setWriter(quoteService.getMember((String) session.getAttribute("loginId")));
-        notificationService.sendToClient(1L, "견적서가 추가되었습니다."); //로그인된 모든 admin에게 알람.
+        notificationService.sendToClient(1L, quoteDto.getId() + "번 견적서가 추가되었습니다."); //로그인된 모든 admin에게 알람.
         quoteService.save(quoteDto);
         return "redirect:/quote_list";
     }
@@ -72,10 +73,10 @@ public class QuoteController {
 
     @PostMapping("/quote_edit_ok")
     public String quoteEditOk(@RequestParam(name = "id") int id, @ModelAttribute QuoteDto quoteDto) {
+        notificationService.sendToClient(1L, quoteDto.getId() + "번 견적서가 수정되었습니다."); //로그인된 모든 admin에게 알람.
         quoteService.update(id, quoteDto);
         return "redirect:/quote_list";
     }
-
 
     //결제완료시 미수금,수주거래 변동.
     @GetMapping ("/quote_check_ok/{id}")
@@ -110,6 +111,7 @@ public class QuoteController {
                 return ResponseEntity.badRequest().body("배송할 제품의 재고량이 주문량보다 적습니다.");
             }
             if (quoteDto.getLocation() == 2) { //배송완료를 눌렀을시
+                quoteDto.setEndat(LocalDate.now()); //배송완료시간기록
                 quoteService.update((int) companyId, quoteDto);
                 return ResponseEntity.ok("배송 처리가 확인 되었습니다.");
             }

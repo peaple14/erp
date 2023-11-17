@@ -61,8 +61,15 @@
             </td>
 
             <td>
-                <button class="sendDelivery" data-action="1" th:attr="data-quote-id=${quote.id}">배송중</button>
-                <button class="sendDelivery" data-action="2" th:attr="data-quote-id=${quote.id}">배송완료</button>
+                <th:block th:if="${quote.location == 0}">
+                    <button class="sendDelivery" data-action="1" th:attr="data-quote-id=${quote.id}">배송중</button>
+                </th:block>
+                <th:block th:if="${quote.location == 1}">
+                    <button class="sendDelivery" data-action="2" th:attr="data-quote-id=${quote.id}">배송완료</button>
+                </th:block>
+                <th:block th:if="${quote.location != 0 and quote.location != 1}">
+                    <p>이미배송된상품</p>
+                </th:block>
             </td>
         </tr>
         </tbody>
