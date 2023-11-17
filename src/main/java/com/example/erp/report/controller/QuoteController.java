@@ -2,6 +2,7 @@ package com.example.erp.report.controller;
 
 import com.example.erp.member.service.NotificationService;
 import com.example.erp.product.entity.ProductEntity;
+import com.example.erp.product.service.ProductService;
 import com.example.erp.report.dto.DeliveryDto;
 import com.example.erp.report.dto.QuoteDto;
 import com.example.erp.report.service.QuoteService;
@@ -21,6 +22,8 @@ public class QuoteController {
 
     private final QuoteService quoteService;
     private final NotificationService notificationService;
+    private final ProductService productService;
+
     //리스트띄우기
     @GetMapping("/quote_list")
     public String listQuotes(Model model) {
@@ -98,17 +101,25 @@ public class QuoteController {
     public ResponseEntity<String> receivePayment(@RequestBody DeliveryDto dto) {
         long companyId = dto.getCompany_id();
         int location = dto.getLocation();
-        System.out.println("이건 제대로 되나: " + dto);
+//        System.out.println("이건 제대로 되려나: " + dto);
         QuoteDto quoteDto = quoteService.findById((int) companyId);
 
-        // quoteDto가 null이 아닌지 확인
         if (quoteDto != null) {
             quoteDto.setLocation(location);
+            if (quoteDto.getLocation() == 1 && quoteDto.getProduct().getCount()<quoteDto.getQuantity()) { //배송해야하는데 재고량보다 작을시
+                return ResponseEntity.badRequest().body("배송할 제품의 재고량이 주문량보다 적습니다.");
+            }
+            if (quoteDto.getLocation() == 2) { //배송완료를 눌렀을시
+                quoteService.update((int) companyId, quoteDto);
+                return ResponseEntity.ok("배송 처리가 확인 되었습니다.");
+            }
+            //배송출발을 눌렀을시
+            productService.countupdate(quoteDto.getProduct().getId(),-quoteDto.getQuantity());
             quoteService.update((int) companyId, quoteDto);
             return ResponseEntity.ok("배송 처리가 확인 되었습니다.");
         } else {
-            // quoteDto가 null이면 적절한 응답 반환
-            return ResponseEntity.badRequest().body("견적서를 찾을 수 없습니다.");
+            return ResponseEntity.badRequest().body("배송 처리에 실패했습니다.");
+
         }
     }
 

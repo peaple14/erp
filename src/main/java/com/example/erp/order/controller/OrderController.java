@@ -19,7 +19,7 @@ public class OrderController {
     @GetMapping("/go_order_list")
     public String goorder(Model model) {
         List<QuoteDto> quoteDto = quoteService.getgoQuotes(1);
-        model.addAttribute("quotes, quoteDto");
+        model.addAttribute("quotes", quoteDto);
         return "order/go_order_list";
     }
 
@@ -28,7 +28,6 @@ public class OrderController {
     public String endorder(Model model) {
         List<QuoteDto> quoteDto = quoteService.getgoQuotes(2);
         model.addAttribute("quotes", quoteDto);
-        return "order/go_order_list";
+        return "order/end_order_list";
     }
-
 }
