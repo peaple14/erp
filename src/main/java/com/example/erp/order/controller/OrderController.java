@@ -17,12 +17,18 @@ public class OrderController {
 
     //진행중인 주문
     @GetMapping("/go_order_list")
-    public String listExpends(Model model) {
-        List<QuoteDto> quoteDto = quoteService.getgoQuotes();
-        System.out.println("이게되나" + quoteDto);
-        model.addAttribute("quotes", quoteDto);
+    public String goorder(Model model) {
+        List<QuoteDto> quoteDto = quoteService.getgoQuotes(1);
+        model.addAttribute("quotes, quoteDto");
         return "order/go_order_list";
     }
 
+    //끝난 주문
+    @GetMapping("/end_order_list")
+    public String endorder(Model model) {
+        List<QuoteDto> quoteDto = quoteService.getgoQuotes(2);
+        model.addAttribute("quotes", quoteDto);
+        return "order/go_order_list";
+    }
 
 }

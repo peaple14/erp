@@ -33,6 +33,10 @@ public class QuoteEntity {
     @Column
     private LocalDate createdAt;
 
+    //배송완료 일자
+    @Column
+    private LocalDate endAt;
+
     //배달전,배달중,배달완료 = 0,1,2
     @Column
     private int location;  //현재 배송지 위치
@@ -83,6 +87,7 @@ public class QuoteEntity {
         quoteEntity.setMember(quoteDto.getWriter());
         quoteEntity.setGopostcode(quoteDto.getGopostcode());
         quoteEntity.setGoroadAddress(quoteDto.getGoroadAddress());
+        quoteEntity.setEndAt(quoteDto.getEndat());
         quoteEntity.setGodetailAddress(quoteDto.getGodetailAddress());
         quoteEntity.setEndpostcode(quoteDto.getEndpostcode());
         quoteEntity.setEndroadAddress(quoteDto.getEndroadAddress());
@@ -98,6 +103,7 @@ public class QuoteEntity {
         this.totalPrice  = quoteDto.getTotalprice();
         this.createdAt = quoteDto.getCreatedat();
         this.product = quoteDto.getProduct();
+        this.member=quoteDto.getWriter();
         this.location = quoteDto.getLocation();
         this.gopostcode=quoteDto.getGopostcode();
         this.goroadAddress=quoteDto.getGoroadAddress();

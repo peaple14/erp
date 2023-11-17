@@ -35,7 +35,7 @@ public class InitData {
             memberDto2.setUserauthority("ADMIN");
             memberRepository.save(MemberEntity.toMemberEntity(memberDto2));
 
-            log.info("계정 초기 데이터를 추가했습니다.");
+            log.info("계정 초기 데이터를 추가");
         } else {
             log.info("계정 데이터가 이미 존재합니다. 초기화하지 않았습니다.");
         }

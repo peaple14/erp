@@ -1,20 +1,18 @@
 package com.example.erp.report.controller;
 
-import com.example.erp.company.dto.CompanyDto;
-import com.example.erp.company.entity.CompanyEntity;
-import com.example.erp.company.service.CompanyService;
-import com.example.erp.member.entity.MemberEntity;
 import com.example.erp.member.service.NotificationService;
 import com.example.erp.product.entity.ProductEntity;
+import com.example.erp.report.dto.DeliveryDto;
 import com.example.erp.report.dto.QuoteDto;
-import com.example.erp.report.entity.QuoteEntity;
 import com.example.erp.report.service.QuoteService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -94,4 +92,25 @@ public class QuoteController {
         quoteService.mesugm(id, quoteDto);
         return "redirect:/quote_list";
     }
+
+    //배송현재상황
+    @PostMapping("/delievery")
+    public ResponseEntity<String> receivePayment(@RequestBody DeliveryDto dto) {
+        long companyId = dto.getCompany_id();
+        int location = dto.getLocation();
+        System.out.println("이건 제대로 되나: " + dto);
+        QuoteDto quoteDto = quoteService.findById((int) companyId);
+
+        // quoteDto가 null이 아닌지 확인
+        if (quoteDto != null) {
+            quoteDto.setLocation(location);
+            quoteService.update((int) companyId, quoteDto);
+            return ResponseEntity.ok("배송 처리가 확인 되었습니다.");
+        } else {
+            // quoteDto가 null이면 적절한 응답 반환
+            return ResponseEntity.badRequest().body("견적서를 찾을 수 없습니다.");
+        }
+    }
+
+
 }

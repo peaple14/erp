@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>견적서 리스트</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 <body class="quote-list">
 <div class="quote-container">
@@ -25,11 +26,12 @@
             <th>자세히</th>
             <th>수정</th>
             <th>결제 완료</th>
+            <th>배송 상황</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="quote : ${quotes}">
-            <td th:text="${quote.id}"></td>
+        <tr th:each="quote : ${quotes}" th:id="'quote_row_' + ${quote.id}">
+            <td id="quote_id" th:text="${quote.id}"></td>
             <td>
                 <a th:text="${quote.quotename}"></a>
             </td>
@@ -57,12 +59,53 @@
                 <a th:if="${quote.checkmember == null}" th:href="@{'/quote_check_ok/' + ${quote.id}}"
                    class="quote-check-button btn btn-success">결제 완료</a>
             </td>
+
+            <td>
+                <button class="sendDelivery" data-action="1" th:attr="data-quote-id=${quote.id}">배송중</button>
+                <button class="sendDelivery" data-action="2" th:attr="data-quote-id=${quote.id}">배송완료</button>
+            </td>
         </tr>
         </tbody>
     </table>
 </div>
 </body>
 </html>
+
+<script>
+    $(document).ready(function() {
+        $(".sendDelivery").click(function() {
+            var delivery = parseInt($(this).data("action"));
+            var companyId = $(this).data("quote-id");
+
+            var data = {
+                location: delivery,
+                company_id: companyId,
+            };
+
+            console.log("보낼 데이터:", data); // 데이터를 콘솔에 출력
+
+            $.ajax({
+                url: "/delievery",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function(response) {
+                    console.log("서버 응답:", response); // 성공 시 응답을 콘솔에 출력
+                    alert("처리가 완료.");
+                    location.reload(); // 페이지 새로고침
+                },
+                error: function(error) {
+                    console.error("오류 발생:", error); // 오류 시 에러를 콘솔에 출력
+                    alert("처리중 오류발생.");
+                }
+            });
+        });
+    });
+
+</script>
+
+
+
 
 <style>
     /* 견적서 리스트 페이지 스타일 */
