@@ -23,29 +23,28 @@
         <input type="text" id="productname" name="productname" required>
     </div>
     <div class="form-group">
-
-        <div class="form-group">
-            <label for="price">제품가격:</label>
-            <input type="number" id="price" name="price" required>
-        </div>
-        <div class="form-group">
-            <label for="makecompany">제조업체:</label>
-            <!-- 드롭다운 목록 -->
-            <select id="makecompany" name="makecompany" required>
-                <option value="" selected disabled>제조업체 선택</option>
-                <th:block th:each="company : ${companies}">
-                    <option th:value="${company.id}" th:text="${company.companyName}"></option>
-                </th:block>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="makeday">제조년도:</label>
-            <input type="month" id="makeday" name="makeday" required>
-        </div>
-        <!-- hidden 필드로 선택한 회사의 id를 보냅니다 -->
-        <input type="hidden" id="selectedCompanyId" name="selectedCompanyId">
-        <button type="submit" class="btn btn-primary">저장</button>
-        <a onclick="loadTab('product_list')">뒤로 가기</a>
+        <label for="price">제품가격:</label>
+        <input type="number" id="price" name="price" required>
+    </div>
+    <div class="form-group">
+        <label for="makecompany">제조업체:</label>
+        <!-- 드롭다운 목록 -->
+        <select id="makecompany" name="makecompany" required>
+            <option value="" selected disabled>제조업체 선택</option>
+            <th:block th:each="company : ${companies}">
+                <option th:value="${company.id}" th:text="${company.companyName}"></option>
+            </th:block>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="makeday">제조년도:</label>
+        <input type="month" id="makeday" name="makeday" required>
+    </div>
+    <!-- hidden 필드로 선택한 회사의 id를 보냅니다 -->
+    <input type="hidden" id="selectedCompanyId" name="selectedCompanyId">
+    <div class="button-container">
+        <button class="save-button" type="submit">저장</button>
+        <button class="cancel-button" onclick="loadTab('product_list')">뒤로 가기</button>
     </div>
 </form>
 
@@ -55,78 +54,57 @@
 
 
 <style>
-    /* styles.css */
-
-    /* 제품 추가 페이지 스타일 */
-    body.product-add {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        margin-top: 20px;
-        padding: 0;
+    form {
+        max-width: 400px;
+        margin: 0 auto;
     }
 
-    .product-add h1 {
-        font-size: 24px;
-        margin: 0 0 20px 0;
+    div {
+        margin-bottom: 10px;
     }
 
-    .product-add form {
-        background-color: #fff;
-        padding: 0;
-        margin: 0;
-    }
-
-    .product-add .form-group {
-        margin-bottom: 20px;
-    }
-
-    .product-add label {
+    label {
         display: block;
-        font-weight: bold;
         margin-bottom: 5px;
     }
 
-    .product-add input[type="text"],
-    .product-add input[type="datetime-local"] {
-        width: calc(100% - 22px);
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-    }
-
-    .product-add select {
+    input,
+    select {
         width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
+        padding: 8px;
+        box-sizing: border-box;
     }
 
-    .product-add button {
-        padding: 10px 20px;
-        font-size: 15px;
-        text-align: center;
-        text-decoration: none;
+    .button-container {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .save-button,
+    .cancel-button {
+        width: calc(50% - 5px);
+        padding: 10px;
+        border: none;
         border-radius: 5px;
         cursor: pointer;
-        transition: background-color 0.3s;
-        background-color: #007bff;
+    }
+
+    .save-button {
+        background-color: #4caf50;
         color: #fff;
-        border: none;
     }
 
-    .product-add button:hover {
-        background-color: #0056b3;
+    .cancel-button {
+        background-color: #aaa;
+        color: #fff;
     }
 
-    .product-add a {
-        text-decoration: none;
-        color: #007bff;
-        font-size: 16px;
-        float: right;
+    .save-button:hover {
+        background-color: #45a049;
     }
 
-    .product-add a:hover {
-        text-decoration: underline;
+    .cancel-button:hover {
+        background-color: #777;
     }
 
 </style>

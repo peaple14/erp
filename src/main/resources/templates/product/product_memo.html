@@ -1,39 +1,43 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>제품 세부 정보</title>
 </head>
+
 <body class="company-info">
 <div class="company-info-container">
     <h1 class="company-title">제품 세부 정보</h1>
     <hr>
-<div th:if="${product != null}">
-    <p><strong>ID:</strong> <span th:text="${product.id}"></span></p>
-    <p><strong>제품명:</strong> <span th:text="${product.productname}"></span></p>
-    <p><strong>제품코드:</strong> <span th:text="${product.productcode}"></span></p>
-    <p><strong>재고량:</strong> <span th:text="${product.count}"></span></p>
-    <p><strong>제품가격:</strong> <span th:text="${product.price}"></span></p>
-    <p><strong>제조업체:</strong> <span th:text="${product.makecompany.companyName}"></span></p>
-    <p><strong>제조년도:</strong> <span th:text="${#temporals.format(product.makeday, 'yyyy-MM')}"></span></p>
+    <div th:if="${product != null}">
+        <p><strong>ID:</strong> <span th:text="${product.id}"></span></p>
+        <p><strong>제품명:</strong> <span th:text="${product.productname}"></span></p>
+        <p><strong>제품코드:</strong> <span th:text="${product.productcode}"></span></p>
+        <p><strong>재고량:</strong> <span th:text="${product.count}"></span></p>
+        <p><strong>제품가격:</strong> <span th:text="${product.price}"></span></p>
+        <p><strong>제조업체:</strong> <span th:text="${product.makecompany.companyName}"></span></p>
+        <p><strong>제조년도:</strong> <span th:text="${#temporals.format(product.makeday, 'yyyy-MM')}"></span></p>
 
-    <!-- 수정 버튼 추가 (수정 페이지로 이동) -->
-    <a class="product-link" th:attr="ad='/product_edit/' + ${product.id}"
-       onclick="loadTab(this.getAttribute('ad'))">수정</a>
-</div>
-<div th:if="${product == null}">
-    <p>해당 ID에 대한 제품이 없습니다.</p>
-</div>
-    <a onclick="loadTab('product_list')">뒤로 가기</a>
+        <!-- 수정 버튼 추가 (수정 페이지로 이동) -->
+        <div class="button-container">
+            <a class="product-link" th:attr="ad='/product_edit/' + ${product.id}"
+               onclick="loadTab(this.getAttribute('ad'))">수정</a>
+            <a class="product-link" onclick="loadTab('product_list')">뒤로 가기</a>
+        </div>
+    </div>
+    <div th:if="${product == null}">
+        <p>해당 ID에 대한 제품이 없습니다.</p>
+    </div>
 </div>
 </body>
+
 </html>
 
 <style>
-
     .company-title {
-        font-size: 24px;
+        font-size: 36px;
         margin: 0 0 20px 0;
     }
 
@@ -46,11 +50,14 @@
 
     .company-info-container {
         background-color: #fff;
-        padding: 0;
-        margin: 0;
+        padding: 20px;
+        margin: 0 auto;
+        max-width: 400px;
+        border-radius: 5px;
     }
 
     .company-info-container p {
+        font-size: 18px;
         margin: 10px 0;
     }
 
@@ -58,15 +65,21 @@
         font-weight: bold;
     }
 
+    .button-container {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
     .company-info-container a {
+        font-size: 20px;
         text-decoration: none;
         color: #007bff;
-        margin-top: 10px;
-        display: block;
+        display: inline-block;
+        cursor: pointer;
     }
 
     .company-info-container a:hover {
         text-decoration: underline;
     }
-
 </style>
