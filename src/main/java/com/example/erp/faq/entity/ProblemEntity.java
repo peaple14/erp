@@ -42,7 +42,7 @@ public class ProblemEntity {
     }
 
 
-    //시간되면 더티체킹 수정용.
+    //더티체킹 수정용.
     public void update(String problemTitle, String problemMemo) {
         System.out.println("시작");
         if (problemTitle != null) {

@@ -24,6 +24,7 @@ public class QuoteDto {
     private long totalprice; //총단가
     private long receivemoney; //받은돈
     private LocalDate createdat; //견적서일자
+    private LocalDate endat; //배송완료일자
     private MemberEntity writer; // 작성자
     private int location;//현재위치(나중에 배송중사용)
     private MemberEntity checkmember; //누가 최종확인했는지
@@ -33,6 +34,7 @@ public class QuoteDto {
     private String endpostcode; //받을우편번호
     private String enddetailAddress; //받을상세주소
     private String endroadAddress; //받을도로명주소
+
 
 
     //메서드이름 다음부터 잘좀짓기

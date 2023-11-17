@@ -22,6 +22,7 @@ public class ExpendDto {
     private long quantity; // 수량
     private long totalprice; // 총 단가
     private LocalDate createdat; // 지출결의서 일자
+    private LocalDate endat; //배송완료일자
     private MemberEntity writer; // 작성자
     private MemberEntity checkmember; // 누가 최종 확인했는지
     private String gopostcode; //출발우편번호
@@ -36,6 +37,7 @@ public class ExpendDto {
         expendDto.setId(expendEntity.getId());
         expendDto.setExpendname(expendEntity.getExpendname());
         expendDto.setProduct(expendEntity.getProduct());
+        expendDto.setEndat(expendEntity.getEndAt());
         expendDto.setQuantity(expendEntity.getQuantity());
         expendDto.setTotalprice(expendEntity.getTotalPrice());
         expendDto.setCreatedat(expendEntity.getCreatedAt());

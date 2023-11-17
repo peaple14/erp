@@ -30,6 +30,9 @@ public class ExpendEntity {
     private LocalDate createdAt;
 
     @Column
+    private LocalDate endAt;
+
+    @Column
     private int location;
 
     @ManyToOne

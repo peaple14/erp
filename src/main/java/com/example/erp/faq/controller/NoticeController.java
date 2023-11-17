@@ -32,7 +32,7 @@ public class NoticeController {
     @GetMapping("/notice_add")
     public String notice_add() {
 //        System.out.println("세션내용:" + session.getAttribute("loginId"));
-        return "faq/notice/notice_add";  //글추가할 페이지입니다.
+        return "faq/notice/notice_add";
     }
 
     //글추가 처리 -> 권한이 admin일때만 되도록.
@@ -40,8 +40,8 @@ public class NoticeController {
     public String notice_ok(@ModelAttribute NoticeDto noticeDTO, HttpSession session) throws IOException {
         System.out.println("세션내용:" +  session.getAttribute("loginId"));
         noticeDTO.setWriter(session.getAttribute("loginId").toString());
-        noticeSerivce.save(noticeDTO); //writer은 session에서 받아욜 예정입니다.
-        return "redirect:/notice_list"; //글추가 끝나고 갈페이지입니다.
+        noticeSerivce.save(noticeDTO); //writer은 session에서 받아욜 예정
+        return "redirect:/notice_list";
     }
 
 

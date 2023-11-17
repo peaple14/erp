@@ -53,11 +53,7 @@ public class InitProductData {
         productService.save(productDto);
     }
 
-    private CompanyEntity createDummyCompany(String companyName) {
-        CompanyEntity companyEntity = new CompanyEntity();
-        companyEntity.setCompanyName(companyName);
-        return companyEntity;
-    }
+
 
     @Transactional
     public CompanyEntity findById(long id) {
