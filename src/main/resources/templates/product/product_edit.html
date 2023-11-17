@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,22 +8,30 @@
 
     <!-- jQuery 스크립트 추가 -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- Bootstrap CSS 라이브러리 추가 -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
-<body>
-<h1>제품 수정</h1>
-<form id="editForm" th:object="${product}" method="post" th:action="@{/product_edit_ok}">
-    <input type="hidden" th:field="*{id}" />
 
-    <p><strong>제품명:</strong> <input type="text" th:field="*{productname}" /></p>
-    <p><strong>재고량:</strong> <input type="text" th:field="*{count}" /></p>
-    <p><strong>제품가격:</strong> <input type="text" th:field="*{price}" /></p>
+<body class="product-edit">
+<form id="editForm" th:object="${product}" method="post" th:action="@{/product_edit_ok}" class="edit-form">
+    <input type="hidden" th:field="*{id}" />
+    <h1>제품 수정</h1>
+    <hr>
+    <div class="form-group">
+        <label for="productname"><strong>제품명:</strong></label>
+        <input type="text" th:field="*{productname}" />
+    </div>
+    <div class="form-group">
+        <label for="count"><strong>재고량:</strong></label>
+        <input type="text" th:field="*{count}" />
+    </div>
+    <div class="form-group">
+        <label for="price"><strong>제품가격:</strong></label>
+        <input type="text" th:field="*{price}" />
+    </div>
 
     <div class="form-group">
-        <label for="makecompany">제조업체:</label>
+        <label for="makecompany"><strong>제조업체:</strong></label>
         <!-- 드롭다운 목록 -->
-        <select id="makecompany" name="makecompany" required>
+        <select id="makecompany" name="makecompany" required style="width: 100%;">
             <option value="" selected disabled>제조업체 선택</option>
             <th:block th:each="company, iterStat : ${companies}">
                 <option th:value="${company.id}" th:text="${company.companyName}"
@@ -31,13 +40,16 @@
         </select>
     </div>
     <div class="form-group">
-        <label for="makeday">제조년도:</label>
-        <input type="month" id="makeday" name="makeday" required th:value="${#temporals.format(product.makeday, 'yyyy-MM')}" />
+        <label for="makeday"><strong>제조년도:</strong></label>
+        <input type="month" id="makeday" name="makeday" required
+               th:value="${#temporals.format(product.makeday, 'yyyy-MM')}" />
     </div>
 
-    <input type="button" id="editBtn" onclick="loadTab('product_list')" value="수정">
+    <div class="button-container">
+        <a type="button" id="editBtn" onclick="loadTab('product_list')" class="edit-button">수정</a>
+        <a onclick="loadTab('product_list')" class="back-link">뒤로 가기</a>
+    </div>
 </form>
-<a onclick="loadTab('product_list')">뒤로 가기</a>
 
 <!-- Ajax 스크립트 추가 -->
 <script>
@@ -62,4 +74,76 @@
     });
 </script>
 </body>
+
 </html>
+
+<style>
+    /* 스타일 추가 */
+    body.product-edit {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin-top: 20px;
+        padding: 0;
+    }
+
+    .edit-form {
+        background-color: #fff;
+        padding: 20px;
+        margin: 0 auto;
+        max-width: 400px;
+        border-radius: 5px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    input[type="month"],
+    select {
+        width: calc(100% - 22px);
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    .button-container {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
+    .edit-button {
+        padding: 10px 20px;
+        font-size: 15px;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+    }
+
+    .edit-button:hover {
+        background-color: #0056b3;
+    }
+
+    .back-link {
+        text-decoration: none;
+        color: #007bff;
+        font-size: 16px;
+        display: block;
+        margin-top: 10px;
+    }
+
+    .back-link:hover {
+        text-decoration: underline;
+    }
+</style>
