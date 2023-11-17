@@ -59,7 +59,18 @@ public class ProductService {
     @Transactional
     public void update(Long id, ProductDto productDto) {
         ProductEntity productEntity = productRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("제품: " + id + " 를 찾을 수 없습니다."));
+                .orElseThrow(() -> new EntityNotFoundException("제품: "+ id +"를 찾을 수 없습니다."));
         productEntity.update(productDto);
+    }
+
+    //배송완료시 갯수변경
+    @Transactional
+    public void countupdate(Long id, long count) { //상품id와 추가되거나 빠진갯수
+        ProductDto productDto = findById(id);
+        if (productDto == null) {
+            throw new EntityNotFoundException("상품 ID에 해당하는 상품이 존재하지 않습니다.");
+        }
+        productDto.setCount(productDto.getCount() + count);
+        update(id, productDto);
     }
 }
