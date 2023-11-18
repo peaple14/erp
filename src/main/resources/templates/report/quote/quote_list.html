@@ -40,7 +40,7 @@
             <td th:text="${quote.quantity}"></td>
             <td th:text="${quote.totalprice}"></td>
             <td th:text="${quote.createdat}"></td>
-            <td th:text="${quote.writer.userName}"></td>
+            <td th:text="${quote.writer != null ? quote.writer.userName : ''}"></td>
             <td>
                 <span th:if="${quote.checkmember != null}">확인됨</span>
                 <span th:if="${quote.checkmember == null}">미확인</span>

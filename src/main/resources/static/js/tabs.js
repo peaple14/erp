@@ -61,7 +61,7 @@ function loadTab(pageUrl, tabId, tabIdx) {
                     tabContents.appendChild(temp);
                     tabCounter++; // 탭이 생성될 때마다 카운터 증가
                     temp.id = 'tabContent' + tabCounter;
-                    console.log(substr(tabIdx))
+                    //console.log(substr(tabIdx))
 
                     // 페이지가 로드되었음을 표시하고 저장
                     loadedPages[tabId] = html_dom.body;
@@ -185,8 +185,8 @@ function changeSidebar(menu) {
     } else if (menu === 'menu5') {
         sidebarContent = `
                     <ul class="sidebar-links">
-                        <li><a href="#" onclick="addTab('고객불만접수','/problem_list')">고객불만접수</a></li>
                         <li><a href="#" onclick="addTab('공지사항','/notice_list')">공지사항</a></li>
+                        <li><a href="#" onclick="addTab('고객불만접수','/problem_list')">고객불만접수</a></li>
                     </ul>
                 `;
     }

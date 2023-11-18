@@ -10,12 +10,34 @@
         const eventSource = new EventSource('http://localhost:8080/subscribe/1');
 
         eventSource.addEventListener('sse', event => {
-            console.log(event);
+            console.log(event.data);
+            showNotifications(event.data); // Corrected function name
         });
+
+        function showNotifications(message) {
+            // 알림을 표시하는 로직 추가
+            var notification = document.createElement('div');
+            notification.className = 'notification';
+
+            // 알림 메시지
+            var messageContent = document.createElement('span');
+            messageContent.textContent = message;
+            notification.appendChild(messageContent);
+
+            // 닫기 버튼
+            var closeButton = document.createElement('span');
+            closeButton.textContent = 'x';
+            closeButton.className = 'close-button';
+            closeButton.onclick = function() {
+                document.body.removeChild(notification);
+            };
+            notification.appendChild(closeButton);
+
+            document.body.appendChild(notification);
+        }
     </script>
-    <script th:unless="${authority eq 'ADMIN'}">
-        console.log("사용자는 ADMIN 권한이 없습니다.");
-    </script>
+
+
 </head>
 <body>
 <!-- 네비게이션 바 -->
@@ -28,6 +50,7 @@
         <li><a href="#" onclick="changeSidebar('menu3')">보고서</a></li>
         <li><a href="#" onclick="changeSidebar('menu4')">주문</a></li>
         <li><a href="#" onclick="changeSidebar('menu5')">FAQ</a></li>
+        <li id="notification-icon"><a style="cursor: pointer">🔔</a></li>
     </ul>
 </nav>
 
@@ -53,3 +76,15 @@
 </script>
 </body>
 </html>
+<style>
+    .notification {
+        position: fixed;
+        top: 120px; /* 네비게이션 바의 하단에 정렬하려면 조절 필요 */
+        right: 20px;
+        background-color: #28a745; /* 알림 배경색 */
+        color: #fff;
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+</style>

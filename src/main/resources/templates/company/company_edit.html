@@ -10,38 +10,51 @@
 </head>
 
 <body class="company-edit">
-<form th:object="${company}" method="post" th:action="@{/company_edit_ok}">
+<form th:object="${company}" method="post" th:action="@{/company_edit_ok}" class="edit-form">
     <input type="hidden" th:field="*{id}" />
     <h1>회사 수정</h1>
     <hr>
-    <p><strong>회사 이름:</strong> <input type="text" th:field="*{companyName}" /></p>
-    <p><strong>회사 대표:</strong> <input type="text" th:field="*{companyVip}" /></p>
-    <p><strong>거래처 연락처:</strong> <input type="text" th:field="*{companyTel}" /></p>
-    <select id="status" name="status" required>
-        <option value="receive">receive</option>
-        <option value="send">send</option>
-    </select>
-    <div>
-        <label for="postcode">우편번호:</label>
-        <input type="text" id="postcode" name="postcode" placeholder="우편번호" th:value="${company.postcode}" readonly>
-        <input type="button" onclick="execDaumPostcode()" value="우편번호 찾기" required>
+    <div class="form-group">
+        <label for="companyName"><strong>회사 이름:</strong></label>
+        <input type="text" th:field="*{companyName}" />
     </div>
-    <div>
-        <label for="roadAddress">도로명주소:</label>
+    <div class="form-group">
+        <label for="companyVip"><strong>회사 대표:</strong></label>
+        <input type="text" th:field="*{companyVip}" />
+    </div>
+    <div class="form-group">
+        <label for="companyTel"><strong>거래처 연락처:</strong></label>
+        <input type="text" th:field="*{companyTel}" />
+    </div>
+    <div class="form-group">
+        <label for="status"><strong>상태:</strong></label>
+        <!-- 스타일 수정: 너비를 100%로 조정 -->
+        <select id="status" name="status" required style="width: 100%;">
+            <option value="receive">receive</option>
+            <option value="send">send</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="postcode"><strong>우편번호:</strong></label>
+        <input type="text" id="postcode" name="postcode" placeholder="우편번호" th:value="${company.postcode}" readonly>
+        <!-- 스타일 수정: 너비를 100%로 조정 -->
+        <input type="button" onclick="execDaumPostcode()" value="우편번호 찾기" required style="width: 100%; cursor: pointer;">
+    </div>
+    <div class="form-group">
+        <label for="roadAddress"><strong>도로명주소:</strong></label>
         <input type="text" id="roadAddress" name="roadAddress" placeholder="도로명주소" th:value="${company.roadAddress}" readonly>
         <span id="guide" style="color:#999;display:none"></span>
     </div>
-    <div>
-        <label for="detailAddress">상세주소:</label>
+    <div class="form-group">
+        <label for="detailAddress"><strong>상세주소:</strong></label>
         <input type="text" id="detailAddress" name="detailAddress" placeholder="상세주소" th:value="${company.detailAddress}">
     </div>
-    <input type="submit" value="수정">
-    <a onclick="loadTab('company_list')">뒤로 가기</a>
+    <div class="button-container">
+        <!-- 스타일 수정: 수정 버튼 스타일 조정 -->
+        <input type="submit" value="수정" class="edit-button">
+        <a onclick="loadTab('company_list')" class="back-link">뒤로 가기</a>
+    </div>
 </form>
-
-</body>
-
-</html>
 
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
@@ -84,9 +97,7 @@
     }
 </script>
 
-
 <style>
-
     /* 회사 수정 페이지 스타일 */
     body.company-edit {
         font-family: Arial, sans-serif;
@@ -102,21 +113,26 @@
 
     .company-edit form {
         background-color: #fff;
-        padding: 0;
+        padding: 20px;
         margin-top: 20px;
+        border-radius: 5px;
+        max-width: 400px;
+        margin: 0 auto;
     }
 
-    .company-edit p {
-        margin: 10px 0;
+    .form-group {
+        margin-bottom: 20px;
     }
 
-    .company-edit strong {
+    label {
         display: block;
         font-weight: bold;
         margin-bottom: 5px;
     }
 
-    .company-edit input[type="text"] {
+    input[type="text"],
+    select,
+    input[type="button"] {
         width: calc(100% - 22px);
         padding: 10px;
         border: 1px solid #ccc;
@@ -124,33 +140,39 @@
         margin-bottom: 10px;
     }
 
-    .company-edit input[type="submit"] {
-        padding: 5px 10px;
+    .button-container {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
+    .edit-button {
+        padding: 10px 20px;
         font-size: 15px;
         text-align: center;
         text-decoration: none;
         border-radius: 5px;
         cursor: pointer;
         transition: background-color 0.3s;
-        margin-top: 10px;
         background-color: #007bff;
         color: #fff;
         border: none;
     }
 
-    .company-edit input[type="submit"]:hover {
+    .edit-button:hover {
         background-color: #0056b3;
     }
 
-    .company-edit a {
+    .back-link {
         text-decoration: none;
         color: #007bff;
         font-size: 16px;
-        float: right;
     }
 
-    .company-edit a:hover {
+    .back-link:hover {
         text-decoration: underline;
     }
-
 </style>
+</body>
+
+</html>

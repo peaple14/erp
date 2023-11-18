@@ -1,16 +1,93 @@
-<!--수정값들도 들어오는건 로그로 들어오게 해뒀음. add로 추가할수있었던것만 수정하면됨.-->
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>지출결의서 수정</title>
+    <style>
+        /* 견적서 수정 페이지 스타일 */
+        body.expend-edit {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .expend-edit h1 {
+            font-size: 24px;
+            margin: 0 0 20px 0;
+        }
+
+        .expend-edit form {
+            background-color: #fff;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 5px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        select,
+        input[type="number"],
+        input[type="date"],
+        input[type="button"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .edit-button {
+            padding: 10px 20px;
+            font-size: 15px;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+        }
+
+        .edit-button:hover {
+            background-color: #0056b3;
+        }
+
+        .back-link {
+            text-decoration: none;
+            color: #007bff;
+            font-size: 16px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
     <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=520eefe9a26b8b1ec6d77a0a8d0a439d"></script>
 </head>
-<body>
-<h1>지출결의서 수정</h1>
+<body class="expend-edit"> <!-- 클래스 변경 -->
 <form action="/expend_edit_ok" method="post">
+    <h1>지출결의서 수정</h1>
+    <hr>
     <input type="hidden" id="id" name="id" th:value="${expendDto.id}">
     <input type="hidden" id="checkmember" name="checkmember" th:value="${expendDto.checkmember}" />
     <div>
@@ -19,7 +96,7 @@
     </div>
     <div>
         <label for="expendDto.company">회사 선택:</label>
-        <select id="expendDto.company" name="company" required>
+        <select id="expendDto.company" name="company" required style="width: 100%;">
             <option value="" selected disabled>회사 선택</option>
             <th:block th:each="product : ${products}">
                 <option th:value="${expendDto.id}" th:text="${expendDto.product.company.companyName}" th:selected="${expendDto.product.company != null && product.company.id == expendDto.product.company.id}"></option>
@@ -28,7 +105,7 @@
     </div>
     <div>
         <label for="expendDto.product">제품 선택:</label>
-        <select id="expendDto.product" name="product" required>
+        <select id="expendDto.product" name="product" required style="width: 100%;">
             <option value="" selected disabled>제품 선택</option>
             <th:block th:each="product : ${products}">
                 <option th:value="${expendDto.product.id}" th:text="${expendDto.product.productName}" th:selected="${expendDto.product != null && product.id == expendDto.product.id}"></option>
@@ -54,7 +131,7 @@
     <div>
         <label for="gopostcode">출발우편번호:</label>
         <input type="text" id="gopostcode" name="gopostcode" placeholder="우편번호" th:value="${expendDto.gopostcode}" readonly>
-        <input type="button" onclick="execDaumPostcode('go')" value="출발우편번호 찾기" required>
+        <input type="button" onclick="execDaumPostcode('go')" value="출발우편번호 찾기" required style="width: 100%; cursor: pointer;">
     </div>
     <div>
         <label for="goroadAddress">출발도로명주소:</label>
@@ -68,7 +145,7 @@
     <div>
         <label for="endpostcode">도착우편번호:</label>
         <input type="text" id="endpostcode" name="endpostcode" placeholder="우편번호" th:value="${expendDto.endpostcode}" readonly>
-        <input type="button" onclick="execDaumPostcode('end')" value="도착우편번호 찾기" required>
+        <input type="button" onclick="execDaumPostcode('end')" value="도착우편번호 찾기" required style="width: 100%; cursor: pointer;">
     </div>
     <div>
         <label for="endroadAddress">도착도로명주소:</label>
@@ -80,7 +157,10 @@
         <input type="text" id="enddetailAddress" name="enddetailAddress" placeholder="상세주소" th:value="${expendDto.enddetailAddress}">
     </div>
 
-    <button type="submit">수정</button>
+    <div class="button-container">
+        <button type="submit" class="edit-button">수정</button>
+        <a onclick="loadTab('expend_list')" class="back-link">뒤로 가기</a>
+    </div>
 </form>
 <script th:inline="javascript">
     // 수량과 단위 단가가 변경될 때 총 단가를 계산

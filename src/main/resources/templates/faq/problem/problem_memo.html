@@ -19,12 +19,15 @@
         <p><strong>내용:</strong> <span th:text="${problem.problemMemo}"></span></p>
 
         <!-- 수정 버튼 추가 -->
-        <a th:href="@{/problem_edit/{id}(id=${problem.id})}" class="edit-link">수정</a>
+        <div class="button-container">
+            <a class="info-link" th:attr="ad='problem_edit/' + ${problem.id}"
+               onclick="loadTab(this.getAttribute('ad'))">수정</a>
+        <a onclick="loadTab('problem_list')" class="info-link">뒤로 가기</a>
+        </div>
     </div>
     <div th:if="${problem == null}" class="no-problem">
         <p>해당 ID에 대한 고객불만접수가 없습니다.</p>
     </div>
-    <a href="/problem_list" class="back-link">뒤로 가기</a>
 </div>
 </body>
 </html>
@@ -42,7 +45,6 @@
 
     .problem-details {
         background-color: #fff;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
         margin: 20px auto;
         padding: 20px;
         border-radius: 5px;
@@ -76,13 +78,24 @@
         margin: 10px 0;
     }
 
-    .back-link {
-        display: block;
+    .button-container {
+        display: flex;
+        justify-content: space-between;
         margin-top: 20px;
-        text-align: center;
+    }
+
+    .info-link {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+        font-size: 20px;
         text-decoration: none;
+        cursor: pointer;
         color: #007bff;
-        font-size: 16px;
+    }
+
+    .info-link:hover {
+        text-decoration: underline;
     }
 
 </style>
