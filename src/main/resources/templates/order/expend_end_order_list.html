@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>주문완료 리스트</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+
+    .expend-container {
+      margin: 50px;
+    }
+
+    .expend-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    .expend-table th, .expend-table td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+
+    .expend-table th {
+      background-color: #343a40;
+      color: white;
+    }
+
+    .expend-table tbody tr:hover {
+      background-color: #f5f5f5;
+    }
+  </style>
+</head>
+
+<body class="expend-list">
+<div class="container">
+  <div class="expend-container">
+    <h1 class="text-center text-dark">주문완료 리스트</h1>
+    <table class="table table-hover expend-table">
+      <thead class="thead-dark">
+      <tr>
+        <th>ID</th>
+        <th>견적서 이름</th>
+        <th>회사 이름</th>
+        <th>제품명</th>
+        <th>총 단가</th>
+        <th>배송완료 일자</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="expend, rowStat : ${expends}">
+        <td th:text="${expend.id}"></td>
+        <td>
+          <a th:text="${expend.expendname}"></a>
+        </td>
+        <td th:text="${expend.product.company.companyName}"></td>
+        <td th:text="${expend.product.productName}"></td>
+        <td th:text="${expend.totalprice}"></td>
+        <td th:text="${expend.createdat}"></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</body>
+
+</html>

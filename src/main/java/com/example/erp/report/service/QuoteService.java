@@ -112,7 +112,7 @@ public class QuoteService {
 
     //미수금
     @Transactional
-    public String mesugm(int id ,QuoteDto quoteDto) {//이름짓기 이슈->나중에 리펙터링해서 바꾸기
+    public String mesugm(int id ,QuoteDto quoteDto) {
 
         //나중에 service로 옮기기.
         QuoteEntity quoteEntity = QuoteEntity.toSaveEntity(findById((int) quoteDto.id)); //모두 넣어서 견적서 완성본 만들기

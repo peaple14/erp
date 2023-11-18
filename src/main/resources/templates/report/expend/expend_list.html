@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>지출결의서 리스트</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 <body class="expend-list">
 <div class="expend-container">
     <h1>지출결의서 리스트
-        <a class="expend-button btn btn-primary" href="/expend_add" role="button">지출결의서 추가</a>
+        <a class="expend-button btn btn-primary" onclick="loadTab('expend_add')" role="button">지출결의서 추가</a>
     </h1>
     <table class="expend-table table table-hover">
         <thead class="thead-dark">
@@ -25,11 +26,12 @@
             <th>자세히</th>
             <th>수정</th>
             <th>결제 완료</th>
+            <th>배송 상황</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="expend : ${expends}">
-            <td th:text="${expend.id}"></td>
+        <tr th:each="expend : ${expends}" th:id="'expend_row_' + ${expend.id}">
+            <td id="expend_id" th:text="${expend.id}"></td>
             <td>
                 <a th:text="${expend.expendname}"></a>
             </td>
@@ -44,15 +46,27 @@
                 <span th:if="${expend.checkmember == null}">미확인</span>
             </td>
             <td>
-                <a th:href="@{'/expend_memo/' + ${expend.id}}">자세히 보기</a>
+                <a class="product-link" th:attr="ad='expend_memo/' + ${expend.id}"
+                   onclick="loadTab(this.getAttribute('ad'))">자세히 보기</a>
             </td>
             <td>
                 <span th:if="${expend.checkmember != null}">결제 완료</span>
-                <span th:if="${expend.checkmember == null}"> <a th:href="@{'/expend_edit/' + ${expend.id}}">수정</a></span>
+                <span th:if="${expend.checkmember == null}">
+                    <a class="product-link" th:attr="ad='expend_edit/' + ${expend.id}"
+                       onclick="loadTab(this.getAttribute('ad'))">수정</a></span>
             </td>
             <td>
                 <a th:if="${expend.checkmember == null}" th:href="@{'/expend_check_ok/' + ${expend.id}}"
                    class="expend-check-button btn btn-success">결제 완료</a>
+            </td>
+
+            <td>
+                <th:block th:if="${expend.location == 0}">
+                    <button class="sendDelivery" data-action="2" th:attr="data-expend-id=${expend.id}">배송완료</button>
+                </th:block>
+                <th:block th:if="${expend.location == 2}">
+                    <p>이미배송된상품</p>
+                </th:block>
             </td>
         </tr>
         </tbody>
@@ -60,6 +74,42 @@
 </div>
 </body>
 </html>
+
+<script>
+    $(document).ready(function() {
+        $(".sendDelivery").click(function() {
+            var delivery = parseInt($(this).data("action"));
+            var companyId = $(this).data("expend-id");
+
+            var data = {
+                location: delivery,
+                company_id: companyId,
+            };
+
+            console.log("보낼 데이터:", data); // 데이터를 콘솔에 출력
+
+            $.ajax({
+                url: "/delievery_expend",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function(response) {
+                    console.log("서버 응답:", response); // 성공 시 응답을 콘솔에 출력
+                    alert("처리가 완료.");
+                    location.reload(); // 페이지 새로고침
+                },
+                error: function(error) {
+                    console.error("오류 발생:", error); // 오류 시 에러를 콘솔에 출력
+                    alert("처리중 오류발생.");
+                }
+            });
+        });
+    });
+
+</script>
+
+
+
 
 <style>
     /* 지출결의서 리스트 페이지 스타일 */
@@ -122,5 +172,14 @@
 
     .expend-check-button {
         margin-right: 10px;
+    }
+    .product-link {
+        color: #007bff; /* 링크 색상 */
+        cursor: pointer;
+    }
+
+    .product-link:hover {
+        color: #0056b3; /* 호버 시 링크 색상 변경 */
+        text-decoration: underline;
     }
 </style>

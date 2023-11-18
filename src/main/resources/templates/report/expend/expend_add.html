@@ -1,16 +1,79 @@
-<!--회사 선택시 그 회사에서 파는 물품만 뜨도록 하고싶음.-->
-<!--만약 회사선택안하고 제품선택시 회사선택후 제품선택하라고 함.-->
-<!--단위단가는 그 제품의 가격이 뜨게하면좋겠음.-->
-<!--들어오는 값들은 log에 남도록 하겠음.-->
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>지출결의서 추가</title>
+    <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=520eefe9a26b8b1ec6d77a0a8d0a439d"></script>
+    <style>
+        #mapModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+
+        /* 추가된 스타일 */
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        div {
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
+
+
 <h1>지출결의서 추가</h1>
 <form action="/expend_add" method="post">
     <div>
@@ -21,16 +84,16 @@
         <label for="company">회사 선택:</label>
         <select id="company" name="company" required>
             <option value="" selected disabled>회사 선택</option>
+            <!-- 회사 목록을 동적으로 렌더링 -->
+            <th:block th:each="company : ${companies}">
+                <option th:value="${company.companyName}" th:text="${company.companyName}"></option>
+            </th:block>
         </select>
     </div>
     <div>
         <label for="product">제품 선택:</label>
         <select id="product" name="product" required>
             <option value="" selected disabled>제품 선택</option>
-            <!-- 제품 목록을 동적으로 렌더링 -->
-            <th:block th:each="product : ${products}">
-                <option th:value="${product.id}" th:text="${product.productName}"></option>
-            </th:block>
         </select>
     </div>
     <div>
@@ -49,6 +112,40 @@
         <label for="totalprice">총 단가:</label>
         <input type="number" id="totalprice" name="totalprice" required readonly>
     </div>
+
+    <div>
+        <label for="gopostcode">출발우편번호:</label>
+        <input type="text" id="gopostcode" name="gopostcode" placeholder="우편번호" value = "38430" readonly>
+        <input type="button" onclick="execDaumPostcode('go')" value="출발우편번호 찾기" required>
+    </div>
+    <div>
+        <label for="goroadAddress">출발도로명주소:</label>
+        <input type="text" id="goroadAddress" name="goroadAddress" placeholder="도로명주소" value = "경북 경산시 하양읍 하양로 13-13" readonly>
+        <span id="guide" style="color:#999;display:none"></span>
+    </div>
+    <div>
+        <label for="godetailAddress">출발상세주소:</label>
+        <input type="text" id="godetailAddress" name="godetailAddress" placeholder="상세주소" value = "C6 2층">
+    </div>
+    <div>
+        <label for="endpostcode">도착우편번호:</label>
+        <input type="text" id="endpostcode" name="endpostcode" placeholder="우편번호" readonly>
+        <input type="button" onclick="execDaumPostcode('end')" value="도착우편번호 찾기" required>
+    </div>
+    <div>
+        <label for="endroadAddress">도착도로명주소:</label>
+        <input type="text" id="endroadAddress" name="endroadAddress" placeholder="도로명주소" readonly>
+        <span id="guides" style="color:#999;display:none"></span>
+    </div>
+    <div>
+        <label for="enddetailAddress">도착상세주소:</label>
+        <input type="text" id="enddetailAddress" name="enddetailAddress" placeholder="상세주소">
+    </div>
+
+
+
+
+
     <button type="submit">저장</button>
 </form>
 <script th:inline="javascript">
@@ -66,6 +163,7 @@
     // 중복되지 않는 회사 목록 생성 및 드롭다운 업데이트
     const products = [[${products}]]; // 상품 목록
     const companySelect = document.getElementById("company");
+    const productSelect = document.getElementById("product");
 
     const uniqueCompanies = [...new Set(products.map(product => product.company.companyName))];
 
@@ -75,6 +173,59 @@
         option.text = companyName;
         companySelect.appendChild(option);
     });
+
+    companySelect.addEventListener("change", function() {
+        // 선택한 회사에 해당하는 제품만 필터링하여 렌더링
+        const selectedCompany = this.value;
+        productSelect.innerHTML = '<option value="" selected disabled>제품 선택</option>';
+        products.forEach(function(product) {
+            if (product.company.companyName === selectedCompany) {
+                const option = document.createElement("option");
+                option.value = product.id;
+                option.text = product.productName;
+                productSelect.appendChild(option);
+            }
+        });
+    });
 </script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+    function execDaumPostcode(addressType) {
+        new daum.Postcode({
+            oncomplete: function (data) {
+                var roadAddr = data.roadAddress;
+                var extraRoadAddr = '';
+
+                if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+                    extraRoadAddr += data.bname;
+                }
+
+                if (data.buildingName !== '' && data.apartment === 'Y') {
+                    extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                }
+
+                var postcodeField = document.getElementById(addressType + 'postcode');
+                var roadAddressField = document.getElementById(addressType + 'roadAddress');
+                var guideTextBox = document.getElementById('guide');
+                if (data.autoRoadAddress) {
+                    var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
+                    guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
+                    guideTextBox.style.display = 'block';
+                } else if (data.autoJibunAddress) {
+                    var expJibunAddr = data.autoJibunAddress;
+                    guideTextBox.innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
+                    guideTextBox.style.display = 'block';
+                } else {
+                    guideTextBox.innerHTML = '';
+                    guideTextBox.style.display = 'none';
+                }
+
+                postcodeField.value = data.zonecode;
+                roadAddressField.value = roadAddr;
+            }
+        }).open();
+    }
+</script>
+
 </body>
 </html>
