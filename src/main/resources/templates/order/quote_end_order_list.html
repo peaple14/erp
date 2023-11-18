@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>주문완료 리스트</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+
+    .quote-container {
+      margin: 50px;
+    }
+
+    .quote-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    .quote-table th, .quote-table td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+
+    .quote-table th {
+      background-color: #343a40;
+      color: white;
+    }
+
+    .quote-table tbody tr:hover {
+      background-color: #f5f5f5;
+    }
+  </style>
+</head>
+
+<body class="quote-list">
+<div class="container">
+  <div class="quote-container">
+    <h1 class="text-center text-dark">주문완료 리스트</h1>
+    <table class="table table-hover quote-table">
+      <thead class="thead-dark">
+      <tr>
+        <th>ID</th>
+        <th>견적서 이름</th>
+        <th>회사 이름</th>
+        <th>제품명</th>
+        <th>총 단가</th>
+        <th>배송완료 일자</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="quote, rowStat : ${quotes}">
+        <td th:text="${quote.id}"></td>
+        <td>
+          <a th:text="${quote.quotename}"></a>
+        </td>
+        <td th:text="${quote.product.company.companyName}"></td>
+        <td th:text="${quote.product.productName}"></td>
+        <td th:text="${quote.totalprice}"></td>
+        <td th:text="${quote.createdat}"></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</body>
+
+</html>

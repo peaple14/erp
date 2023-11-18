@@ -44,7 +44,7 @@ public class QuoteEntity {
     @Column
     private long receive_money; //받은돈들. 나중에 총단가와 비교할것.
 
-    //견적서 최종확인자 -> 굳이 이걸 join했어야했나? 그냥 멤버id적었음 되지 않았는가?
+    //견적서 최종확인자
     @ManyToOne
     @JoinColumn(name = "checkmember_id")
     private MemberEntity checkmember;

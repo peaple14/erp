@@ -98,7 +98,7 @@ public class QuoteController {
     }
 
     //배송현재상황
-    @PostMapping("/delievery")
+    @PostMapping("/delievery_quote")
     public ResponseEntity<String> receivePayment(@RequestBody DeliveryDto dto) {
         long companyId = dto.getCompany_id();
         int location = dto.getLocation();
