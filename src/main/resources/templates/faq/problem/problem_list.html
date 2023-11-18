@@ -18,12 +18,13 @@
     <tr th:each="problem : ${problem}">
         <td th:text="${problem.id}"></td>
         <td>
-            <a th:text="${problem.problemTitle}" th:href="@{'/problem_memo/' + ${problem.id}}"></a>
+            <a class="notice-link" th:text="${problem.problemTitle}" th:attr="ad='problem_memo/' + ${problem.id}"
+               onclick="loadTab(this.getAttribute('ad'))"></a>
         </td>        <td th:text="${problem.writer}"></td>
         <td th:text="${problem.problemCreatedTime}"></td>
     </tr>
 </table>
-<a class="notice-button" href="/problem_add">글쓰기</a> <!-- 글쓰기 버튼 -->
+<a class="notice-button" onclick="loadTab('problem_add')">글쓰기</a> <!-- 글쓰기 버튼 -->
 </div>
 </body>
 </html>
@@ -42,9 +43,8 @@
     .notice-container {
         background-color: #fff;
         /*box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);*/
-        margin: 20px;
-        padding: 20px;
-        border-radius: 5px;
+        margin: 0;
+        padding: 0;
         text-align: center; /* 공지사항 제목 가운데 정렬 */
     }
 
@@ -75,6 +75,7 @@
 
     .notice-link:hover {
         text-decoration: underline;
+        cursor: pointer;
     }
 
     .notice-button {
@@ -93,12 +94,13 @@
         margin-top: 5px; /* 약간의 상단 간격 조정 */
         font-weight: bold;
         position: absolute;
-        top: 180px; /* 조정 필요 */
+        top: 5px; /* 조정 필요 */
         right: 110px; /* 조정 필요 */
     }
 
     .notice-button:hover {
         background-color: #333333; /* hover 시 더 어두운 회색 */
+        cursor: pointer;
     }
 
     .notice-table th:first-child,

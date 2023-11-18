@@ -1,86 +1,88 @@
-<!--수정값들도 들어오는건 로그로 들어오게 해뒀음. add로 추가할수있었던것만 수정하면됨.-->
-
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>견적서 수정</title>
     <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=520eefe9a26b8b1ec6d77a0a8d0a439d"></script>
 </head>
-<body>
-<h1>견적서 수정</h1>
-<form action="/quote_edit_ok" method="post">
+<body class="company-edit">
+<form action="/quote_edit_ok" method="post" class="edit-form">
     <input type="hidden" id="id" name="id" th:value="${quoteDto.id}">
     <input type="hidden" id="checkmember" name="checkmember" th:value="${quoteDto.checkmember}" />
-    <div>
-        <label for="quotename">견적서 이름:</label>
+    <h1>견적서 수정</h1>
+    <hr>
+    <div class="form-group">
+        <label for="quotename"><strong>견적서 이름:</strong></label>
         <input type="text" id="quotename" name="quotename" th:value="${quoteDto.quotename}" required>
     </div>
-    <div>
-        <label for="quoteDto.company">회사 선택:</label>
-        <select id="quoteDto.company" name="company" required>
+    <div class="form-group">
+        <label for="quoteDto.company"><strong>회사 선택:</strong></label>
+        <select id="quoteDto.company" name="company" required style="width: 100%;">
             <option value="" selected disabled>회사 선택</option>
             <th:block th:each="product : ${products}">
                 <option th:value="${quoteDto.id}" th:text="${quoteDto.product.company.companyName}" th:selected="${quoteDto.product.company != null && product.company.id == quoteDto.product.company.id}"></option>
             </th:block>
         </select>
     </div>
-    <div>
-        <label for="quoteDto.product">제품 선택:</label>
-        <select id="quoteDto.product" name="product" required>
+    <div class="form-group">
+        <label for="quoteDto.product"><strong>제품 선택:</strong></label>
+        <select id="quoteDto.product" name="product" required style="width: 100%;">
             <option value="" selected disabled>제품 선택</option>
             <th:block th:each="product : ${products}">
                 <option th:value="${quoteDto.product.id}" th:text="${quoteDto.product.productName}" th:selected="${quoteDto.product != null && product.id == quoteDto.product.id}"></option>
             </th:block>
         </select>
     </div>
-    <div>
-        <label for="quantity">수량:</label>
+    <div class="form-group">
+        <label for="quantity"><strong>수량:</strong></label>
         <input type="number" id="quantity" name="quantity" th:value="${quoteDto.quantity}" required>
     </div>
-    <div>
-        <label for="price">단위 단가:</label>
+    <div class="form-group">
+        <label for="price"><strong>단위 단가:</strong></label>
         <input type="number" id="price" name="price" th:value="${quoteDto.product.price}" required>
     </div>
-    <div>
-        <label for="createdAt">일자 선택:</label>
+    <div class="form-group">
+        <label for="createdAt"><strong>일자 선택:</strong></label>
         <input type="date" id="createdAt" name="createdat" th:value="${#temporals.format(quoteDto.createdat, 'yyyy-MM-dd')}" required>
     </div>
-    <div>
-        <label for="totalprice">총 단가:</label>
+    <div class="form-group">
+        <label for="totalprice"><strong>총 단가:</strong></label>
         <input type="number" id="totalprice" name="totalprice" th:value="${quoteDto.totalprice}" required readonly>
     </div>
-    <div>
-        <label for="gopostcode">출발우편번호:</label>
+    <div class="form-group">
+        <label for="gopostcode"><strong>출발우편번호:</strong></label>
         <input type="text" id="gopostcode" name="gopostcode" placeholder="우편번호" th:value="${quoteDto.gopostcode}" readonly>
-        <input type="button" onclick="execDaumPostcode('go')" value="출발우편번호 찾기" required>
+        <input type="button" onclick="execDaumPostcode('go')" value="출발우편번호 찾기" required style="width: 100%; cursor: pointer;">
     </div>
-    <div>
-        <label for="goroadAddress">출발도로명주소:</label>
+    <div class="form-group">
+        <label for="goroadAddress"><strong>출발도로명주소:</strong></label>
         <input type="text" id="goroadAddress" name="goroadAddress" placeholder="도로명주소" th:value="${quoteDto.goroadAddress}" readonly>
         <span id="guide" style="color:#999;display:none"></span>
     </div>
-    <div>
-        <label for="godetailAddress">출발상세주소:</label>
+    <div class="form-group">
+        <label for="godetailAddress"><strong>출발상세주소:</strong></label>
         <input type="text" id="godetailAddress" name="godetailAddress" placeholder="상세주소" th:value="${quoteDto.godetailAddress}">
     </div>
-    <div>
-        <label for="endpostcode">도착우편번호:</label>
+    <div class="form-group">
+        <label for="endpostcode"><strong>도착우편번호:</strong></label>
         <input type="text" id="endpostcode" name="endpostcode" placeholder="우편번호" th:value="${quoteDto.endpostcode}" readonly>
-        <input type="button" onclick="execDaumPostcode('end')" value="도착우편번호 찾기" required>
+        <input type="button" onclick="execDaumPostcode('end')" value="도착우편번호 찾기" required style="width: 100%; cursor: pointer;">
     </div>
-    <div>
-        <label for="endroadAddress">도착도로명주소:</label>
+    <div class="form-group">
+        <label for="endroadAddress"><strong>도착도로명주소:</strong></label>
         <input type="text" id="endroadAddress" name="endroadAddress" placeholder="도로명주소" th:value="${quoteDto.endroadAddress}" readonly>
         <span id="guides" style="color:#999;display:none"></span>
     </div>
-    <div>
-        <label for="enddetailAddress">도착상세주소:</label>
+    <div class="form-group">
+        <label for="enddetailAddress"><strong>도착상세주소:</strong></label>
         <input type="text" id="enddetailAddress" name="enddetailAddress" placeholder="상세주소" th:value="${quoteDto.enddetailAddress}">
     </div>
 
-    <button type="submit">수정</button>
+    <div class="button-container">
+        <button type="submit" class="edit-button">수정</button>
+        <a onclick="loadTab('quote_list')" class="back-link">뒤로 가기</a>
+    </div>
 </form>
 <script th:inline="javascript">
     // 수량과 단위 단가가 변경될 때 총 단가를 계산
@@ -132,5 +134,83 @@
         }).open();
     }
 </script>
+<style>
+    /* 견적서 수정 페이지 스타일 */
+    body.company-edit {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    .company-edit h1 {
+        font-size: 24px;
+        margin: 0 0 20px 0;
+    }
+
+    .company-edit form {
+        background-color: #fff;
+        padding: 20px;
+        margin-top: 20px;
+        border-radius: 5px;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    select,
+    input[type="number"],
+    input[type="date"],
+    input[type="button"] {
+        width: calc(100% - 22px);
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+
+    .button-container {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
+    .edit-button {
+        padding: 10px 20px;
+        font-size: 15px;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+    }
+
+    .edit-button:hover {
+        background-color: #0056b3;
+    }
+
+    .back-link {
+        text-decoration: none;
+        color: #007bff;
+        font-size: 16px;
+    }
+
+    .back-link:hover {
+        text-decoration: underline;
+    }
+</style>
 </body>
 </html>

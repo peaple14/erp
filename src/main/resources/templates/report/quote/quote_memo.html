@@ -1,15 +1,15 @@
-<!--이곳도 edit와 동일하게 모든 정보가 로그에 뜨게해뒀음. 디자인은 잘 못해서 원하는대로 보이게하면됨.-->
-
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>견적서 상세 정보</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body class="quote-memo">
 <div class="quote-container">
-  <h1>견적서 상세 정보</h1>
+  <h1 class="quote-title">견적서 상세 정보</h1>
+  <hr>
   <table class="quote-table table table-hover">
     <tr>
       <th>ID</th>
@@ -42,12 +42,64 @@
     <tr>
       <th>최종 확인 여부</th>
       <td>
-        <span th:if="${quote.checkmember != null}">확인됨</span>
-        <span th:if="${quote.checkmember == null}">미확인</span>
+        <span th:if="${quote.checkmember != null}" class="confirmed">확인됨</span>
+        <span th:if="${quote.checkmember == null}" class="unconfirmed">미확인</span>
       </td>
     </tr>
-
+    <tr>
+      <td>
+        <a onclick="loadTab('quote_list')" class="back-link">뒤로 가기</a>
+      </td>
+    </tr>
   </table>
 </div>
 </body>
 </html>
+
+<style>
+  body.quote-memo {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin-top: 20px;
+    padding: 0;
+  }
+
+  .quote-container {
+    background-color: #fff;
+    padding: 20px;
+    margin: 0 auto;
+    max-width: 600px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .quote-title {
+    font-size: 24px;
+    margin: 0 0 20px 0;
+  }
+
+  .quote-table th, .quote-table td {
+    padding: 10px;
+  }
+
+  .confirmed {
+    color: #28a745;
+    font-weight: bold;
+  }
+
+  .unconfirmed {
+    color: #dc3545;
+    font-weight: bold;
+  }
+  .back-link {
+    text-decoration: none;
+    color: #007bff;
+
+    font-size: 16px;
+  }
+
+  .back-link:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+</style>

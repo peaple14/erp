@@ -19,7 +19,7 @@
             <textarea id="problemMemo" name="problemMemo" rows="4" required placeholder="내용을 입력하세요." style="width: calc(100% - 22px);"></textarea>
         </div>
         <div class="button-container">
-            <button type="button" class="cancel-button">취소</button>
+            <button type="button" class="cancel-button" onclick="loadTab('problem_list')">취소</button>
             <button type="submit" class="save-button">저장</button>
         </div>
     </form>
@@ -59,7 +59,6 @@
 
     .problem-form {
         background-color: #fff;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
         margin: 20px auto;
         padding: 20px;
         border-radius: 5px;
