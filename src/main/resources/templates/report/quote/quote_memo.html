@@ -47,6 +47,10 @@
       </td>
     </tr>
     <tr>
+      <td>첨부파일: <a th:if="${quote.uploadFileName}" th:href="|/attach/quote/${quote.id}|" th:text="${quote.uploadFileName}"/></td>
+    </tr>
+
+    <tr>
       <td>
         <a onclick="loadTab('quote_list')" class="back-link">뒤로 가기</a>
       </td>
