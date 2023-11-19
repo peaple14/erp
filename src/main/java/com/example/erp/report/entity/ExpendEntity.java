@@ -78,6 +78,11 @@ public class ExpendEntity {
     @Column
     private String endroadAddress; //받을도로명주소
 
+    @Column
+    private String uploadFileName; //원래첨부파일이름
+    @Column
+    private String storeFileName; //저장된 첨부파일 이름
+
     public static ExpendEntity toSaveEntity(ExpendDto expendDto) {
         ExpendEntity expendEntity = new ExpendEntity();
         expendEntity.setExpendname(expendDto.getExpendname());
@@ -93,6 +98,9 @@ public class ExpendEntity {
         expendEntity.setEndpostcode(expendDto.getEndpostcode());
         expendEntity.setEndroadAddress(expendDto.getEndroadAddress());
         expendEntity.setEnddetailAddress(expendDto.getEnddetailAddress());
+        expendEntity.setUploadFileName(expendDto.getUploadFileName());
+        expendEntity.setStoreFileName(expendDto.getStoreFileName());
+
         return expendEntity;
     }
 

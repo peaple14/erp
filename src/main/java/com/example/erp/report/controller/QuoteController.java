@@ -5,6 +5,8 @@ import com.example.erp.product.entity.ProductEntity;
 import com.example.erp.product.service.ProductService;
 import com.example.erp.report.dto.DeliveryDto;
 import com.example.erp.report.dto.QuoteDto;
+import com.example.erp.report.dto.UploadFile;
+import com.example.erp.report.service.FileStore;
 import com.example.erp.report.service.QuoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,7 @@ public class QuoteController {
     private final QuoteService quoteService;
     private final NotificationService notificationService;
     private final ProductService productService;
+    private final FileStore fileStore;
 
     //리스트띄우기
     @GetMapping("/quote_list")
@@ -44,10 +47,14 @@ public class QuoteController {
     }
 
     @PostMapping("/quote_add")
-    public String quoteAdd(@ModelAttribute QuoteDto quoteDto, HttpSession session) {
+    public String quoteAdd(@ModelAttribute QuoteDto quoteDto, HttpSession session) throws IOException {
+        UploadFile attachFile = fileStore.storeFile(quoteDto.getAttachFile());
+        System.out.println("뭐있는지나 보자:" + attachFile);
+        quoteDto.setStoreFileName(attachFile.getStoreFileName());
+        quoteDto.setUploadFileName(attachFile.getUploadFileName());
         quoteDto.setLocation(0);//
         quoteDto.setWriter(quoteService.getMember((String) session.getAttribute("loginId")));
-        notificationService.sendToClient(1L, quoteDto.getId() + "번 견적서가 추가되었습니다."); //로그인된 모든 admin에게 알람.
+        notificationService.sendToClient(1L, quoteDto.getQuotename() + " 견적서가 추가되었습니다."); //로그인된 모든 admin에게 알람.
         quoteService.save(quoteDto);
         return "redirect:/quote_list";
     }
@@ -73,7 +80,7 @@ public class QuoteController {
 
     @PostMapping("/quote_edit_ok")
     public String quoteEditOk(@RequestParam(name = "id") int id, @ModelAttribute QuoteDto quoteDto) {
-        notificationService.sendToClient(1L, quoteDto.getId() + "번 견적서가 수정되었습니다."); //로그인된 모든 admin에게 알람.
+        notificationService.sendToClient(1L, quoteDto.getQuotename() + " 견적서가 수정되었습니다."); //로그인된 모든 admin에게 알람.
         quoteService.update(id, quoteDto);
         return "redirect:/quote_list";
     }

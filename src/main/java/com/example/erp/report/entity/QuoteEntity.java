@@ -77,6 +77,11 @@ public class QuoteEntity {
     @Column
     private String endroadAddress; //받을도로명주소
 
+    @Column
+    private String uploadFileName; //원래첨부파일이름
+    @Column
+    private String storeFileName; //저장된 첨부파일 이름
+
     public static QuoteEntity toSaveEntity(QuoteDto quoteDto) {
         QuoteEntity quoteEntity = new QuoteEntity();
         quoteEntity.setQuotename(quoteDto.getQuotename());
@@ -92,6 +97,8 @@ public class QuoteEntity {
         quoteEntity.setEndpostcode(quoteDto.getEndpostcode());
         quoteEntity.setEndroadAddress(quoteDto.getEndroadAddress());
         quoteEntity.setEnddetailAddress(quoteDto.getEnddetailAddress());
+        quoteEntity.setUploadFileName(quoteDto.getUploadFileName());
+        quoteEntity.setStoreFileName(quoteDto.getStoreFileName());
         return quoteEntity;
     }
 
