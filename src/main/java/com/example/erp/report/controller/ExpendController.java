@@ -6,17 +6,24 @@ import com.example.erp.product.service.ProductService;
 import com.example.erp.report.dto.DeliveryDto;
 
 import com.example.erp.report.dto.ExpendDto;
+import com.example.erp.report.dto.QuoteDto;
 import com.example.erp.report.dto.UploadFile;
 import com.example.erp.report.service.ExpendService;
 import com.example.erp.report.service.FileStore;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriUtils;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -131,6 +138,22 @@ public class ExpendController {
             return ResponseEntity.badRequest().body("배송 처리에 실패했습니다.");
 
         }
+    }
+
+    @GetMapping("/attach/expend/{itemId}")
+    public ResponseEntity<Resource> downloadAttach(@PathVariable Long itemId) throws MalformedURLException {
+        ExpendDto expendDto = expendService.findById(Math.toIntExact(itemId));
+        String storeFileName = expendDto.getStoreFileName();
+        String uploadFileName = expendDto.getUploadFileName();
+
+        UrlResource resource = new UrlResource("file:" + fileStore.getFullPath(storeFileName));
+
+
+        String encodedUploadFileName = UriUtils.encode(uploadFileName, StandardCharsets.UTF_8);
+        String contentDisposition = "attachment; filename=" + encodedUploadFileName ;
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
+                .body(resource);
     }
 
 

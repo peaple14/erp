@@ -6,16 +6,23 @@ import com.example.erp.product.service.ProductService;
 import com.example.erp.report.dto.DeliveryDto;
 import com.example.erp.report.dto.QuoteDto;
 import com.example.erp.report.dto.UploadFile;
+import com.example.erp.report.repository.QuoteRepository;
 import com.example.erp.report.service.FileStore;
 import com.example.erp.report.service.QuoteService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriUtils;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -27,6 +34,7 @@ public class QuoteController {
     private final NotificationService notificationService;
     private final ProductService productService;
     private final FileStore fileStore;
+
 
     //리스트띄우기
     @GetMapping("/quote_list")
@@ -130,6 +138,23 @@ public class QuoteController {
             return ResponseEntity.badRequest().body("배송 처리에 실패했습니다.");
 
         }
+    }
+
+
+    @GetMapping("/attach/quote/{itemId}")
+    public ResponseEntity<Resource> downloadAttach(@PathVariable Long itemId) throws MalformedURLException {
+        QuoteDto quoteDto = quoteService.findById(Math.toIntExact(itemId));
+        String storeFileName = quoteDto.getStoreFileName();
+        String uploadFileName = quoteDto.getUploadFileName();
+
+        UrlResource resource = new UrlResource("file:" + fileStore.getFullPath(storeFileName));
+
+
+        String encodedUploadFileName = UriUtils.encode(uploadFileName, StandardCharsets.UTF_8);
+        String contentDisposition = "attachment; filename=" + encodedUploadFileName ;
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
+                .body(resource);
     }
 
 
