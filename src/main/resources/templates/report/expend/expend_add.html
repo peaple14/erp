@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<form action="/expend_add" method="post">
+<form action="/expend_add" method="post" enctype="multipart/form-data">
     <h1>지출결의서 추가</h1>
     <hr>
     <div>
@@ -77,6 +77,8 @@
         <input type="text" id="enddetailAddress" name="enddetailAddress" placeholder="상세주소">
     </div>
 
+
+    <li>첨부파일<input type="file" name="attachFile"></li>
 
 
 

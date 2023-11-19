@@ -8,6 +8,7 @@ import com.example.erp.report.entity.QuoteEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.Column;
 import java.time.LocalDate;
@@ -34,6 +35,9 @@ public class QuoteDto {
     private String endpostcode; //받을우편번호
     private String enddetailAddress; //받을상세주소
     private String endroadAddress; //받을도로명주소
+    private MultipartFile attachFile; //첨부파일
+    private String uploadFileName; //첨부파일 원본이름
+    private String storeFileName; //첨부파일 저장된이름
 
 
 
@@ -56,6 +60,8 @@ public class QuoteDto {
         quoteDto.setEndpostcode(quoteEntity.getEndpostcode());
         quoteDto.setEndroadAddress(quoteEntity.getEndroadAddress());
         quoteDto.setEnddetailAddress(quoteEntity.getEnddetailAddress());
+        quoteDto.setUploadFileName(quoteEntity.getUploadFileName());
+        quoteDto.setStoreFileName(quoteEntity.getStoreFileName());
         return quoteDto;
     }
 

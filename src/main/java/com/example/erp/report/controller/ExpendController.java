@@ -6,7 +6,9 @@ import com.example.erp.product.service.ProductService;
 import com.example.erp.report.dto.DeliveryDto;
 
 import com.example.erp.report.dto.ExpendDto;
+import com.example.erp.report.dto.UploadFile;
 import com.example.erp.report.service.ExpendService;
+import com.example.erp.report.service.FileStore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -25,6 +28,8 @@ public class ExpendController {
     private final ExpendService expendService;
     private final NotificationService notificationService;
     private final ProductService productService;
+    private final FileStore fileStore;
+
 
     //리스트띄우기
     @GetMapping("/expend_list")
@@ -45,10 +50,14 @@ public class ExpendController {
     }
 
     @PostMapping("/expend_add")
-    public String expendAdd(@ModelAttribute ExpendDto expendDto, HttpSession session) {
+    public String expendAdd(@ModelAttribute ExpendDto expendDto, HttpSession session) throws IOException {
+        UploadFile attachFile = fileStore.storeFile(expendDto.getAttachFile());
+        System.out.println("뭐있는지나 보자:" + attachFile);
+        expendDto.setStoreFileName(attachFile.getStoreFileName());
+        expendDto.setUploadFileName(attachFile.getUploadFileName());
         expendDto.setLocation(0);//
         expendDto.setWriter(expendService.getMember((String) session.getAttribute("loginId")));
-        notificationService.sendToClient(1L, expendDto.getId() + "번 지출결의서가 추가되었습니다."); //로그인된 모든 admin에게 알람.
+        notificationService.sendToClient(1L, expendDto.getExpendname() + " 지출결의서가 추가되었습니다."); //로그인된 모든 admin에게 알람.
         expendService.save(expendDto);
         return "redirect:/expend_list";
     }
@@ -74,7 +83,7 @@ public class ExpendController {
 
     @PostMapping("/expend_edit_ok")
     public String expendEditOk(@RequestParam(name = "id") int id, @ModelAttribute ExpendDto expendDto) {
-        notificationService.sendToClient(1L, expendDto.getId() + "번 지출결의서가 수정되었습니다."); //로그인된 모든 admin에게 알람.
+        notificationService.sendToClient(1L, expendDto.getExpendname() + " 지출결의서가 수정되었습니다."); //로그인된 모든 admin에게 알람.
         expendService.update(id, expendDto);
         return "redirect:/expend_list";
     }
