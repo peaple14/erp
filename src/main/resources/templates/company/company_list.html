@@ -6,9 +6,10 @@
 </head>
 <body class="quote-list">
 <div class="quote-container">
-    <h1>회사 리스트
+    <h1>회사 리스트<input type="text" id="searchInput" placeholder="검색어를 입력하세요">
         <a class="quote-button btn btn-primary" onclick="loadTab('company_add')" role="button">회사 추가</a>
     </h1>
+
     <table class="quote-table table table-hover">
         <thead class="thead-dark">
         <tr>
@@ -43,7 +44,20 @@
 </div>
 <script>
     $(document).ready(function() {
-        $(".sendPayment").click(function() {
+        // Search button click event
+        $("#searchButton").click(function() {
+            performSearch();
+        });
+
+        // Enter key press event in the search input field
+        $("#searchInput").keypress(function(event) {
+            if (event.which === 13) {
+                performSearch();
+            }
+        });
+
+        // Event delegation for the sendPayment button
+        $(".quote-table").on("click", ".sendPayment", function() {
             var money = $(this).closest("tr").find(".paymentAmount").val();
             var companyId = $(this).closest("tr").find("td#company_id").text(); // 해당 행의 ID 값을 가져옵니다.
 
@@ -69,9 +83,20 @@
                 }
             });
         });
+
+        // Function to perform the search
+        function performSearch() {
+            var searchTerm = $("#searchInput").val().toLowerCase();
+            $(".quote-table tbody tr").each(function() {
+                var rowText = $(this).text().toLowerCase();
+                if (rowText.includes(searchTerm)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        }
     });
-
-
 
 </script>
 </body>
@@ -87,17 +112,14 @@
 
     .quote-container {
         background-color: #fff;
-        margin: 0;
+        margin: 0 auto; /* 수평 가운데 정렬을 위한 스타일 */
         padding: 0;
         text-align: center;
     }
 
-
-
     .quote-table {
         width: 100%;
         border-collapse: collapse;
-
     }
 
     .quote-table th, .quote-table td {
@@ -113,8 +135,8 @@
     .quote-button {
         display: inline-block;
         position: absolute;
-        top: 5px; /* 조정 필요 */
-        right: 110px; /* 조정 필요 */
+        top: 5px;
+        right: 110px;
         padding: 10px 20px;
         font-size: 16px;
         text-align: center;
@@ -150,13 +172,23 @@
     .sendPayment:hover {
         background-color: #218838;
     }
+
     .product-link {
-        color: #007bff; /* 링크 색상 */
+        color: #007bff;
         cursor: pointer;
     }
 
     .product-link:hover {
-        color: #0056b3; /* 호버 시 링크 색상 변경 */
+        color: #0056b3;
         text-decoration: underline;
+    }
+
+    #searchInput {
+        position: absolute;
+        top: 5px;
+        right: 250px;
+        font-size: 16px;
+        width: 300px;
+        height: 34px;
     }
 </style>

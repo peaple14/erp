@@ -48,6 +48,7 @@ function loadTab(pageUrl, tabId, tabIdx) {
         var tabContents = document.getElementById('tabContents');
         tabContents.innerHTML = '';
         tabContents.appendChild(loadedPages[tabId]);
+        executeScripts(loadedPages[tabId]); // 추가: 스크립트 실행
     } else {
         // 새로운 페이지를 가져와서 로드
         fetch(pageUrl, { method: 'get' })
@@ -61,7 +62,9 @@ function loadTab(pageUrl, tabId, tabIdx) {
                     tabContents.appendChild(temp);
                     tabCounter++; // 탭이 생성될 때마다 카운터 증가
                     temp.id = 'tabContent' + tabCounter;
-                    //console.log(substr(tabIdx))
+
+                    // 추가: 스크립트 실행
+                    executeScripts(temp);
 
                     // 페이지가 로드되었음을 표시하고 저장
                     loadedPages[tabId] = html_dom.body;
@@ -70,7 +73,15 @@ function loadTab(pageUrl, tabId, tabIdx) {
     }
 }
 
-
+function executeScripts(container) {
+    // 페이지 내의 스크립트 실행
+    var scripts = container.querySelectorAll('script');
+    scripts.forEach(function (script) {
+        var newScript = document.createElement('script');
+        newScript.text = script.text;
+        document.head.appendChild(newScript).parentNode.removeChild(newScript);
+    });
+}
 function addTab(tabName, pageUrl) {
     // 새로운 탭 생성
     var tabsContainer = document.getElementById('tabs');

@@ -8,7 +8,7 @@
 </head>
 <body class="expend-list">
 <div class="expend-container">
-    <h1>지출결의서 리스트
+    <h1>지출결의서 리스트<input type="text" id="searchInput" placeholder="검색어를 입력하세요">
         <a class="expend-button btn btn-primary" onclick="loadTab('expend_add')" role="button">지출결의서 추가</a>
     </h1>
     <table class="expend-table table table-hover">
@@ -105,7 +105,31 @@
             });
         });
     });
+    $(document).ready(function() {
+        // Search button click event
+        $("#searchButton").click(function() {
+            performSearch();
+        });
 
+        // Enter key press event in the search input field
+        $("#searchInput").keypress(function(event) {
+            if (event.which === 13) {
+                performSearch();
+            }
+        });
+
+        function performSearch() {
+            var searchTerm = $("#searchInput").val().toLowerCase();
+            $(".expend-table tbody tr").each(function() {
+                var rowText = $(this).text().toLowerCase();
+                if (rowText.includes(searchTerm)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        }
+    });
 </script>
 
 
@@ -181,5 +205,14 @@
     .product-link:hover {
         color: #0056b3; /* 호버 시 링크 색상 변경 */
         text-decoration: underline;
+    }
+
+    #searchInput {
+        position: absolute;
+        top: 5px;
+        right: 250px;
+        font-size: 16px;
+        width: 300px;
+        height: 34px;
     }
 </style>
