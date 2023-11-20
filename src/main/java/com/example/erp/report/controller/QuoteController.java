@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -57,17 +58,23 @@ public class QuoteController {
     }
 
     @PostMapping("/quote_add")
-    public String quoteAdd(@ModelAttribute QuoteDto quoteDto, HttpSession session) throws IOException {
-        UploadFile attachFile = fileStore.storeFile(quoteDto.getAttachFile());
-        if (attachFile != null) {
-            quoteDto.setStoreFileName(attachFile.getStoreFileName());
-            quoteDto.setUploadFileName(attachFile.getUploadFileName());
+    @ResponseBody
+    public ResponseEntity<String> quoteAdd(@ModelAttribute QuoteDto quoteDto, HttpSession session) throws IOException {
+        try {
+            UploadFile attachFile = fileStore.storeFile(quoteDto.getAttachFile());
+            if (attachFile != null) {
+                quoteDto.setStoreFileName(attachFile.getStoreFileName());
+                quoteDto.setUploadFileName(attachFile.getUploadFileName());
+            }
+            quoteDto.setLocation(0);
+            quoteDto.setWriter(quoteService.getMember((String) session.getAttribute("loginId")));
+            notificationService.sendToClient(1L, quoteDto.getQuotename() + " 견적서가 추가되었습니다.");
+            quoteService.save(quoteDto);
+
+            return ResponseEntity.ok("견적서가 성공적으로 추가되었습니다.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("견적서 추가 중 오류가 발생했습니다.");
         }
-        quoteDto.setLocation(0);
-        quoteDto.setWriter(quoteService.getMember((String) session.getAttribute("loginId")));
-        notificationService.sendToClient(1L, quoteDto.getQuotename() + " 견적서가 추가되었습니다."); //로그인된 모든 admin에게 알람.
-        quoteService.save(quoteDto);
-        return "redirect:/quote_list";
     }
 
 
