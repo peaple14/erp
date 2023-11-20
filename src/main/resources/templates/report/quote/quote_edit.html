@@ -7,7 +7,7 @@
     <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=520eefe9a26b8b1ec6d77a0a8d0a439d"></script>
 </head>
 <body class="company-edit">
-<form action="/quote_edit_ok" method="post" class="edit-form">
+<form action="/quote_edit_ok" method="post" class="edit-form" enctype="multipart/form-data">
     <input type="hidden" id="id" name="id" th:value="${quoteDto.id}">
     <input type="hidden" id="checkmember" name="checkmember" th:value="${quoteDto.checkmember}" />
     <h1>견적서 수정</h1>
@@ -79,12 +79,43 @@
         <input type="text" id="enddetailAddress" name="enddetailAddress" placeholder="상세주소" th:value="${quoteDto.enddetailAddress}">
     </div>
 
+    <div class="form-group">
+        <label for="attachFile"><strong>수정할 첨부 파일:</strong></label>
+        <input type="file" id="attachFile" name="attachFile">
+    </div>
+
+    <div>
+        <span>현재 첨부파일: </span>
+        <a th:if="${quoteDto.uploadFileName}" th:href="|/attach/quote/${quoteDto.id}|" th:text="${quoteDto.uploadFileName}" id="currentFileName" />
+        <button type="button" id="removeFileButton" onclick="removeFile()">x</button>
+    </div>
+    <input type="hidden" id="uploadFileName" name="uploadFileName" th:value="${quoteDto.uploadFileName}" />
+
+
     <div class="button-container">
         <button type="submit" class="edit-button">수정</button>
         <a onclick="loadTab('quote_list')" class="back-link">뒤로 가기</a>
     </div>
+
 </form>
+
 <script th:inline="javascript">
+    function removeFile() {
+        // 현재 파일명 숨기기
+        document.getElementById("currentFileName").style.display = "none";
+
+        // 파일 업로드 input 초기화
+        document.getElementById("attachFile").value = "";
+
+        // quoteDto.uploadFileName 값 null로 설정
+        document.getElementById("uploadFileName").value = null;
+    }
+</script>
+
+
+<script th:inline="javascript">
+
+
     // 수량과 단위 단가가 변경될 때 총 단가를 계산
     document.getElementById("quantity").addEventListener("input", calculateTotalPrice);
     document.getElementById("price").addEventListener("input", calculateTotalPrice);

@@ -119,6 +119,8 @@ public class QuoteEntity {
         this.endpostcode=quoteDto.getEndpostcode();
         this.endroadAddress=quoteDto.getEndroadAddress();
         this.enddetailAddress=quoteDto.getEnddetailAddress();
+        this.uploadFileName = quoteDto.getUploadFileName();
+        this.storeFileName = quoteDto.getStoreFileName();
     }
 
     //결제완료용
