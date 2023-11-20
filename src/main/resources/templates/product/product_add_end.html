@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP 시스템</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/tabs.css"> <!-- 추가된 CSS 파일 -->
+    <script th:if="${authority eq 'ADMIN'}">
+        const eventSource = new EventSource('http://localhost:8080/subscribe/1');
+
+        eventSource.addEventListener('sse', event => {
+            console.log(event);
+        });
+    </script>
+    <script th:unless="${authority eq 'ADMIN'}">
+        console.log("사용자는 ADMIN 권한이 없습니다.");
+    </script>
+</head>
+<body>
+<!-- 네비게이션 바 -->
+<nav class="navbar">
+    <!-- 네비게이션 링크들 추가 -->
+    <ul class="nav-links">
+        <li class="company-name">ERP wizard</li>
+        <li><a href="#" onclick="changeSidebar('menu1')">제품</a></li>
+        <li><a href="#" onclick="changeSidebar('menu2')">거래처</a></li>
+        <li><a href="#" onclick="changeSidebar('menu3')">보고서</a></li>
+        <li><a href="#" onclick="changeSidebar('menu4')">주문</a></li>
+        <li><a href="#" onclick="changeSidebar('menu5')">FAQ</a></li>
+    </ul>
+</nav>
+
+<!-- 왼쪽 사이드바 -->
+<aside class="sidebar" id="sidebar">
+    <!-- 기본 사이드바 내용 -->
+    <ul class="sidebar-links">
+        <li><a href="#" onclick="addTab('제품관리','/product_list')">제품관리</a></li>
+    </ul>
+</aside>
+
+<!-- 오른쪽 메인 화면 -->
+<main class="main-content" id="mainContent">
+    <!-- 메인 컨텐츠 내용 추가 -->
+    <div id="tabs" class="tabs-container"></div>
+    <div id="tabContents" class="tab-contents">
+        <div class="quote-list">
+        <div class="quote-container">
+            <h1>제품 리스트
+                <a class="quote-button btn btn-primary" onclick="loadTab('product_add')" role="button">제품 추가</a>
+            </h1>
+            <table class="quote-table table table-hover">
+                <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>제품명</th>
+                    <th>제품코드</th>
+                    <th>재고량</th>
+                    <th>제품가격</th>
+                    <th>제조업체</th>
+                    <th>제조년도</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="product : ${products}">
+                    <td th:text="${product.id}"></td>
+                    <td>
+                        <a class="product-link" th:text="${product.productname}" th:attr="ad='product_memo/' + ${product.id}"
+                           onclick="loadTab(this.getAttribute('ad'))"></a>
+                    </td>
+
+                    <td th:text="${product.productcode}"></td>
+                    <td th:text="${product.count}"></td>
+                    <td th:text="${product.price}"></td>
+                    <td th:text="${product.makecompany.companyName}"></td>
+                    <td th:text="${#temporals.format(product.makeday, 'yyyy-MM')}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        </div>
+    </div>
+</main>
+<script src="js/test.js"></script>
+<script src="/js/tabs.js"></script> <!-- 추가된 JavaScript 파일 -->
+
+<script>
+    var selectedTabId = '';
+</script>
+</body>
+</html>

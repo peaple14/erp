@@ -1,20 +1,20 @@
 package com.example.erp.report.controller;
 
-import com.example.erp.company.dto.CompanyDto;
-import com.example.erp.company.entity.CompanyEntity;
-import com.example.erp.company.service.CompanyService;
-import com.example.erp.member.entity.MemberEntity;
-import com.example.erp.member.service.SseService;
+import com.example.erp.member.service.NotificationService;
 import com.example.erp.product.entity.ProductEntity;
+import com.example.erp.product.service.ProductService;
+import com.example.erp.report.dto.DeliveryDto;
 import com.example.erp.report.dto.QuoteDto;
-import com.example.erp.report.entity.QuoteEntity;
 import com.example.erp.report.service.QuoteService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -22,14 +22,14 @@ import java.util.List;
 public class QuoteController {
 
     private final QuoteService quoteService;
-    private final SseService sseService;
+    private final NotificationService notificationService;
+    private final ProductService productService;
 
     //리스트띄우기
     @GetMapping("/quote_list")
     public String listQuotes(Model model) {
         List<QuoteDto> quotes = quoteService.getAllQuotes();
         model.addAttribute("quotes", quotes);
-        System.out.println("quote 리스트띄우기:" + quotes);
         return "report/quote/quote_list";
     }
 
@@ -40,28 +40,15 @@ public class QuoteController {
         System.out.println(products);
         model.addAttribute("quoteDto", new QuoteDto());
         model.addAttribute("products", products);
-        //알림 보내기용
-        sseService.sendNotification("quote-added", "새로운 견적서가 추가되었습니다.");
-
         return "report/quote/quote_add";
-
-
     }
 
     @PostMapping("/quote_add")
     public String quoteAdd(@ModelAttribute QuoteDto quoteDto, HttpSession session) {
-        // 추가: HTML 폼에서 입력한 데이터를 로그로 출력
-//        System.out.println("견적서 추가 폼 제출 데이터: " + quoteDto);
-//        System.out.println("로그인 세션 정보: " + session.getAttribute("loginId"));
         quoteDto.setLocation(0);//
         quoteDto.setWriter(quoteService.getMember((String) session.getAttribute("loginId")));
+        notificationService.sendToClient(1L, quoteDto.getId() + "번 견적서가 추가되었습니다."); //로그인된 모든 admin에게 알람.
         quoteService.save(quoteDto);
-
-//        //알림 보내기용
-//        sseService.sendNotification("quote-added", "새로운 견적서가 추가되었습니다.");
-
-
-
         return "redirect:/quote_list";
     }
 
@@ -81,17 +68,14 @@ public class QuoteController {
         model.addAttribute("products", products);
         QuoteDto quoteDto = quoteService.findById(id);
         model.addAttribute("quoteDto", quoteDto);
-        System.out.println("수정데이터값들:" + quoteDto);
         return "report/quote/quote_edit";
     }
 
     @PostMapping("/quote_edit_ok")
     public String quoteEditOk(@RequestParam(name = "id") int id, @ModelAttribute QuoteDto quoteDto) {
-        System.out.println("수정후:" + quoteDto);
         quoteService.update(id, quoteDto);
         return "redirect:/quote_list";
     }
-
 
     //결제완료시 미수금,수주거래 변동.
     @GetMapping ("/quote_check_ok/{id}")
@@ -111,4 +95,34 @@ public class QuoteController {
         quoteService.mesugm(id, quoteDto);
         return "redirect:/quote_list";
     }
+
+    //배송현재상황
+    @PostMapping("/delievery")
+    public ResponseEntity<String> receivePayment(@RequestBody DeliveryDto dto) {
+        long companyId = dto.getCompany_id();
+        int location = dto.getLocation();
+//        System.out.println("이건 제대로 되려나: " + dto);
+        QuoteDto quoteDto = quoteService.findById((int) companyId);
+
+        if (quoteDto != null) {
+            quoteDto.setLocation(location);
+            if (quoteDto.getLocation() == 1 && quoteDto.getProduct().getCount()<quoteDto.getQuantity()) { //배송해야하는데 재고량보다 작을시
+                return ResponseEntity.badRequest().body("배송할 제품의 재고량이 주문량보다 적습니다.");
+            }
+            if (quoteDto.getLocation() == 2) { //배송완료를 눌렀을시
+                quoteDto.setEndat(LocalDate.now()); //배송완료시간기록
+                quoteService.update((int) companyId, quoteDto);
+                return ResponseEntity.ok("배송 처리가 확인 되었습니다.");
+            }
+            //배송출발을 눌렀을시
+            productService.countupdate(quoteDto.getProduct().getId(),-quoteDto.getQuantity());
+            quoteService.update((int) companyId, quoteDto);
+            return ResponseEntity.ok("배송 처리가 확인 되었습니다.");
+        } else {
+            return ResponseEntity.badRequest().body("배송 처리에 실패했습니다.");
+
+        }
+    }
+
+
 }

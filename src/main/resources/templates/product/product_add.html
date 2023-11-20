@@ -15,7 +15,7 @@
 </head>
 
 <body class="product-add">
-<form action="/product_add" method="post">
+<form method="get">
     <h1>제품 추가</h1>
     <hr>
     <div class="form-group">
@@ -24,28 +24,28 @@
     </div>
     <div class="form-group">
 
-    <div class="form-group">
-        <label for="price">제품가격:</label>
-        <input type="text" id="price" name="price" required>
-    </div>
-    <div class="form-group">
-        <label for="makecompany">제조업체:</label>
-        <!-- 드롭다운 목록 -->
-        <select id="makecompany" name="makecompany" required>
-            <option value="" selected disabled>제조업체 선택</option>
-            <th:block th:each="company : ${companies}">
-                <option th:value="${company.id}" th:text="${company.companyName}"></option>
-            </th:block>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="makeday">제조년도:</label>
-        <input type="month" id="makeday" name="makeday" required>
-    </div>
-    <!-- hidden 필드로 선택한 회사의 id를 보냅니다 -->
-    <input type="hidden" id="selectedCompanyId" name="selectedCompanyId">
-    <button type="submit" class="btn btn-primary">저장</button>
-    <a href="/product_list">뒤로 가기</a>
+        <div class="form-group">
+            <label for="price">제품가격:</label>
+            <input type="number" id="price" name="price" required>
+        </div>
+        <div class="form-group">
+            <label for="makecompany">제조업체:</label>
+            <!-- 드롭다운 목록 -->
+            <select id="makecompany" name="makecompany" required>
+                <option value="" selected disabled>제조업체 선택</option>
+                <th:block th:each="company : ${companies}">
+                    <option th:value="${company.id}" th:text="${company.companyName}"></option>
+                </th:block>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="makeday">제조년도:</label>
+            <input type="month" id="makeday" name="makeday" required>
+        </div>
+        <!-- hidden 필드로 선택한 회사의 id를 보냅니다 -->
+        <input type="hidden" id="selectedCompanyId" name="selectedCompanyId">
+        <button type="submit" class="btn btn-primary">저장</button>
+        <a onclick="loadTab('product_list')">뒤로 가기</a>
     </div>
 </form>
 
@@ -61,7 +61,7 @@
     body.product-add {
         font-family: Arial, sans-serif;
         background-color: #f4f4f4;
-        margin: 0;
+        margin-top: 20px;
         padding: 0;
     }
 
@@ -72,10 +72,8 @@
 
     .product-add form {
         background-color: #fff;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-        padding: 20px;
-        margin: 20px auto;
-        border-radius: 5px;
+        padding: 0;
+        margin: 0;
     }
 
     .product-add .form-group {

@@ -4,19 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>제품 리스트</title>
-    <script>
-        var eventSource = new EventSource('/sse-endpoint');
-        eventSource.onmessage = function(event) {
-            var message = event.data;
-            console.log(event.data);
-            // 메시지 처리 논리를 추가합니다.
-        };
-    </script>
+
 </head>
 <body class="quote-list">
 <div class="quote-container">
 <h1>제품 리스트
-    <a class="quote-button btn btn-primary" href="/product_add" role="button">제품 추가</a>
+    <a class="quote-button btn btn-primary" onclick="loadTab('product_add')" role="button">제품 추가</a>
 </h1>
     <table class="quote-table table table-hover">
         <thead class="thead-dark">
@@ -34,8 +27,10 @@
     <tr th:each="product : ${products}">
         <td th:text="${product.id}"></td>
         <td>
-            <a th:text="${product.productname}" th:href="@{'/product_memo/' + ${product.id}}"></a>
+            <a class="product-link" th:text="${product.productname}" th:attr="ad='product_memo/' + ${product.id}"
+               onclick="loadTab(this.getAttribute('ad'))"></a>
         </td>
+
         <td th:text="${product.productcode}"></td>
         <td th:text="${product.count}"></td>
         <td th:text="${product.price}"></td>
@@ -47,7 +42,18 @@
 </div>
 </body>
 </html>
+<script>
+    var eventSource = new EventSource('/sse-endpoint');
 
+    eventSource.onmessage = function(event) {
+        var message = event.data;
+        console.log('Received message:', message);
+    };
+
+    eventSource.onerror = function(event) {
+        console.error('EventSource failed:', event);
+    };
+</script>
 <style>
     /* 견적서 리스트 페이지 스타일 */
 
@@ -61,9 +67,8 @@
 
     .quote-container {
         background-color: #fff;
-        margin: 20px;
-        padding: 20px;
-        border-radius: 5px;
+        margin: 0;
+        padding: 0;
         text-align: center;
     }
 
@@ -90,7 +95,7 @@
     .quote-button {
         display: inline-block;
         position: absolute;
-        top: 180px; /* 조정 필요 */
+        top: 5px; /* 조정 필요 */
         right: 110px; /* 조정 필요 */
         padding: 10px 20px;
         font-size: 16px;
@@ -108,4 +113,13 @@
         background-color: #333333;
     }
 
+    .product-link {
+        color: #007bff; /* 링크 색상 */
+        cursor: pointer;
+    }
+
+    .product-link:hover {
+        color: #0056b3; /* 호버 시 링크 색상 변경 */
+        text-decoration: underline;
+    }
 </style>

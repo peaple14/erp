@@ -30,6 +30,9 @@ public class ExpendEntity {
     private LocalDate createdAt;
 
     @Column
+    private LocalDate endAt;
+
+    @Column
     private int location;
 
     @ManyToOne
@@ -43,6 +46,26 @@ public class ExpendEntity {
     @ManyToOne
     @JoinColumn(name = "member_id")
     private MemberEntity member;
+
+    @Column
+    private String gopostcode; //출발우편번호
+
+    @Column
+    private String godetailAddress; //출발상세주소
+
+    @Column
+    private String goroadAddress; //출발도로명주소
+
+    @Column
+    private String endpostcode; //받을우편번호
+
+    @Column
+    private String enddetailAddress; //받을상세주소
+
+    @Column
+    private String endroadAddress; //받을도로명주소
+
+
 
     public static ExpendEntity toSaveEntity(ExpendDto expendDto) {
         ExpendEntity expendEntity = new ExpendEntity();

@@ -19,12 +19,13 @@
         <p><strong>내용:</strong> <span th:text="${notice.noticeMemo}"></span></p>
 
         <!-- 수정 버튼 추가 -->
-        <a th:href="@{/notice_edit/{id}(id=${notice.id})}" class="edit-link">수정</a>
+        <a class="product-link" th:attr="ad='notice_edit/' + ${notice.id}"
+           onclick="loadTab(this.getAttribute('ad'))">수정</a>
     </div>
     <div th:if="${notice == null}" class="no-notice">
         <p>해당 ID에 대한 공지사항이 없습니다.</p>
     </div>
-    <a href="/notice_list" class="back-link">뒤로 가기</a>
+    <a onclick="loadTab('notice_list')" class="back-link">뒤로 가기</a>
 </div>
 </body>
 </html>
@@ -40,9 +41,8 @@
 
     .notice-details {
         background-color: #fff;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-        margin: 20px auto;
-        padding: 20px;
+        margin-top: 20px;
+        padding: 0;
         border-radius: 5px;
     }
 
@@ -81,6 +81,15 @@
         text-decoration: none;
         color: #007bff;
         font-size: 16px;
+    }
+    .product-link {
+        color: #007bff; /* 링크 색상 */
+        cursor: pointer;
+    }
+
+    .product-link:hover {
+        color: #0056b3; /* 호버 시 링크 색상 변경 */
+        text-decoration: underline;
     }
 
 </style>

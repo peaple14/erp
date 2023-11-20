@@ -6,6 +6,16 @@
     <title>ERP 시스템</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/tabs.css"> <!-- 추가된 CSS 파일 -->
+    <script th:if="${authority eq 'ADMIN'}">
+        const eventSource = new EventSource('http://localhost:8080/subscribe/1');
+
+        eventSource.addEventListener('sse', event => {
+            console.log(event);
+        });
+    </script>
+    <script th:unless="${authority eq 'ADMIN'}">
+        console.log("사용자는 ADMIN 권한이 없습니다.");
+    </script>
 </head>
 <body>
 <!-- 네비게이션 바 -->
@@ -35,7 +45,11 @@
     <div id="tabs" class="tabs-container"></div>
     <div id="tabContents" class="tab-contents"></div>
 </main>
-
+<script src="js/test.js"></script>
 <script src="js/tabs.js"></script> <!-- 추가된 JavaScript 파일 -->
+
+<script>
+    var selectedTabId = '';
+</script>
 </body>
 </html>

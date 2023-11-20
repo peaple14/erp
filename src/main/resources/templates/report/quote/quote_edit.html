@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>견적서 수정</title>
+    <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=520eefe9a26b8b1ec6d77a0a8d0a439d"></script>
 </head>
 <body>
 <h1>견적서 수정</h1>
@@ -50,6 +51,35 @@
         <label for="totalprice">총 단가:</label>
         <input type="number" id="totalprice" name="totalprice" th:value="${quoteDto.totalprice}" required readonly>
     </div>
+    <div>
+        <label for="gopostcode">출발우편번호:</label>
+        <input type="text" id="gopostcode" name="gopostcode" placeholder="우편번호" th:value="${quoteDto.gopostcode}" readonly>
+        <input type="button" onclick="execDaumPostcode('go')" value="출발우편번호 찾기" required>
+    </div>
+    <div>
+        <label for="goroadAddress">출발도로명주소:</label>
+        <input type="text" id="goroadAddress" name="goroadAddress" placeholder="도로명주소" th:value="${quoteDto.goroadAddress}" readonly>
+        <span id="guide" style="color:#999;display:none"></span>
+    </div>
+    <div>
+        <label for="godetailAddress">출발상세주소:</label>
+        <input type="text" id="godetailAddress" name="godetailAddress" placeholder="상세주소" th:value="${quoteDto.godetailAddress}">
+    </div>
+    <div>
+        <label for="endpostcode">도착우편번호:</label>
+        <input type="text" id="endpostcode" name="endpostcode" placeholder="우편번호" th:value="${quoteDto.endpostcode}" readonly>
+        <input type="button" onclick="execDaumPostcode('end')" value="도착우편번호 찾기" required>
+    </div>
+    <div>
+        <label for="endroadAddress">도착도로명주소:</label>
+        <input type="text" id="endroadAddress" name="endroadAddress" placeholder="도로명주소" th:value="${quoteDto.endroadAddress}" readonly>
+        <span id="guides" style="color:#999;display:none"></span>
+    </div>
+    <div>
+        <label for="enddetailAddress">도착상세주소:</label>
+        <input type="text" id="enddetailAddress" name="enddetailAddress" placeholder="상세주소" th:value="${quoteDto.enddetailAddress}">
+    </div>
+
     <button type="submit">수정</button>
 </form>
 <script th:inline="javascript">
@@ -62,6 +92,44 @@
         const price = parseFloat(document.getElementById("price").value);
         const totalprice = quantity * price;
         document.getElementById("totalprice").value = totalprice;
+    }
+</script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+    function execDaumPostcode(addressType) {
+        new daum.Postcode({
+            oncomplete: function (data) {
+                var roadAddr = data.roadAddress;
+                var extraRoadAddr = '';
+
+                if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+                    extraRoadAddr += data.bname;
+                }
+
+                if (data.buildingName !== '' && data.apartment === 'Y') {
+                    extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                }
+
+                var postcodeField = document.getElementById(addressType + 'postcode');
+                var roadAddressField = document.getElementById(addressType + 'roadAddress');
+                var guideTextBox = document.getElementById('guide');
+                if (data.autoRoadAddress) {
+                    var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
+                    guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
+                    guideTextBox.style.display = 'block';
+                } else if (data.autoJibunAddress) {
+                    var expJibunAddr = data.autoJibunAddress;
+                    guideTextBox.innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
+                    guideTextBox.style.display = 'block';
+                } else {
+                    guideTextBox.innerHTML = '';
+                    guideTextBox.style.display = 'none';
+                }
+
+                postcodeField.value = data.zonecode;
+                roadAddressField.value = roadAddr;
+            }
+        }).open();
     }
 </script>
 </body>

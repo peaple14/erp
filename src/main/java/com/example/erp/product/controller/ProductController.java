@@ -1,5 +1,6 @@
 package com.example.erp.product.controller;
 
+import com.example.erp.company.dto.CompanyDto;
 import com.example.erp.company.entity.CompanyEntity;
 import com.example.erp.product.dto.ProductDto;
 import com.example.erp.product.service.ProductService;
@@ -8,7 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -31,10 +34,39 @@ public class ProductController {
         return "product/product_add";
     }
 
+    /*
     @PostMapping("/product_add")
-    public String productAdd(ProductDto productDto) {
+    @ResponseBody
+    public Map<String, Object> productAdd(ProductDto productDto) {
+        Map<String, Object> resultMap = new HashMap<>();
+        try {
+            productService.save(productDto);
+            resultMap.put("result", "OK");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            resultMap.put("result", "NO");
+        }
+
+        return resultMap;
+    }
+    */
+
+    @PostMapping("/product_add")
+    public String productDto(ProductDto productDto, Model model) {
+        System.out.println("추가되는것:" + productDto);
         productService.save(productDto);
-        return "redirect:/product_list";
+        List<ProductDto> products = productService.getAllProducts();
+        model.addAttribute("products", products);
+        return "product/product_add_end";
+    }
+
+    @GetMapping("/product_add_end")
+    public String addListProducts(ProductDto productDto, Model model) {
+        productService.save(productDto);
+        List<ProductDto> products = productService.getAllProducts();
+        model.addAttribute("products", products);
+        return "product/product_list";
     }
 
     @GetMapping("/product_memo/{id}")
