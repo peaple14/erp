@@ -6,7 +6,7 @@
 </head>
 <body class="quote-list">
 <div class="quote-container">
-    <h1>미수금 리스트</h1>
+    <h1>미수금 리스트<input type="text" id="searchInput" placeholder="검색어를 입력하세요"></h1>
     <table class="quote-table table table-hover">
         <thead class="thead-dark">
             <tr>
@@ -32,6 +32,34 @@
 </div>
 </body>
 </html>
+
+<script>
+    $(document).ready(function() {
+        // Search button click event
+        $("#searchButton").click(function() {
+            performSearch();
+        });
+
+        // Enter key press event in the search input field
+        $("#searchInput").keypress(function(event) {
+            if (event.which === 13) {
+                performSearch();
+            }
+        });
+
+        function performSearch() {
+            var searchTerm = $("#searchInput").val().toLowerCase();
+            $(".quote-table tbody tr").each(function() {
+                var rowText = $(this).text().toLowerCase();
+                if (rowText.includes(searchTerm)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        }
+    });
+</script>
 <style>
     body.quote-list {
         font-family: Arial, sans-serif;
@@ -105,5 +133,14 @@
 
     .sendPayment:hover {
         background-color: #218838;
+    }
+
+    #searchInput {
+        position: absolute;
+        top: 5px;
+        right: 250px;
+        font-size: 16px;
+        width: 300px;
+        height: 34px;
     }
 </style>
