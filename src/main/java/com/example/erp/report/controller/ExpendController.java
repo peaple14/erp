@@ -24,6 +24,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -59,9 +60,11 @@ public class ExpendController {
     @PostMapping("/expend_add")
     public String expendAdd(@ModelAttribute ExpendDto expendDto, HttpSession session) throws IOException {
         UploadFile attachFile = fileStore.storeFile(expendDto.getAttachFile());
-        System.out.println("뭐있는지나 보자:" + attachFile);
-        expendDto.setStoreFileName(attachFile.getStoreFileName());
-        expendDto.setUploadFileName(attachFile.getUploadFileName());
+        if (attachFile != null) {
+            expendDto.setStoreFileName(attachFile.getStoreFileName());
+            expendDto.setUploadFileName(attachFile.getUploadFileName());
+        }
+
         expendDto.setLocation(0);//
         expendDto.setWriter(expendService.getMember((String) session.getAttribute("loginId")));
         notificationService.sendToClient(1L, expendDto.getExpendname() + " 지출결의서가 추가되었습니다."); //로그인된 모든 admin에게 알람.
@@ -89,10 +92,34 @@ public class ExpendController {
     }
 
     @PostMapping("/expend_edit_ok")
-    public String expendEditOk(@RequestParam(name = "id") int id, @ModelAttribute ExpendDto expendDto) {
+    public String expendEditOk(@RequestParam(name = "id") int id, @ModelAttribute ExpendDto expendDto) throws IOException, NoSuchAlgorithmException {
+        ExpendDto origindto = expendService.findById((int) expendDto.getId());
+        if(origindto.getStoreFileName() == null && expendDto.getAttachFile().isEmpty()){
+            System.out.println("빈파일 입니다");
+        }
+        else if (origindto.getStoreFileName() == null && !expendDto.getAttachFile().isEmpty()) { //방금들어온게 첫 파일이면
+            UploadFile attachFile = fileStore.storeFile(expendDto.getAttachFile());
+            expendDto.setStoreFileName(attachFile.getStoreFileName());
+            expendDto.setUploadFileName(attachFile.getUploadFileName());
+        } else if (origindto.getStoreFileName() != null && expendDto.getUploadFileName().isEmpty()) { //파일이 삭제되었다면
+            System.out.println("삭제된파일");
+            expendDto.setStoreFileName(null);
+            fileStore.deleteFile(origindto.getStoreFileName());
+        } else if(!expendDto.getUploadFileName().isEmpty()){ //수정없을때
+            System.out.println("파일은 수정없음.");
+        }else if (fileStore.compareFilesByHash(expendDto.getAttachFile(), origindto.getStoreFileName())){//원래 파일 있고, 새 파일이 들어 왔다면
+            System.out.println("같은파일입니다.");
+        }else { //다른파일이면
+            System.out.println("다른파일입니다");
+            fileStore.deleteFile(origindto.getStoreFileName());//삭제후
+            UploadFile attachFile = fileStore.storeFile(expendDto.getAttachFile());//새파일 저장
+            expendDto.setStoreFileName(attachFile.getStoreFileName());
+            expendDto.setUploadFileName(attachFile.getUploadFileName());
+        }
+
         notificationService.sendToClient(1L, expendDto.getExpendname() + " 지출결의서가 수정되었습니다."); //로그인된 모든 admin에게 알람.
         expendService.update(id, expendDto);
-        return "redirect:/expend_list";
+        return "redirect:/quote_list";
     }
 
     //결제완료시 결제완료.

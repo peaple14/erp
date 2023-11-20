@@ -121,6 +121,8 @@ public class ExpendEntity {
         this.endpostcode=expendDto.getEndpostcode();
         this.endroadAddress=expendDto.getEndroadAddress();
         this.enddetailAddress=expendDto.getEnddetailAddress();
+        this.uploadFileName = expendDto.getUploadFileName();
+        this.storeFileName = expendDto.getStoreFileName();
     }
 
     //결제완료용

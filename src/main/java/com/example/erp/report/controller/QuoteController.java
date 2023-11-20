@@ -20,9 +20,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriUtils;
 
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -57,10 +59,11 @@ public class QuoteController {
     @PostMapping("/quote_add")
     public String quoteAdd(@ModelAttribute QuoteDto quoteDto, HttpSession session) throws IOException {
         UploadFile attachFile = fileStore.storeFile(quoteDto.getAttachFile());
-        System.out.println("뭐있는지나 보자:" + attachFile);
-        quoteDto.setStoreFileName(attachFile.getStoreFileName());
-        quoteDto.setUploadFileName(attachFile.getUploadFileName());
-        quoteDto.setLocation(0);//
+        if (attachFile != null) {
+            quoteDto.setStoreFileName(attachFile.getStoreFileName());
+            quoteDto.setUploadFileName(attachFile.getUploadFileName());
+        }
+        quoteDto.setLocation(0);
         quoteDto.setWriter(quoteService.getMember((String) session.getAttribute("loginId")));
         notificationService.sendToClient(1L, quoteDto.getQuotename() + " 견적서가 추가되었습니다."); //로그인된 모든 admin에게 알람.
         quoteService.save(quoteDto);
@@ -79,6 +82,7 @@ public class QuoteController {
 
     @GetMapping("/quote_edit/{id}")
     public String quoteEdit(Model model, @PathVariable int id) {
+
         List<ProductEntity> products = quoteService.getAllProducts();
         model.addAttribute("products", products);
         QuoteDto quoteDto = quoteService.findById(id);
@@ -87,11 +91,35 @@ public class QuoteController {
     }
 
     @PostMapping("/quote_edit_ok")
-    public String quoteEditOk(@RequestParam(name = "id") int id, @ModelAttribute QuoteDto quoteDto) {
+    public String quoteEditOk(@RequestParam(name = "id") int id, @ModelAttribute QuoteDto quoteDto) throws IOException, NoSuchAlgorithmException {
+        QuoteDto origindto = quoteService.findById((int) quoteDto.getId());
+        if(origindto.getStoreFileName() == null && quoteDto.getAttachFile().isEmpty()){
+            System.out.println("빈파일 입니다");
+        }
+        else if (origindto.getStoreFileName() == null && !quoteDto.getAttachFile().isEmpty()) { //방금들어온게 첫 파일이면
+            UploadFile attachFile = fileStore.storeFile(quoteDto.getAttachFile());
+            quoteDto.setStoreFileName(attachFile.getStoreFileName());
+            quoteDto.setUploadFileName(attachFile.getUploadFileName());
+        } else if (origindto.getStoreFileName() != null && quoteDto.getUploadFileName().isEmpty()) { //파일이 삭제되었다면
+            System.out.println("삭제된파일");
+            quoteDto.setStoreFileName(null);
+            fileStore.deleteFile(origindto.getStoreFileName());
+        } else if(!quoteDto.getUploadFileName().isEmpty()){ //수정없을때
+            System.out.println("파일은 수정없음.");
+        }else if (fileStore.compareFilesByHash(quoteDto.getAttachFile(), origindto.getStoreFileName())){//원래 파일 있고, 새 파일이 들어 왔다면
+            System.out.println("같은파일입니다.");
+        }else { //다른파일이면
+            System.out.println("다른파일입니다");
+            fileStore.deleteFile(origindto.getStoreFileName());//삭제후
+            UploadFile attachFile = fileStore.storeFile(quoteDto.getAttachFile());//새파일 저장
+            quoteDto.setStoreFileName(attachFile.getStoreFileName());
+            quoteDto.setUploadFileName(attachFile.getUploadFileName());
+        }
+
         notificationService.sendToClient(1L, quoteDto.getQuotename() + " 견적서가 수정되었습니다."); //로그인된 모든 admin에게 알람.
-        quoteService.update(id, quoteDto);
-        return "redirect:/quote_list";
-    }
+            quoteService.update(id, quoteDto);
+            return "redirect:/quote_list";
+        }
 
     //결제완료시 미수금,수주거래 변동.
     @GetMapping ("/quote_check_ok/{id}")
@@ -149,13 +177,10 @@ public class QuoteController {
 
         UrlResource resource = new UrlResource("file:" + fileStore.getFullPath(storeFileName));
 
-
         String encodedUploadFileName = UriUtils.encode(uploadFileName, StandardCharsets.UTF_8);
         String contentDisposition = "attachment; filename=" + encodedUploadFileName ;
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
                 .body(resource);
     }
-
-
 }
