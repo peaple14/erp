@@ -10,7 +10,6 @@
     <h1 class="notice-title">공지사항 수정</h1>
     <hr>
     <form th:object="${notice}" method="post" th:action="@{/notice_edit_ok}">
-        <!-- ID를 숨겨진 입력 필드로 추가 -->
         <input type="hidden" th:field="*{id}" />
 
         <div class="form-group" style="display: flex; justify-content: space-between">
@@ -28,7 +27,6 @@
             <textarea id="noticeMemo" th:field="*{noticeMemo}" rows="4" required placeholder="내용을 입력하세요."></textarea>
         </div>
 
-        <!-- 수정 버튼 추가 -->
         <div class="button-container">
         <input type="submit" value="수정" class="edit-button">
         <a onclick="loadTab('notice_list')" class="back-link">뒤로 가기</a>
@@ -39,7 +37,6 @@
 </html>
 
 <script>
-    // autoresize.js
 
     function autoResize(element) {
         element.style.height = "auto";
@@ -59,7 +56,6 @@
 </script>
 
 <style>
-    /* 수정 페이지 전용 스타일 */
 
     body.edit-notice {
         font-family: Arial, sans-serif;

@@ -2,7 +2,6 @@ package com.example.erp.faq.entity;
 
 import com.example.erp.faq.dto.NoticeDto;
 import com.example.erp.member.entity.MemberEntity;
-import com.example.erp.member.repository.MemberRepository;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 

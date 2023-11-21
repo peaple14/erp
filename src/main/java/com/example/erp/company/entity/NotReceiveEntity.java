@@ -2,9 +2,7 @@ package com.example.erp.company.entity;
 
 import javax.persistence.*;
 
-import com.example.erp.company.dto.CompanyDto;
 
-import com.example.erp.company.dto.NotReceiveDto;
 import com.example.erp.report.entity.QuoteEntity;
 import lombok.Data;
 

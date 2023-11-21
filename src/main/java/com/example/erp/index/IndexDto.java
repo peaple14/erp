@@ -1,6 +1,5 @@
 package com.example.erp.index;
 
-import com.example.erp.company.entity.CompanyEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

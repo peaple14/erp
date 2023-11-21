@@ -1,7 +1,6 @@
 package com.example.erp.faq.controller;
 
 
-import com.example.erp.faq.dto.NoticeDto;
 import com.example.erp.faq.dto.ProblemDto;
 import com.example.erp.faq.service.ProblemService;
 import lombok.RequiredArgsConstructor;

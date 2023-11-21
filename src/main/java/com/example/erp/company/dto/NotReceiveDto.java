@@ -1,7 +1,6 @@
 package com.example.erp.company.dto;
 
 import com.example.erp.company.entity.NotReceiveEntity;
-import com.example.erp.report.entity.QuoteEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;

@@ -111,11 +111,11 @@
             processData: false,
             contentType: false,
             success: function(response) {
-                alert(response); // 성공 시 메시지 출력 (나중에 수정 가능)
-                loadTab('expend_list'); // 페이지 변경
+                alert(response);
+                loadTab('expend_list');
             },
             error: function(error) {
-                console.error("오류 발생:", error); // 오류 시 에러를 콘솔에 출력
+                console.error("오류 발생:", error);
                 alert("견적서 수정 중 오류 발생.");
             }
         });
@@ -190,7 +190,6 @@
     }
 </script>
 <style>
-    /* 견적서 수정 페이지 스타일 */
     body.company-edit {
         font-family: Arial, sans-serif;
         background-color: #f4f4f4;

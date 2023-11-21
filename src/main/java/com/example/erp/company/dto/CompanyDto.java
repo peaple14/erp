@@ -1,7 +1,6 @@
 package com.example.erp.company.dto;
 
 import com.example.erp.company.entity.CompanyEntity;
-import com.example.erp.member.entity.MemberEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
