@@ -130,11 +130,24 @@
     document.getElementById("quantity").addEventListener("input", calculateTotalPrice);
     document.getElementById("price").addEventListener("input", calculateTotalPrice);
 
+    // 제품 선택이 변경될 때 단위 단가 업데이트
+    document.getElementById("product").addEventListener("change", updateUnitPrice);
+
     function calculateTotalPrice() {
         const quantity = parseFloat(document.getElementById("quantity").value);
         const price = parseFloat(document.getElementById("price").value);
         const totalprice = quantity * price;
         document.getElementById("totalprice").value = totalprice;
+    }
+
+    function updateUnitPrice() {
+        const productId = document.getElementById("product").value;
+        const selectedProduct = products.find(product => product.id == productId);
+
+        if (selectedProduct) {
+            document.getElementById("price").value = selectedProduct.price;
+            calculateTotalPrice(); // 단위 단가 업데이트 후 총 단가 계산
+        }
     }
 
     // 중복되지 않는 회사 목록 생성 및 드롭다운 업데이트
@@ -163,8 +176,11 @@
                 productSelect.appendChild(option);
             }
         });
+
+        updateUnitPrice(); // 회사 선택 시 단위 단가 업데이트
     });
 </script>
+
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
     function execDaumPostcode(addressType) {
