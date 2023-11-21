@@ -57,8 +57,8 @@
         function performSearch() {
             var searchTerm = $("#searchInput").val().toLowerCase();
             $(".quote-table tbody tr").each(function() {
-                var productName = $(this).find("td:nth-child(2)").text().toLowerCase();
-                if (productName.includes(searchTerm)) {
+                var rowText = $(this).text().toLowerCase();
+                if (rowText.includes(searchTerm)) {
                     $(this).show();
                 } else {
                     $(this).hide();
