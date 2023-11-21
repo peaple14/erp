@@ -126,60 +126,65 @@
 
 
 <script th:inline="javascript">
-    // 수량과 단위 단가가 변경될 때 총 단가를 계산
-    document.getElementById("quantity").addEventListener("input", calculateTotalPrice);
-    document.getElementById("price").addEventListener("input", calculateTotalPrice);
+    var products = [[${products}]]; // 상품 목록 초기화
 
-    // 제품 선택이 변경될 때 단위 단가 업데이트
-    document.getElementById("product").addEventListener("change", updateUnitPrice);
+    // 중복 선언을 피하기 위해 변수를 블록 스코프로 선언
+    {
+        // 수량과 단위 단가가 변경될 때 총 단가를 계산
+        document.getElementById("quantity").addEventListener("input", calculateTotalPrice);
+        document.getElementById("price").addEventListener("input", calculateTotalPrice);
 
-    function calculateTotalPrice() {
-        const quantity = parseFloat(document.getElementById("quantity").value);
-        const price = parseFloat(document.getElementById("price").value);
-        const totalprice = quantity * price;
-        document.getElementById("totalprice").value = totalprice;
-    }
+        // 제품 선택이 변경될 때 단위 단가 업데이트
+        document.getElementById("product").addEventListener("change", updateUnitPrice);
 
-    function updateUnitPrice() {
-        const productId = document.getElementById("product").value;
-        const selectedProduct = products.find(product => product.id == productId);
-
-        if (selectedProduct) {
-            document.getElementById("price").value = selectedProduct.price;
-            calculateTotalPrice(); // 단위 단가 업데이트 후 총 단가 계산
+        function calculateTotalPrice() {
+            const quantity = parseFloat(document.getElementById("quantity").value);
+            const price = parseFloat(document.getElementById("price").value);
+            const totalprice = quantity * price;
+            document.getElementById("totalprice").value = totalprice;
         }
-    }
 
-    // 중복되지 않는 회사 목록 생성 및 드롭다운 업데이트
-    const products = [[${products}]]; // 상품 목록
-    const companySelect = document.getElementById("company");
-    const productSelect = document.getElementById("product");
+        function updateUnitPrice() {
+            const productId = document.getElementById("product").value;
+            const selectedProduct = products.find(product => product.id == productId);
 
-    const uniqueCompanies = [...new Set(products.map(product => product.company.companyName))];
-
-    uniqueCompanies.forEach(companyName => {
-        const option = document.createElement("option");
-        option.value = companyName;
-        option.text = companyName;
-        companySelect.appendChild(option);
-    });
-
-    companySelect.addEventListener("change", function() {
-        // 선택한 회사에 해당하는 제품만 필터링하여 렌더링
-        const selectedCompany = this.value;
-        productSelect.innerHTML = '<option value="" selected disabled>제품 선택</option>';
-        products.forEach(function(product) {
-            if (product.company.companyName === selectedCompany) {
-                const option = document.createElement("option");
-                option.value = product.id;
-                option.text = product.productName;
-                productSelect.appendChild(option);
+            if (selectedProduct) {
+                document.getElementById("price").value = selectedProduct.price;
+                calculateTotalPrice(); // 단위 단가 업데이트 후 총 단가 계산
             }
+        }
+
+        // 중복되지 않는 회사 목록 생성 및 드롭다운 업데이트
+        const companySelect = document.getElementById("company");
+        const productSelect = document.getElementById("product");
+
+        const uniqueCompanies = [...new Set(products.map(product => product.company.companyName))];
+
+        uniqueCompanies.forEach(companyName => {
+            const option = document.createElement("option");
+            option.value = companyName;
+            option.text = companyName;
+            companySelect.appendChild(option);
         });
 
-        updateUnitPrice(); // 회사 선택 시 단위 단가 업데이트
-    });
+        companySelect.addEventListener("change", function() {
+            // 선택한 회사에 해당하는 제품만 필터링하여 렌더링
+            const selectedCompany = this.value;
+            productSelect.innerHTML = '<option value="" selected disabled>제품 선택</option>';
+            products.forEach(function(product) {
+                if (product.company.companyName === selectedCompany) {
+                    const option = document.createElement("option");
+                    option.value = product.id;
+                    option.text = product.productName;
+                    productSelect.appendChild(option);
+                }
+            });
+
+            updateUnitPrice(); // 회사 선택 시 단위 단가 업데이트
+        });
+    }
 </script>
+
 
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
