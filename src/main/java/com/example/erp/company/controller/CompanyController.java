@@ -29,10 +29,11 @@ public class CompanyController {
     }
 
     @PostMapping("/company_add")
+    @ResponseBody
     public String companyAdd(CompanyDto companyDto) {
         System.out.println("추가되는것:" + companyDto);
         companyService.save(companyDto);
-        return "redirect:/company_list";
+        return "회사추가완료";
     }
 
     @GetMapping("/company_memo/{id}")
@@ -50,8 +51,9 @@ public class CompanyController {
     }
 
     @PostMapping("/company_edit_ok")
+    @ResponseBody
     public String companyEditOk(@RequestParam(name = "id") Long id,@ModelAttribute CompanyDto companyDto) {
         companyService.update(id,companyDto);
-        return "redirect:/company_list";
+        return "회사 수정 완료";
     }
 }

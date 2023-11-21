@@ -98,35 +98,34 @@ public class QuoteController {
     }
 
     @PostMapping("/quote_edit_ok")
+    @ResponseBody
     public String quoteEditOk(@RequestParam(name = "id") int id, @ModelAttribute QuoteDto quoteDto) throws IOException, NoSuchAlgorithmException {
-        QuoteDto origindto = quoteService.findById((int) quoteDto.getId());
-        if(origindto.getStoreFileName() == null && quoteDto.getAttachFile().isEmpty()){
-            System.out.println("빈파일 입니다");
-        }
-        else if (origindto.getStoreFileName() == null && !quoteDto.getAttachFile().isEmpty()) { //방금들어온게 첫 파일이면
+        QuoteDto origindto = quoteService.findById(id);
+        quoteDto.setWriter(origindto.getWriter());
+        if (origindto.getStoreFileName() == null && quoteDto.getAttachFile().isEmpty()) {
+            System.out.println("빈파일입니다.");
+        } else if (origindto.getStoreFileName() == null && !quoteDto.getAttachFile().isEmpty()) {
             UploadFile attachFile = fileStore.storeFile(quoteDto.getAttachFile());
             quoteDto.setStoreFileName(attachFile.getStoreFileName());
             quoteDto.setUploadFileName(attachFile.getUploadFileName());
-        } else if (origindto.getStoreFileName() != null && quoteDto.getUploadFileName().isEmpty()) { //파일이 삭제되었다면
+        } else if (origindto.getStoreFileName() != null && quoteDto.getUploadFileName().isEmpty()) {
             System.out.println("삭제된파일");
-            quoteDto.setStoreFileName(null);
-            fileStore.deleteFile(origindto.getStoreFileName());
-        } else if(!quoteDto.getUploadFileName().isEmpty()){ //수정없을때
-            System.out.println("파일은 수정없음.");
-        }else if (fileStore.compareFilesByHash(quoteDto.getAttachFile(), origindto.getStoreFileName())){//원래 파일 있고, 새 파일이 들어 왔다면
+        } else if (!quoteDto.getUploadFileName().isEmpty()) {
+            System.out.println("파일수정없음");
+        } else if (fileStore.compareFilesByHash(quoteDto.getAttachFile(), origindto.getStoreFileName())) {
             System.out.println("같은파일입니다.");
-        }else { //다른파일이면
-            System.out.println("다른파일입니다");
-            fileStore.deleteFile(origindto.getStoreFileName());//삭제후
-            UploadFile attachFile = fileStore.storeFile(quoteDto.getAttachFile());//새파일 저장
+        } else {
+            fileStore.deleteFile(origindto.getStoreFileName());
+            UploadFile attachFile = fileStore.storeFile(quoteDto.getAttachFile());
             quoteDto.setStoreFileName(attachFile.getStoreFileName());
             quoteDto.setUploadFileName(attachFile.getUploadFileName());
         }
 
-        notificationService.sendToClient(1L, quoteDto.getQuotename() + " 견적서가 수정되었습니다."); //로그인된 모든 admin에게 알람.
-            quoteService.update(id, quoteDto);
-            return "redirect:/quote_list";
-        }
+        notificationService.sendToClient(1L, quoteDto.getQuotename() + " 견적서가 수정되었습니다.");
+        quoteService.update(id, quoteDto);
+        return "변경완료";
+    }
+
 
     //결제완료시 미수금,수주거래 변동.
     @GetMapping ("/quote_check_ok/{id}")

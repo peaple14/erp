@@ -9,7 +9,7 @@
 </head>
 
 <body>
-<form action="/company_add" method="post">
+<form id="companyForm" action="/company_add" method="post" >
     <h1>회사 추가</h1>
     <hr>
     <div>
@@ -48,12 +48,35 @@
     </div>
 
     <div class="button-container">
-        <button type="submit" class="save-button">저장</button>
+        <button type="button" onclick="submitForm()">저장</button>
         <button type="button" onclick="loadTab('company_list')" class="cancel-button">취소</button>
     </div>
 </form>
 
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+<script>
+    function submitForm() {
+        var formData = new FormData(document.getElementById('companyForm'));
+
+        $.ajax({
+            url: "/company_add",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                loadTab('company_list'); // 페이지 변경
+            },
+            error: function(error) {
+                console.error("오류 발생:", error);
+                alert("회사 추가 중 오류 발생.");
+            }
+        });
+    }
+</script>
+
+
 <script>
     function execDaumPostcode() {
         new daum.Postcode({
