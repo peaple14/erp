@@ -3,8 +3,6 @@ package com.example.erp.company.service;
 import com.example.erp.company.dto.CompanyDto;
 import com.example.erp.company.entity.CompanyEntity;
 import com.example.erp.company.repository.CompanyRepository;
-import com.example.erp.faq.dto.NoticeDto;
-import com.example.erp.faq.entity.NoticeEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

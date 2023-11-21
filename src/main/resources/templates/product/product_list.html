@@ -42,12 +42,10 @@
 
 <script>
     $(document).ready(function() {
-        // Search button click event
         $("#searchButton").click(function() {
             performSearch();
         });
 
-        // Enter key press event in the search input field
         $("#searchInput").keypress(function(event) {
             if (event.which === 13) {
                 performSearch();
@@ -69,7 +67,6 @@
 </script>
 
 <style>
-    /* 견적서 리스트 페이지 스타일 */
 
     body.quote-list {
         font-family: Arial, sans-serif;
@@ -109,8 +106,8 @@
     .quote-button {
         display: inline-block;
         position: absolute;
-        top: 5px; /* 조정 필요 */
-        right: 110px; /* 조정 필요 */
+        top: 5px;
+        right: 110px;
         padding: 10px 20px;
         font-size: 16px;
         text-align: center;
@@ -128,12 +125,12 @@
     }
 
     .product-link {
-        color: #007bff; /* 링크 색상 */
+        color: #007bff;
         cursor: pointer;
     }
 
     .product-link:hover {
-        color: #0056b3; /* 호버 시 링크 색상 변경 */
+        color: #0056b3;
         text-decoration: underline;
     }
 

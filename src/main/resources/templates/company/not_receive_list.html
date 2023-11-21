@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <!-- 메타태그 및 스타일 -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body class="quote-list">
@@ -35,12 +34,10 @@
 
 <script>
     $(document).ready(function() {
-        // Search button click event
         $("#searchButton").click(function() {
             performSearch();
         });
 
-        // Enter key press event in the search input field
         $("#searchInput").keypress(function(event) {
             if (event.which === 13) {
                 performSearch();
@@ -97,8 +94,8 @@
     .quote-button {
         display: inline-block;
         position: absolute;
-        top: 5px; /* 조정 필요 */
-        right: 110px; /* 조정 필요 */
+        top: 5px;
+        right: 110px;
         padding: 10px 20px;
         font-size: 16px;
         text-align: center;

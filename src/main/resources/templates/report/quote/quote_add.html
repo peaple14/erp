@@ -19,7 +19,6 @@
         <label for="company">회사 선택:</label>
         <select id="company" name="company" required>
             <option value="" selected disabled>회사 선택</option>
-            <!-- 회사 목록을 동적으로 렌더링 -->
             <th:block th:each="company : ${companies}">
                 <option th:value="${company.companyName}" th:text="${company.companyName}"></option>
             </th:block>
@@ -97,7 +96,7 @@
     <body>
     <div class="container">
 
-    </div> <!-- /container -->
+    </div>
     </body>
     </html>
 </form>
@@ -114,10 +113,10 @@
             processData: false,
             contentType: false,
             success: function(response) {
-                loadTab('quote_list'); // 페이지 변경
+                loadTab('quote_list');
             },
             error: function(error) {
-                console.error("오류 발생:", error); // 오류 시 에러를 콘솔에 출력
+                console.error("오류 발생:", error);
                 alert("견적서 추가 중 오류 발생.");
             }
         });
@@ -126,7 +125,7 @@
 
 
 <script th:inline="javascript">
-    var products = [[${products}]]; // 상품 목록 초기화
+    var products = [[${products}]];
 
     // 중복 선언을 피하기 위해 변수를 블록 스코프로 선언
     {

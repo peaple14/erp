@@ -4,7 +4,6 @@ package com.example.erp.report.entity;
 import com.example.erp.member.entity.MemberEntity;
 import com.example.erp.product.entity.ProductEntity;
 import com.example.erp.report.dto.ExpendDto;
-import com.example.erp.report.dto.QuoteDto;
 import lombok.Data;
 
 import javax.persistence.*;

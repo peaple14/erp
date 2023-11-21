@@ -8,14 +8,14 @@
 <body class="write-problem">
 <div class="problem-form">
     <h1 class="problem-title">글쓰기</h1>
-    <form action="/problem_ok" method="post"> <!-- 수정된 부분 -->
+    <form action="/problem_ok" method="post">
         <hr>
         <div class="form-group">
-            <label for="problemTitle"></label> <!-- 수정된 부분 -->
+            <label for="problemTitle"></label>
             <input type="text" id="problemTitle" name="problemTitle" required placeholder="제목을 입력하세요." style="width: calc(100% - 22px);">
         </div>
         <div class="form-group">
-            <label for="problemMemo"></label> <!-- 수정된 부분 -->
+            <label for="problemMemo"></label>
             <textarea id="problemMemo" name="problemMemo" rows="4" required placeholder="내용을 입력하세요." style="width: calc(100% - 22px);"></textarea>
         </div>
         <div class="button-container">
@@ -28,7 +28,6 @@
 </html>
 
 <script>
-    // autoresize.js
 
     function autoResize(element) {
         element.style.height = "auto";
@@ -48,7 +47,6 @@
 </script>
 
 <style>
-    /* 글쓰기 페이지 스타일 */
 
     body.write-problem {
         font-family: Arial, sans-serif;

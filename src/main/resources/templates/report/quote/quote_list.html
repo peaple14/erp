@@ -57,7 +57,7 @@
             </td>
             <td>
                 <a th:if="${quote.checkmember == null}" th:onclick="'javascript:performAjaxCheck(' + ${quote.id} + ')'"
-                   class="quote-check-button btn btn-success">결제 완료</a>
+                   class="product-link">결제 완료</a>
             </td>
 
             <td>
@@ -68,7 +68,7 @@
                     <button class="sendDelivery" data-action="2" th:attr="data-quote-id=${quote.id}">배송완료</button>
                 </th:block>
                 <th:block th:if="${quote.location == 2}">
-                    <p>이미배송된상품</p>
+                    <p>배송완료된상품</p>
                 </th:block>
             </td>
         </tr>
@@ -105,7 +105,7 @@
                 company_id: companyId,
             };
 
-            console.log("보낼 데이터:", data); // 데이터를 콘솔에 출력
+            console.log("보낼 데이터:", data);
 
             $.ajax({
                 url: "/delievery_quote",
@@ -113,24 +113,22 @@
                 contentType: "application/json",
                 data: JSON.stringify(data),
                 success: function(response) {
-                    console.log("서버 응답:", response); // 성공 시 응답을 콘솔에 출력
+                    console.log("서버 응답:", response);
                     alert("처리가 완료.");
                     loadTab('quote_list');
                 },
                 error: function(error) {
-                    console.error("오류 발생:", error); // 오류 시 에러를 콘솔에 출력
+                    console.error("오류 발생:", error);
                     alert("처리중 오류발생.");
                 }
             });
         });
     });
     $(document).ready(function() {
-        // Search button click event
         $("#searchButton").click(function() {
             performSearch();
         });
 
-        // Enter key press event in the search input field
         $("#searchInput").keypress(function(event) {
             if (event.which === 13) {
                 performSearch();
@@ -155,7 +153,6 @@
 
 
 <style>
-    /* 견적서 리스트 페이지 스타일 */
 
     body.quote-list {
         font-family: Arial, sans-serif;
@@ -195,8 +192,8 @@
     .quote-button {
         display: inline-block;
         position: absolute;
-        top: 5px; /* 조정 필요 */
-        right: 110px; /* 조정 필요 */
+        top: 5px;
+        right: 110px;
         padding: 10px 20px;
         font-size: 16px;
         text-align: center;
@@ -217,12 +214,12 @@
         margin-right: 10px;
     }
     .product-link {
-        color: #007bff; /* 링크 색상 */
+        color: #007bff;
         cursor: pointer;
     }
 
     .product-link:hover {
-        color: #0056b3; /* 호버 시 링크 색상 변경 */
+        color: #0056b3;
         text-decoration: underline;
     }
 

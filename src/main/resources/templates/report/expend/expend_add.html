@@ -19,7 +19,6 @@
         <label for="company">회사 선택:</label>
         <select id="company" name="company" required>
             <option value="" selected disabled>회사 선택</option>
-            <!-- 회사 목록을 동적으로 렌더링 -->
             <th:block th:each="company : ${companies}">
                 <option th:value="${company.companyName}" th:text="${company.companyName}"></option>
             </th:block>
@@ -100,7 +99,7 @@
             processData: false,
             contentType: false,
             success: function(response) {
-                loadTab('expend_list'); // 페이지 변경
+                loadTab('expend_list');
             },
             error: function(error) {
                 console.error("오류 발생:", error);

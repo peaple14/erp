@@ -1,7 +1,6 @@
 package com.example.erp.index;
 
 import com.example.erp.report.dto.QuoteDto;
-import com.example.erp.report.entity.QuoteEntity;
 import com.example.erp.report.service.QuoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

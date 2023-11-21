@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>제품 추가</title>
 
-    <!-- jQuery 및 jQuery UI 스크립트 및 스타일 시트 포함 -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -27,7 +26,6 @@
     </div>
     <div class="form-group">
         <label for="makecompany">제조업체:</label>
-        <!-- 드롭다운 목록 -->
         <select id="makecompany" name="makecompany" required>
             <option value="" selected disabled>제조업체 선택</option>
             <th:block th:each="company : ${companies}">
@@ -39,7 +37,6 @@
         <label for="makeday">제조년도:</label>
         <input type="month" id="makeday" name="makeday" required>
     </div>
-    <!-- hidden 필드로 선택한 회사의 id를 보냅니다 -->
     <input type="hidden" id="selectedCompanyId" name="selectedCompanyId">
     <div class="button-container">
         <button type="button" onclick="submitForm()">저장</button>

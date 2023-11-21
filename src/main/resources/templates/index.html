@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ERP 시스템</title>
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/tabs.css"> <!-- 추가된 CSS 파일 -->
+    <link rel="stylesheet" href="css/tabs.css">
     <script th:if="${authority eq 'ADMIN'}">
         const eventSource = new EventSource('http://localhost:8080/subscribe/1');
 
@@ -41,9 +41,7 @@
 
 </head>
 <body>
-<!-- 네비게이션 바 -->
 <nav class="navbar">
-    <!-- 네비게이션 링크들 추가 -->
     <ul class="nav-links">
         <li class="company-name">ERP wizard</li>
         <li><a href="#" onclick="changeSidebar('menu1')">제품</a></li>
@@ -55,21 +53,17 @@
     </ul>
 </nav>
 
-<!-- 왼쪽 사이드바 -->
 <aside class="sidebar" id="sidebar">
-    <!-- 기본 사이드바 내용 -->
     <ul class="sidebar-links">
         <li><a href="#" onclick="addTab('제품관리','/product_list')">제품관리</a></li>
     </ul>
 </aside>
 
-<!-- 오른쪽 메인 화면 -->
 <main class="main-content" id="mainContent">
-    <!-- 메인 컨텐츠 내용 추가 -->
     <div id="tabs" class="tabs-container"></div>
     <div id="tabContents" class="tab-contents"></div>
 </main>
-<script src="js/tabs.js"></script> <!-- 추가된 JavaScript 파일 -->
+<script src="js/tabs.js"></script>
 
 <script>
     var selectedTabId = '';
@@ -79,9 +73,9 @@
 <style>
     .notification {
         position: fixed;
-        top: 120px; /* 네비게이션 바의 하단에 정렬하려면 조절 필요 */
+        top: 120px;
         right: 20px;
-        background-color: #28a745; /* 알림 배경색 */
+        background-color: #28a745;
         color: #fff;
         padding: 10px;
         border-radius: 5px;
