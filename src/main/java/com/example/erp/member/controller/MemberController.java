@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import javax.servlet.http.HttpSession;
@@ -24,13 +25,13 @@ public class MemberController {
 
     //로그인폼
     @GetMapping("/")
-    public String login(){
+    public String login() {
         return "/login";    //첫로그인화면으로
     }
 
     //로그인시도
     @PostMapping("main")
-    public String logins(@ModelAttribute LoginDto loginDto, HttpSession session, BindingResult bindingResult, Model model){
+    public String logins(@ModelAttribute LoginDto loginDto, HttpSession session, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {//에러날시
             return "redirect:/main"; //첫화면으로
         }
@@ -59,5 +60,6 @@ public class MemberController {
         session.invalidate(); //세션타임아웃시간 기본 30분
         return "redirect:index";
     }
+
 
 }
