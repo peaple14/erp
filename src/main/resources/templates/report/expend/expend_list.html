@@ -56,7 +56,7 @@
                        onclick="loadTab(this.getAttribute('ad'))">수정</a></span>
             </td>
             <td>
-                <a th:if="${expend.checkmember == null}" th:href="@{'/expend_check_ok/' + ${expend.id}}"
+                <a th:if="${expend.checkmember == null}" th:onclick="'javascript:performAjaxCheck(' + ${expend.id} + ')'"
                    class="expend-check-button btn btn-success">결제 완료</a>
             </td>
 
@@ -74,6 +74,23 @@
 </div>
 </body>
 </html>
+<script th:inline="javascript">
+    function performAjaxCheck(expendId) {
+        $.ajax({
+            url: "/expend_check_ok/" + expendId,
+            type: "GET",
+            success: function(response) {
+                loadTab('expend_list');
+            },
+            error: function(error) {
+                console.error("오류 발생:", error);
+                alert("결제 처리 중 오류 발생.");
+            }
+        });
+    }
+</script>
+
+
 
 <script>
     $(document).ready(function() {
@@ -96,8 +113,7 @@
                 success: function(response) {
                     console.log("서버 응답:", response); // 성공 시 응답을 콘솔에 출력
                     alert("처리가 완료.");
-                    location.reload(); // 페이지 새로고침
-                },
+                    loadTab('expend_list');                },
                 error: function(error) {
                     console.error("오류 발생:", error); // 오류 시 에러를 콘솔에 출력
                     alert("처리중 오류발생.");
