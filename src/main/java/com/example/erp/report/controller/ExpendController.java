@@ -57,6 +57,7 @@ public class ExpendController {
     }
 
     @PostMapping("/expend_add")
+    @ResponseBody
     public String expendAdd(@ModelAttribute ExpendDto expendDto, HttpSession session) throws IOException {
         UploadFile attachFile = fileStore.storeFile(expendDto.getAttachFile());
         if (attachFile != null) {

@@ -53,6 +53,7 @@ public class QuoteDto {
         quoteDto.setCreatedat(quoteEntity.getCreatedAt());
         quoteDto.setLocation(quoteEntity.getLocation());
         quoteDto.setCheckmember(quoteEntity.getCheckmember());
+        quoteDto.setEndat(quoteEntity.getEndAt());
         quoteDto.setWriter(quoteEntity.getMember());
         quoteDto.setGopostcode(quoteEntity.getGopostcode());
         quoteDto.setGoroadAddress(quoteEntity.getGoroadAddress());
