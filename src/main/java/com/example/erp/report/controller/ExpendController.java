@@ -147,22 +147,17 @@ public class ExpendController {
 
         if (expendDto != null) {
             expendDto.setLocation(location);
-            if (expendDto.getLocation() == 1 && expendDto.getProduct().getCount()<expendDto.getQuantity()) { //배송해야하는데 재고량보다 작을시
-                return ResponseEntity.badRequest().body("배송할 제품의 재고량이 주문량보다 적습니다.");
-            }
             if (expendDto.getLocation() == 2) { //배송완료를 눌렀을시
                 expendDto.setEndat(LocalDate.now()); //배송완료시간기록
+                productService.countupdate(expendDto.getProduct().getId(),expendDto.getQuantity());
                 expendService.update((int) companyId, expendDto);
                 return ResponseEntity.ok("배송 처리가 확인 되었습니다.");
             }
-            //배송출발을 눌렀을시
-            productService.countupdate(expendDto.getProduct().getId(),-expendDto.getQuantity());
-            expendService.update((int) companyId, expendDto);
-            return ResponseEntity.ok("배송 처리가 확인 되었습니다.");
         } else {
             return ResponseEntity.badRequest().body("배송 처리에 실패했습니다.");
 
         }
+        return ResponseEntity.badRequest().body("배송 처리에 실패했습니다.");
     }
 
     @GetMapping("/attach/expend/{itemId}")

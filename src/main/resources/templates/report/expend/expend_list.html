@@ -59,7 +59,6 @@
                 <a th:if="${expend.checkmember == null}" th:onclick="'javascript:performAjaxCheck(' + ${expend.id} + ')'"
                    class="expend-check-button btn btn-success">결제 완료</a>
             </td>
-
             <td>
                 <th:block th:if="${expend.location == 0}">
                     <button class="sendDelivery" data-action="2" th:attr="data-expend-id=${expend.id}">배송완료</button>
