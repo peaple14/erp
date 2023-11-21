@@ -1,101 +1,23 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>지출결의서 수정</title>
-    <style>
-        /* 견적서 수정 페이지 스타일 */
-        body.expend-edit {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-
-        .expend-edit h1 {
-            font-size: 24px;
-            margin: 0 0 20px 0;
-        }
-
-        .expend-edit form {
-            background-color: #fff;
-            padding: 20px;
-            margin-top: 20px;
-            border-radius: 5px;
-            max-width: 400px;
-            margin: 0 auto;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        input[type="text"],
-        select,
-        input[type="number"],
-        input[type="date"],
-        input[type="button"] {
-            width: calc(100% - 22px);
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
-
-        .button-container {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-        }
-
-        .edit-button {
-            padding: 10px 20px;
-            font-size: 15px;
-            text-align: center;
-            text-decoration: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-        }
-
-        .edit-button:hover {
-            background-color: #0056b3;
-        }
-
-        .back-link {
-            text-decoration: none;
-            color: #007bff;
-            font-size: 16px;
-        }
-
-        .back-link:hover {
-            text-decoration: underline;
-        }
-    </style>
+    <title>견적서 수정</title>
     <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=520eefe9a26b8b1ec6d77a0a8d0a439d"></script>
 </head>
-<body class="expend-edit"> <!-- 클래스 변경 -->
-<form action="/expend_edit_ok" method="post" enctype="multipart/form-data">
-    <h1>지출결의서 수정</h1>
-    <hr>
+<body class="company-edit">
+<form id="expendEditForm" action="/expend_edit_ok" method="post" class="edit-form" enctype="multipart/form-data">
     <input type="hidden" id="id" name="id" th:value="${expendDto.id}">
     <input type="hidden" id="checkmember" name="checkmember" th:value="${expendDto.checkmember}" />
-    <div>
-        <label for="expendname">지출결의서 이름:</label>
+    <h1>견적서 수정</h1>
+    <hr>
+    <div class="form-group">
+        <label for="expendname"><strong>견적서 이름:</strong></label>
         <input type="text" id="expendname" name="expendname" th:value="${expendDto.expendname}" required>
     </div>
-    <div>
-        <label for="expendDto.company">회사 선택:</label>
+    <div class="form-group">
+        <label for="expendDto.company"><strong>회사 선택:</strong></label>
         <select id="expendDto.company" name="company" required style="width: 100%;">
             <option value="" selected disabled>회사 선택</option>
             <th:block th:each="product : ${products}">
@@ -103,8 +25,8 @@
             </th:block>
         </select>
     </div>
-    <div>
-        <label for="expendDto.product">제품 선택:</label>
+    <div class="form-group">
+        <label for="expendDto.product"><strong>제품 선택:</strong></label>
         <select id="expendDto.product" name="product" required style="width: 100%;">
             <option value="" selected disabled>제품 선택</option>
             <th:block th:each="product : ${products}">
@@ -112,48 +34,48 @@
             </th:block>
         </select>
     </div>
-    <div>
-        <label for="quantity">수량:</label>
+    <div class="form-group">
+        <label for="quantity"><strong>수량:</strong></label>
         <input type="number" id="quantity" name="quantity" th:value="${expendDto.quantity}" required>
     </div>
-    <div>
-        <label for="price">단위 단가:</label>
+    <div class="form-group">
+        <label for="price"><strong>단위 단가:</strong></label>
         <input type="number" id="price" name="price" th:value="${expendDto.product.price}" required>
     </div>
-    <div>
-        <label for="createdAt">일자 선택:</label>
+    <div class="form-group">
+        <label for="createdAt"><strong>일자 선택:</strong></label>
         <input type="date" id="createdAt" name="createdat" th:value="${#temporals.format(expendDto.createdat, 'yyyy-MM-dd')}" required>
     </div>
-    <div>
-        <label for="totalprice">총 단가:</label>
+    <div class="form-group">
+        <label for="totalprice"><strong>총 단가:</strong></label>
         <input type="number" id="totalprice" name="totalprice" th:value="${expendDto.totalprice}" required readonly>
     </div>
-    <div>
-        <label for="gopostcode">출발우편번호:</label>
+    <div class="form-group">
+        <label for="gopostcode"><strong>출발우편번호:</strong></label>
         <input type="text" id="gopostcode" name="gopostcode" placeholder="우편번호" th:value="${expendDto.gopostcode}" readonly>
         <input type="button" onclick="execDaumPostcode('go')" value="출발우편번호 찾기" required style="width: 100%; cursor: pointer;">
     </div>
-    <div>
-        <label for="goroadAddress">출발도로명주소:</label>
+    <div class="form-group">
+        <label for="goroadAddress"><strong>출발도로명주소:</strong></label>
         <input type="text" id="goroadAddress" name="goroadAddress" placeholder="도로명주소" th:value="${expendDto.goroadAddress}" readonly>
         <span id="guide" style="color:#999;display:none"></span>
     </div>
-    <div>
-        <label for="godetailAddress">출발상세주소:</label>
+    <div class="form-group">
+        <label for="godetailAddress"><strong>출발상세주소:</strong></label>
         <input type="text" id="godetailAddress" name="godetailAddress" placeholder="상세주소" th:value="${expendDto.godetailAddress}">
     </div>
-    <div>
-        <label for="endpostcode">도착우편번호:</label>
+    <div class="form-group">
+        <label for="endpostcode"><strong>도착우편번호:</strong></label>
         <input type="text" id="endpostcode" name="endpostcode" placeholder="우편번호" th:value="${expendDto.endpostcode}" readonly>
         <input type="button" onclick="execDaumPostcode('end')" value="도착우편번호 찾기" required style="width: 100%; cursor: pointer;">
     </div>
-    <div>
-        <label for="endroadAddress">도착도로명주소:</label>
+    <div class="form-group">
+        <label for="endroadAddress"><strong>도착도로명주소:</strong></label>
         <input type="text" id="endroadAddress" name="endroadAddress" placeholder="도로명주소" th:value="${expendDto.endroadAddress}" readonly>
         <span id="guides" style="color:#999;display:none"></span>
     </div>
-    <div>
-        <label for="enddetailAddress">도착상세주소:</label>
+    <div class="form-group">
+        <label for="enddetailAddress"><strong>도착상세주소:</strong></label>
         <input type="text" id="enddetailAddress" name="enddetailAddress" placeholder="상세주소" th:value="${expendDto.enddetailAddress}">
     </div>
 
@@ -164,16 +86,42 @@
 
     <div>
         <span>현재 첨부파일: </span>
-        <a th:if="${expendDto.uploadFileName}" th:href="|/attach/quote/${expendDto.id}|" th:text="${expendDto.uploadFileName}" id="currentFileName" />
+        <a th:if="${expendDto.uploadFileName}" th:href="|/attach/expend/${expendDto.id}|" th:text="${expendDto.uploadFileName}" id="currentFileName" />
         <button type="button" id="removeFileButton" onclick="removeFile()">x</button>
     </div>
     <input type="hidden" id="uploadFileName" name="uploadFileName" th:value="${expendDto.uploadFileName}" />
 
+
     <div class="button-container">
-        <button type="submit" class="edit-button">수정</button>
+        <button type="button" class="edit-button" onclick="submitForm()">수정</button>
         <a onclick="loadTab('expend_list')" class="back-link">뒤로 가기</a>
     </div>
+
 </form>
+
+
+<script th:inline="javascript">
+    function submitForm() {
+        var formData = new FormData(document.getElementById('expendEditForm'));
+
+        $.ajax({
+            url: "/expend_edit_ok",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                alert(response); // 성공 시 메시지 출력 (나중에 수정 가능)
+                loadTab('expend_list'); // 페이지 변경
+            },
+            error: function(error) {
+                console.error("오류 발생:", error); // 오류 시 에러를 콘솔에 출력
+                alert("견적서 수정 중 오류 발생.");
+            }
+        });
+    }
+</script>
+
 
 <script th:inline="javascript">
     function removeFile() {
@@ -183,12 +131,15 @@
         // 파일 업로드 input 초기화
         document.getElementById("attachFile").value = "";
 
-        // quoteDto.uploadFileName 값 null로 설정
+        // expendDto.uploadFileName 값 null로 설정
         document.getElementById("uploadFileName").value = null;
     }
 </script>
 
+
 <script th:inline="javascript">
+
+
     // 수량과 단위 단가가 변경될 때 총 단가를 계산
     document.getElementById("quantity").addEventListener("input", calculateTotalPrice);
     document.getElementById("price").addEventListener("input", calculateTotalPrice);
@@ -238,5 +189,83 @@
         }).open();
     }
 </script>
+<style>
+    /* 견적서 수정 페이지 스타일 */
+    body.company-edit {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    .company-edit h1 {
+        font-size: 24px;
+        margin: 0 0 20px 0;
+    }
+
+    .company-edit form {
+        background-color: #fff;
+        padding: 20px;
+        margin-top: 20px;
+        border-radius: 5px;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    select,
+    input[type="number"],
+    input[type="date"],
+    input[type="button"] {
+        width: calc(100% - 22px);
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+
+    .button-container {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
+    .edit-button {
+        padding: 10px 20px;
+        font-size: 15px;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+    }
+
+    .edit-button:hover {
+        background-color: #0056b3;
+    }
+
+    .back-link {
+        text-decoration: none;
+        color: #007bff;
+        font-size: 16px;
+    }
+
+    .back-link:hover {
+        text-decoration: underline;
+    }
+</style>
 </body>
 </html>

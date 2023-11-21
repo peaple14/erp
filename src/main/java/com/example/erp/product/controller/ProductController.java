@@ -35,22 +35,13 @@ public class ProductController {
 
     @PostMapping("/product_add")
     @ResponseBody
-    public Map<String, Object> productAdd(ProductDto productDto) {
-        /*
-        productService.save(productDto);
-        return "redirect:/product_list";
-         */
-        Map<String, Object> resultMap = new HashMap<>();
+    public String productAdd(ProductDto productDto) {
         try {
             productService.save(productDto);
-            resultMap.put("result", "OK");
-
         } catch (Exception e) {
             e.printStackTrace();
-            resultMap.put("result", "NO");
         }
-
-        return resultMap;
+        return "상품 추가 완료";
     }
 
     @GetMapping("/product_memo/{id}")
@@ -73,8 +64,9 @@ public class ProductController {
     }
 
     @PostMapping("/product_edit_ok")
+    @ResponseBody
     public String productEditOk(@RequestParam(name = "id") Long id, @ModelAttribute ProductDto productDto) {
         productService.update(id, productDto);
-        return "redirect:/product_list";
+        return "상품수정완료";
     }
 }
