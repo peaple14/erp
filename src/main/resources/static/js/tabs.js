@@ -203,3 +203,5 @@ function changeSidebar(menu) {
     }
     sidebar.innerHTML = sidebarContent;
 }
+
+

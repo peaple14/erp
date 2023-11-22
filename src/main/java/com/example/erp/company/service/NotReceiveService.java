@@ -84,8 +84,8 @@ public class NotReceiveService {
     }
 
 
-    @Scheduled(fixedRate = 5000) // 5초에 한번
-//    @Scheduled(cron = "0 0 0 * * ?")// 매일매일 하루에1번씩
+//    @Scheduled(fixedRate = 5000) // 5초에 한번
+    @Scheduled(cron = "0 0 0 * * ?")// 매일매일 하루에1번씩
     public void auto_not_receive() {
 //        notReceiveRepository.deleteAll();//중복추가 방지 -> 안들어간것만 들어가도록 수정.
 
