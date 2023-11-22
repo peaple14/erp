@@ -60,5 +60,8 @@ public class MemberController {
         return "redirect:index";
     }
 
-
+    @GetMapping("/chart")
+    public String chart(){
+        return "report/chart";
+    }
 }
