@@ -7,10 +7,25 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-<div style="width: 80%; margin: auto;">
-    <canvas id="monthlyChart" style="width: 50%; float: left;"></canvas>
 
-    <canvas id="companyChart" style="width: 50%; float: left;"></canvas>
+<div style="display: flex; width: 100%; height: 80vh;">
+    <!-- 왼쪽에 원형 그래프 -->
+    <div style="flex: 1; padding: 20px; position: relative;">
+        <canvas id="profitChart" width="400" height="400"></canvas>
+        <div id="totalSalesText" style="position: absolute; top: 52%; left: 50%; transform: translate(-50%, -50%); text-align: center; font-weight: bold; font-size: 30px"></div>
+    </div>
+
+    <!-- 오른쪽에 위아래로 나눠진 그래프 -->
+    <div style="flex: 1; display: flex; flex-direction: column; padding: 20px;">
+        <!-- 위에 선 그래프 -->
+        <div style="flex: 1;">
+            <canvas id="salesLineChart" height="200"></canvas>
+        </div>
+        <!-- 아래에 중첩 막대 그래프 -->
+        <div style="flex: 1;">
+            <canvas id="companySalesBarChart" height="200"></canvas>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -24,55 +39,153 @@
         }
     }
 
-    async function drawCharts() {
-        const chartData = await fetchData();
+    // 돈의 단위를 천 단위로 끊어서 반환
+    function formatCurrency(value) {
+        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
 
-        // 월별 판매 가격 차트
-        const monthlyLabels = chartData.map(item => item.saleday);
-        const monthlyPrices = chartData.map(item => item.price);
+    // 차트 렌더링
+    async function renderCharts() {
+        const data = await fetchData();
 
-        const monthlyCtx = document.getElementById('monthlyChart').getContext('2d');
-        const monthlyChart = new Chart(monthlyCtx, {
-            type: 'bar',
-            data: {
-                labels: monthlyLabels,
-                datasets: [{
-                    label: '판매 가격',
-                    data: monthlyPrices,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
+        // 1. 원형 그래프
+        const profitData = data.reduce((acc, entry) => {
+            acc[entry.companyname] = (acc[entry.companyname] || 0) + entry.price;
+            return acc;
+        }, {});
 
-        // 회사별 판매 비율 차트
-        const companyLabels = chartData.map(item => item.companyname);
-        const companyPrices = chartData.map(item => item.price);
+        const totalProfit = Object.values(profitData).reduce((sum, value) => sum + value, 0);
 
-        const companyCtx = document.getElementById('companyChart').getContext('2d');
-        const companyChart = new Chart(companyCtx, {
+        const profitChartCanvas = document.getElementById('profitChart').getContext('2d');
+        const totalSalesText = document.getElementById('totalSalesText');
+        new Chart(profitChartCanvas, {
             type: 'doughnut',
             data: {
-                labels: companyLabels,
+                labels: Object.keys(profitData),
                 datasets: [{
-                    data: companyPrices,
-                    backgroundColor: ['rgba(255, 99, 132, 0.8)', 'rgba(54, 162, 235, 0.8)'],
-                    borderWidth: 1
-                }]
+                    data: Object.values(profitData),
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#8A2BE2', '#7FFF00'],
+                }],
             },
-            options: {}
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                const label = context.label || '';
+                                const value = context.formattedValue || '';
+                                const percentage = ((context.parsed / totalProfit) * 100).toFixed(2);
+                                return `${label}: ${formatCurrency(value)}원 (${percentage}%)`;
+                            },
+                        },
+                    },
+                    afterDraw: function (chart) {
+                        const { ctx, chartArea } = chart;
+                        ctx.save();
+                        ctx.font = '18px Arial';
+                        ctx.fillStyle = '#000';
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        const centerX = (chartArea.left + chartArea.right) / 2;
+                        const centerY = (chartArea.top + chartArea.bottom) / 2;
+                        ctx.fillText(`총 매출: ${formatCurrency(totalProfit)}원`, centerX, centerY);
+                        ctx.restore();
+                    },
+                },
+            },
+        });
+
+        totalSalesText.innerText = `총 매출: ${formatCurrency(totalProfit)}원`;
+
+        // 2. 선 그래프
+        const monthlySalesData = data.reduce((acc, entry) => {
+            const month = parseInt(entry.saleday.split('-')[1]);
+            acc[month] = (acc[month] || 0) + entry.price;
+            return acc;
+        }, {});
+
+        const sortedMonths = Object.keys(monthlySalesData).sort((a, b) => a - b);
+
+        const salesLineChartCanvas = document.getElementById('salesLineChart').getContext('2d');
+        new Chart(salesLineChartCanvas, {
+            type: 'line',
+            data: {
+                labels: sortedMonths.map(month => `${month}월`),
+                datasets: [{
+                    label: '월별 판매 금액',
+                    data: sortedMonths.map(month => monthlySalesData[month]),
+                    fill: false,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 2,
+                }],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+            },
+        });
+
+        // 3. 중첩 막대 그래프
+        const companySalesData = data.reduce((acc, entry) => {
+            acc[entry.companyname] = acc[entry.companyname] || {};
+            acc[entry.companyname][entry.saleday] = (acc[entry.companyname][entry.saleday] || 0) + entry.count;
+            return acc;
+        }, {});
+
+        const companyColors = ['#FF6384', '#36A2EB', '#FFCE56', '#8A2BE2', '#7FFF00'];
+        const companySalesLabels = Array.from(new Set(data.map(entry => entry.saleday))).sort();
+        const companySalesDatasets = Object.keys(companySalesData).map((company, index) => ({
+            label: company,
+            data: companySalesLabels.map(month => companySalesData[company][month] || 0),
+            backgroundColor: companyColors[index % companyColors.length],
+            borderColor: 'rgba(255, 255, 255, 0.8)',
+            borderWidth: 1,
+        }));
+
+        const companySalesBarChartCanvas = document.getElementById('companySalesBarChart').getContext('2d');
+        new Chart(companySalesBarChartCanvas, {
+            type: 'bar',
+            data: {
+                labels: companySalesLabels,
+                datasets: companySalesDatasets,
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        stacked: true,
+                    },
+                    y: {
+                        stacked: true,
+                    },
+                },
+                plugins: {
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        callbacks: {
+                            label: function (context) {
+                                const company = context.dataset.label || '';
+                                const entry = companySalesData[company][context.label] || {};
+                                const productInfoText = Object.entries(entry)
+                                    .filter(([product, count]) => count > 0)
+                                    .map(([product, count]) => `${product}: ${count}개`)
+                                    .join('\n');
+                                return `${company}\n${productInfoText}`;
+                            },
+                        },
+                    },
+                },
+            },
         });
     }
 
-    drawCharts();
+    // 페이지 로드 시 차트 렌더링
+    window.onload = renderCharts;
 </script>
+
 </body>
 </html>

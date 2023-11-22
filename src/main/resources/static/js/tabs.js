@@ -68,6 +68,7 @@ function loadTab(pageUrl, tabId, tabIdx) {
 
                     // 페이지가 로드되었음을 표시하고 저장
                     loadedPages[tabId] = html_dom.body;
+                    renderCharts();
                 })
             });
     }
@@ -190,18 +191,18 @@ function changeSidebar(menu) {
         sidebarContent = `
                     <ul class="sidebar-links">
                         <li><a href="#" onclick="addTab('주문현황','/go_order_list')">주문현황</a></li>
-                        <li><a href="#" onclick="addTab('주문완료', '/end_order_list')">주문완료</a></li>
+                        <li><a href="#" onclick="addTab('주문완료', '/quote_end_order_list')">주문완료</a></li>
                     </ul>
                 `;
     } else if (menu === 'menu5') {
         sidebarContent = `
                     <ul class="sidebar-links">
                         <li><a href="#" onclick="addTab('공지사항','/notice_list')">공지사항</a></li>
+                        <li><a href="#" onclick="addTab('현황판','/chart')">현황판</a></li>
                         <li><a href="#" onclick="addTab('고객불만접수','/problem_list')">고객불만접수</a></li>
                     </ul>
                 `;
     }
     sidebar.innerHTML = sidebarContent;
 }
-
-
+addTab('현황판','/chart')
