@@ -49,10 +49,12 @@ public class QuoteController {
     //견적서추가
     @GetMapping("/quote_add")
     public String quoteAdd(Model model) {
-        List<ProductEntity> products = quoteService.getAllProducts();
-        System.out.println(products);
+        List<ProductEntity> filteredProducts = quoteService.getFilteredProducts();
+        System.out.println(filteredProducts);
+
         model.addAttribute("quoteDto", new QuoteDto());
-        model.addAttribute("products", products);
+        model.addAttribute("products", filteredProducts);
+
         return "report/quote/quote_add";
     }
 

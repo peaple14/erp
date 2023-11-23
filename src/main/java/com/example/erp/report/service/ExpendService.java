@@ -54,9 +54,13 @@ public class ExpendService {
 
     //모든 회사 조회후 추가창에 넣기
     @Transactional
-    public List<CompanyEntity> getAllCompanies() {
-        List<CompanyEntity> sendCompanies = companyRepository.findByStatus("send"); //발주회사만 표시
-        return sendCompanies;
+    public List<ProductEntity> getFilteredProducts() {
+        List<ProductEntity> products = getAllProducts();
+        List<ProductEntity> filteredProducts = products.stream()
+                .filter(product -> "receive".equals(product.getCompany().getStatus()))
+                .collect(Collectors.toList());
+
+        return filteredProducts;
     }
 
     //모든 상품 조회

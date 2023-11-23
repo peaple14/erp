@@ -5,7 +5,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>배송중 리스트</title>
-  <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=520eefe9a26b8b1ec6d77a0a8d0a439d"></script>
+
+  <script src="https://developers.Kakao.com/sdk/js/Kakao.js"></script>
+
+  <!-- Kakao 지도 SDK -->
+  <script type="text/javascript" src="https://dapi.Kakao.com/v2/maps/sdk.js?appkey=520eefe9a26b8b1ec6d77a0a8d0a439d"></script>
+
+  <!-- jQuery 로드 -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
   <style>
     #mapModal {
       display: none;
@@ -38,7 +48,6 @@
       font-weight: bold;
       color: #333;
       cursor: pointer;
-      /*x표시 보이기용*/
       z-index: 3;
     }
 
@@ -69,6 +78,7 @@
     </tr>
     </thead>
     <tbody>
+    <!-- 템플릿 엔진 (Thymeleaf)으로 생성된 내용 -->
     <tr th:each="quote, rowStat : ${quotes}">
       <td th:text="${quote.id}"></td>
       <td>
@@ -79,14 +89,14 @@
       <td th:text="${quote.totalprice}"></td>
       <td th:text="${quote.createdat}"></td>
       <td>
-        <a th:text="현재위치" href="#" th:goaddress="${quote.goroadAddress}" th:endaddress="${quote.endroadAddress}"
-           onclick="showMapModal(this.getAttribute('goaddress'), this.getAttribute('endaddress'))">현재위치</a>
+        <a th:text="현재위치" href="#" th:goaddress="${quote.goroadAddress}" th:endaddress="${quote.endroadAddress}" onclick="showMapModal(this.getAttribute('goaddress'), this.getAttribute('endaddress'))">현재위치</a>
       </td>
     </tr>
     </tbody>
   </table>
 </div>
 
+<!-- 지도 모달 -->
 <div id="mapModal" onclick="closeMapModal()">
   <div id="mapContainer" onclick="event.stopPropagation();">
     <span class="close" onclick="closeMapModal()">&times;</span>
@@ -95,13 +105,23 @@
   </div>
 </div>
 
-<script th:inline="javascript">
-  function showMapModal(startAddress, endAddress) {
+<style>
+  #map {
+    width: 100%;
+    height: 400px;
+  }
+</style>
+</body>
 
+</html>
+<script>
+  // 지도 모달을 보여주는 함수
+  function showMapModal(startAddress, endAddress) {
     document.getElementById('mapModal').style.display = 'block';
 
     const REST_API_KEY = '61179dca181c32e776412ff335b7c5dc';
 
+    // 주소를 좌표로 변환하는 함수
     function fetchAndInitializeMap(address, callback) {
       fetch(`https://dapi.kakao.com/v2/local/search/address.json?query=${encodeURIComponent(address)}`, {
         method: 'GET',
@@ -125,6 +145,7 @@
               });
     }
 
+    // 현재 위치를 보여주는 마커를 추가하는 함수
     function showMyLocationMarker(map) {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (position) {
@@ -144,6 +165,7 @@
       }
     }
 
+    // 출발지, 도착지, 내 위치를 표시하는 함수
     fetchAndInitializeMap(startAddress, function (startPosition) {
       fetchAndInitializeMap(endAddress, function (endPosition) {
         kakao.maps.load(() => {
@@ -159,7 +181,6 @@
           const startMarker = new kakao.maps.Marker({
             position: startPosition,
             image: new kakao.maps.MarkerImage('https://cdn3.iconfinder.com/data/icons/map-markers-1/512/market-64.png', new kakao.maps.Size(50, 50)),
-
           });
 
           startMarker.setMap(map);
@@ -179,9 +200,12 @@
     });
   }
 
+  // 지도 모달을 닫는 함수
   function closeMapModal() {
     document.getElementById('mapModal').style.display = 'none';
   }
+
+  // 검색 기능을 수행하는 함수
   $(document).ready(function() {
     // Search button click event
     $("#searchButton").click(function() {
@@ -208,14 +232,3 @@
     }
   });
 </script>
-
-
-<style>
-  #map {
-    width: 100%;
-    height: 400px;
-  }
-</style>
-</body>
-
-</html>
