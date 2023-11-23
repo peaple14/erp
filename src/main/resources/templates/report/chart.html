@@ -135,7 +135,7 @@
         }, {});
 
         const companyColors = ['#FF6384', '#36A2EB', '#FFCE56', '#8A2BE2', '#7FFF00'];
-        const companySalesLabels = Array.from(new Set(data.map(entry => entry.saleday))).sort();
+        const companySalesLabels = Array.from(new Set(data.map(entry => entry.saleday))).sort(); // 정렬 추가
         const companySalesDatasets = Object.keys(companySalesData).map((company, index) => ({
             label: company,
             data: companySalesLabels.map(month => companySalesData[company][month] || 0),
@@ -167,14 +167,21 @@
                         mode: 'index',
                         intersect: false,
                         callbacks: {
+                            // 툴팁에 표시될 내용 설정
                             label: function (context) {
-                                const company = context.dataset.label || '';
-                                const entry = companySalesData[company][context.label] || {};
-                                const productInfoText = Object.entries(entry)
-                                    .filter(([product, count]) => count > 0)
+                                const label = context.dataset.label;
+                                const productInfo = data
+                                    .filter(entry => entry.companyname === label && entry.saleday === companySalesLabels[context.dataIndex])
+                                    .reduce((acc, entry) => {
+                                        acc[entry.productname] = (acc[entry.productname] || 0) + entry.count;
+                                        return acc;
+                                    }, {});
+
+                                const productInfoText = Object.entries(productInfo)
                                     .map(([product, count]) => `${product}: ${count}개`)
                                     .join('\n');
-                                return `${company}\n${productInfoText}`;
+
+                                return productInfoText;
                             },
                         },
                     },
@@ -182,6 +189,7 @@
             },
         });
     }
+
 
     // 페이지 로드 시 차트 렌더링
     window.onload = renderCharts;
