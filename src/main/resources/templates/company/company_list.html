@@ -16,9 +16,9 @@
             <th>회사 이름</th>
             <th>회사 대표</th>
             <th>거래처 연락처</th>
-            <th>상태</th>
-            <th>받을 돈</th>
-            <th>입금액</th>
+            <th>거래처 구분</th>
+            <th>받을 돈/지출금액</th>
+            <th>입금액/지출액</th>
             <th></th>
         </tr>
         </thead>
@@ -31,10 +31,13 @@
             </td>
             <td th:text="${company.companyVip}"></td>
             <td th:text="${company.companyTel}"></td>
-            <td th:text="${company.status}"></td>
-            <td th:text="${company.money}"></td>
             <td>
-                <input type="text" class="paymentAmount" data-company-id="${company.id}" placeholder="입금액">
+                <span th:if="${company.status == 'send'}">수주회사</span>
+                <span th:if="${company.status == 'receive'}">발주회사</span>
+            </td>            <td th:text="${company.money}"></td>
+            <td>
+                <input type="text" class="paymentAmount" data-company-id="${company.id}"
+                       th:placeholder="${company.status == 'send' ? '입금액' : '지불액'}">
                 <button class="sendPayment">입금</button>
             </td>
         </tr>
@@ -43,19 +46,16 @@
 </div>
 <script>
     $(document).ready(function() {
-        // Search button click event
         $("#searchButton").click(function() {
             performSearch();
         });
 
-        // Enter key press event in the search input field
         $("#searchInput").keypress(function(event) {
             if (event.which === 13) {
                 performSearch();
             }
         });
 
-        // Event delegation for the sendPayment button
         $(".quote-table").on("click", ".sendPayment", function() {
             var money = $(this).closest("tr").find(".paymentAmount").val();
             var companyId = $(this).closest("tr").find("td#company_id").text(); // 해당 행의 ID 값을 가져옵니다.
@@ -84,7 +84,6 @@
             });
         });
 
-        // Function to perform the search
         function performSearch() {
             var searchTerm = $("#searchInput").val().toLowerCase();
             $(".quote-table tbody tr").each(function() {
@@ -112,7 +111,7 @@
 
     .quote-container {
         background-color: #fff;
-        margin: 0 auto; /* 수평 가운데 정렬을 위한 스타일 */
+        margin: 0 auto;
         padding: 0;
         text-align: center;
     }
