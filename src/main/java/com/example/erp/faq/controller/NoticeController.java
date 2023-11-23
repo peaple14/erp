@@ -36,11 +36,12 @@ public class NoticeController {
 
     //글추가 처리 -> 권한이 admin일때만 되도록.
     @PostMapping("/notice_ok")
+    @ResponseBody
     public String notice_ok(@ModelAttribute NoticeDto noticeDTO, HttpSession session) throws IOException {
         System.out.println("세션내용:" +  session.getAttribute("loginId"));
         noticeDTO.setWriter(session.getAttribute("loginId").toString());
         noticeSerivce.save(noticeDTO); //writer은 session에서 받아욜 예정
-        return "redirect:/notice_list";
+        return "공지사항 추가 완료.";
     }
 
 
@@ -60,10 +61,11 @@ public class NoticeController {
 
     //글수정 처리
     @PostMapping("/notice_edit_ok")
+    @ResponseBody
     public String edit_ok(@RequestParam(name = "id") Long id, @ModelAttribute NoticeDto noticeDto){
 
         noticeSerivce.update(id,noticeDto);
-        return "redirect:notice_list";
+        return "공지사항 수정 완료";
     }
 
 

@@ -8,7 +8,7 @@
 <body class="write-notice">
 <div class="notice-form">
     <h1 class="notice-title">글쓰기</h1>
-    <form action="/notice_ok" method="post" enctype="multipart/form-data">
+    <form id="noticeForm" action="/notice_ok" method="post" enctype="multipart/form-data">
         <hr>
         <div class="form-group">
             <label for="noticeTitle"></label>
@@ -19,13 +19,36 @@
             <textarea id="noticeMemo" name="noticeMemo" rows="4" required placeholder="내용을 입력하세요." style="width: calc(100% - 22px);"></textarea>
         </div>
         <div class="button-container">
+            <button type="button" onclick="submitForm()">저장</button>
             <button type="button" class="cancel-button" onclick="loadTab('notice_list')">취소</button>
-            <button type="submit" class="save-button" onclick="loadTab('notice_list')">저장</button>
         </div>
     </form>
 </div>
 </body>
 </html>
+
+<script>
+    function submitForm() {
+        var formData = new FormData(document.getElementById('noticeForm'));
+
+        $.ajax({
+            url: "/notice_ok",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                loadTab('notice_list');
+            },
+            error: function(error) {
+                console.error("오류 발생:", error);
+                alert("공지사항 추가 중 오류 발생.");
+            }
+        });
+    }
+</script>
+
+
 
 <script>
 

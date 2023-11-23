@@ -8,7 +8,7 @@
 <body class="write-problem">
 <div class="problem-form">
     <h1 class="problem-title">글쓰기</h1>
-    <form action="/problem_ok" method="post">
+    <form id="problemForm" action="/problem_ok" method="post">
         <hr>
         <div class="form-group">
             <label for="problemTitle"></label>
@@ -19,13 +19,34 @@
             <textarea id="problemMemo" name="problemMemo" rows="4" required placeholder="내용을 입력하세요." style="width: calc(100% - 22px);"></textarea>
         </div>
         <div class="button-container">
+            <button type="button" onclick="submitForm()">저장</button>
             <button type="button" class="cancel-button" onclick="loadTab('problem_list')">취소</button>
-            <button type="submit" class="save-button">저장</button>
         </div>
     </form>
 </div>
 </body>
 </html>
+
+<script>
+    function submitForm() {
+        var formData = new FormData(document.getElementById('problemForm'));
+
+        $.ajax({
+            url: "/problem_ok",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                loadTab('problem_list');
+            },
+            error: function(error) {
+                console.error("오류 발생:", error);
+                alert("고객불만접수 추가 중 오류 발생.");
+            }
+        });
+    }
+</script>
 
 <script>
 
