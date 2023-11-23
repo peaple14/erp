@@ -6,8 +6,10 @@ import com.example.erp.company.repository.CompanyRepository;
 import com.example.erp.company.service.CompanyService;
 import com.example.erp.member.entity.MemberEntity;
 import com.example.erp.member.repository.MemberRepository;
+import com.example.erp.product.dto.ProductDto;
 import com.example.erp.product.entity.ProductEntity;
 import com.example.erp.product.repository.ProductRepository;
+import com.example.erp.product.service.ProductService;
 import com.example.erp.report.dto.QuoteDto;
 import com.example.erp.report.entity.QuoteEntity;
 import com.example.erp.report.repository.QuoteRepository;
@@ -29,6 +31,7 @@ public class QuoteService {
     private final ProductRepository productRepository;
     private final MemberRepository memberRepository;
     private final CompanyService companyService;
+    private final ProductService productService;
 
     //견적서조회
     @Transactional
@@ -51,14 +54,15 @@ public class QuoteService {
         return goQuotes;
     }
 
-
     //모든 회사 조회후 추가창에 넣기
     @Transactional
-    public List<CompanyEntity> getAllCompanies() {
-        List<CompanyEntity> receivedCompanies = companyRepository.findByStatus("receive"); //수주회사만 표시
-        List<CompanyEntity> sendCompanies = companyRepository.findByStatus("send"); //발주회사만 표시
+    public List<ProductEntity> getFilteredProducts() {
+        List<ProductEntity> products = getAllProducts();
+        List<ProductEntity> filteredProducts = products.stream()
+                .filter(product -> "send".equals(product.getCompany().getStatus()))
+                .collect(Collectors.toList());
 
-        return receivedCompanies;
+        return filteredProducts;
     }
 
     //모든 상품 조회
