@@ -6,43 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>주문완료 리스트</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-    }
-
-    .quote-container {
-      margin: 50px;
-    }
-
-    .quote-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-
-    .quote-table th, .quote-table td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: left;
-    }
-
-    .quote-table th {
-      background-color: #343a40;
-      color: white;
-    }
-
-    .quote-table tbody tr:hover {
-      background-color: #f5f5f5;
-    }
-  </style>
 </head>
 
 <body class="quote-list">
-<div class="container">
   <div class="quote-container">
-    <h1 class="text-center text-dark">주문완료 리스트</h1>
+    <h1 class="text-center text-dark">주문완료 리스트<input type="text" id="searchInput" placeholder="검색어를 입력하세요"></h1>
     <table class="table table-hover quote-table">
       <thead class="thead-dark">
       <tr>
@@ -68,7 +36,74 @@
       </tbody>
     </table>
   </div>
-</div>
 </body>
-
 </html>
+
+<script>
+
+  $(document).ready(function() {
+    $("#searchButton").click(function() {
+      performSearch();
+    });
+
+    $("#searchInput").keypress(function(event) {
+      if (event.which === 13) {
+        performSearch();
+      }
+    });
+
+    function performSearch() {
+      var searchTerm = $("#searchInput").val().toLowerCase();
+      $(".quote-table tbody tr").each(function() {
+        var rowText = $(this).text().toLowerCase();
+        if (rowText.includes(searchTerm)) {
+          $(this).show();
+        } else {
+          $(this).hide();
+        }
+      });
+    }
+  });
+</script>
+
+<style>
+  body.quote-list {
+    font-family: Arial, sans-serif;
+    position: relative;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+  }
+
+  .quote-container {
+    background-color: #fff;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+  }
+
+
+  .quote-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .quote-table th, .quote-table td {
+    border-bottom: 1px solid #dddddd;
+    padding: 10px;
+    text-align: left;
+  }
+
+  .quote-table th {
+    background-color: #f0f0f0;
+  }
+
+  #searchInput {
+    position: absolute;
+    top: 5px;
+    right: 250px;
+    font-size: 16px;
+    width: 300px;
+    height: 34px;
+  }
+</style>

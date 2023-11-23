@@ -191,7 +191,8 @@ function changeSidebar(menu) {
         sidebarContent = `
                     <ul class="sidebar-links">
                         <li><a href="#" onclick="addTab('주문현황','/go_order_list')">주문현황</a></li>
-                        <li><a href="#" onclick="addTab('주문완료', '/quote_end_order_list')">주문완료</a></li>
+                        <li><a href="#" onclick="addTab('수주', '/quote_end_order_list')">수주</a></li>
+                        <li><a href="#" onclick="addTab('발주', '/expend_end_order_list')">발주</a></li>
                     </ul>
                 `;
     } else if (menu === 'menu5') {
