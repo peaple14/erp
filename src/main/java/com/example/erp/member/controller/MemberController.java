@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import javax.servlet.http.HttpSession;
@@ -50,18 +51,22 @@ public class MemberController {
     }
 
     //로그아웃
-    @PostMapping("/logout")
+    @GetMapping("/logout")
     public String logout(HttpSession session) {
         SseEmitter emitter = (SseEmitter) session.getAttribute("sseEmitter");
         if (emitter != null) {
             emitter.complete();
         }
         session.invalidate(); //세션타임아웃시간 기본 30분
-        return "redirect:index";
+        return "redirect:/";
     }
 
     @GetMapping("/chart")
     public String chart(){
         return "report/chart";
     }
+
+
+
+
 }

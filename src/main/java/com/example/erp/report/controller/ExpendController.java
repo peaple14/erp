@@ -6,6 +6,7 @@ import com.example.erp.product.service.ProductService;
 import com.example.erp.report.dto.DeliveryDto;
 
 import com.example.erp.report.dto.ExpendDto;
+import com.example.erp.report.dto.QuoteDto;
 import com.example.erp.report.dto.UploadFile;
 import com.example.erp.report.service.ExpendService;
 import com.example.erp.report.service.FileStore;
@@ -48,12 +49,14 @@ public class ExpendController {
 
     //지출결의서추가
     @GetMapping("/expend_add")
-    public String expendAdd(Model model) {
-        List<ProductEntity> products = expendService.getAllProducts();
-        System.out.println(products);
-        model.addAttribute("expendDto", new ExpendDto());
-        model.addAttribute("products", products);
-        return "report/expend/expend_add";
+    public String quoteAdd(Model model) {
+        List<ProductEntity> filteredProducts = expendService.getFilteredProducts();
+        System.out.println(filteredProducts);
+
+        model.addAttribute("quoteDto", new QuoteDto());
+        model.addAttribute("products", filteredProducts);
+
+        return "report/quote/quote_add";
     }
 
     @PostMapping("/expend_add")
