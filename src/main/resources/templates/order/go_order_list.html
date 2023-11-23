@@ -97,9 +97,9 @@
 </div>
 
 <!-- 지도 모달 -->
-<div id="mapModal" onclick="closeMapModal()">
-  <div id="mapContainer" onclick="event.stopPropagation();">
-    <span class="close" onclick="closeMapModal()">&times;</span>
+<div id="mapModal" style="display: none;" onclick="closeMapModal()">
+  <div id="mapContainer" onclick="event.stopPropagation();" style="width: 66.66%; height: 66.66%; position: fixed; top: 40%; left: 55%; transform: translate(-50%, -50%); background-color: #fefefe; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+    <span class="close" onclick="closeMapModal()" style="position: absolute; top: 10px; left: 20px; font-size: 24px; font-weight: bold; color: #333; cursor: pointer; z-index: 3;">&times;</span>
     <div id="map" style="width:100%; height:100%;"></div>
     <div id="myLocationMarker"></div>
   </div>
@@ -108,16 +108,43 @@
 <style>
   #map {
     width: 100%;
-    height: 400px;
+    height: 100%;
   }
 </style>
 </body>
-
-</html>
 <script>
+  // 검색 기능을 수행하는 함수
+  $(document).ready(function() {
+    // Search button click event
+    $("#searchButton").click(function() {
+      performSearch();
+    });
+
+    $("#searchInput").keypress(function(event) {
+      if (event.which === 13) {
+        performSearch();
+      }
+    });
+
+    function performSearch() {
+      var searchTerm = $("#searchInput").val().toLowerCase();
+      $(".quote-table tbody tr").each(function() {
+        var rowText = $(this).text().toLowerCase();
+        if (rowText.includes(searchTerm)) {
+          $(this).show();
+        } else {
+          $(this).hide();
+        }
+      });
+    }
+  });
+
   // 지도 모달을 보여주는 함수
   function showMapModal(startAddress, endAddress) {
+    console.log(document.getElementById('mapModal'));
+
     document.getElementById('mapModal').style.display = 'block';
+
 
     const REST_API_KEY = '61179dca181c32e776412ff335b7c5dc';
 
@@ -204,31 +231,6 @@
   function closeMapModal() {
     document.getElementById('mapModal').style.display = 'none';
   }
-
-  // 검색 기능을 수행하는 함수
-  $(document).ready(function() {
-    // Search button click event
-    $("#searchButton").click(function() {
-      performSearch();
-    });
-
-    // Enter key press event in the search input field
-    $("#searchInput").keypress(function(event) {
-      if (event.which === 13) {
-        performSearch();
-      }
-    });
-
-    function performSearch() {
-      var searchTerm = $("#searchInput").val().toLowerCase();
-      $(".quote-table tbody tr").each(function() {
-        var rowText = $(this).text().toLowerCase();
-        if (rowText.includes(searchTerm)) {
-          $(this).show();
-        } else {
-          $(this).hide();
-        }
-      });
-    }
-  });
 </script>
+
+</html>

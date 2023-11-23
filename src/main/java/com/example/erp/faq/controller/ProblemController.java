@@ -35,11 +35,12 @@ public class ProblemController {
 
     //글추가 처리 -> 권한이 admin일때만 되도록.
     @PostMapping("/problem_ok")
+    @ResponseBody
     public String notice_ok(@ModelAttribute ProblemDto problemDto, HttpSession session) throws IOException {
         System.out.println("세션내용:" +  session.getAttribute("loginId"));
         problemDto.setWriter(session.getAttribute("loginId").toString());
         problemService.save(problemDto); //writer은 session에서 받아욜 예정입니다.
-        return "redirect:/problem_list"; //글추가 끝나고 갈페이지입니다.
+        return "고객불만접수 추가 완료";
     }
 
 
@@ -59,10 +60,10 @@ public class ProblemController {
 
     //글수정 처리
     @PostMapping("/problem_edit_ok")
+    @ResponseBody
     public String edit_ok(@RequestParam(name = "id") Long id, @ModelAttribute ProblemDto problemDto){
-
         problemService.update(id,problemDto);
-        return "redirect:problem_list";
+        return "고객불만접수 수정 완료";
     }
 
 
