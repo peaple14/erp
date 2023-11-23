@@ -53,7 +53,10 @@
         <li><a href="#" onclick="changeSidebar('menu3')">보고서</a></li>
         <li><a href="#" onclick="changeSidebar('menu4')">주문</a></li>
         <li><a href="#" onclick="changeSidebar('menu5')">FAQ</a></li>
-        <li id="notification-icon"><a style="cursor: pointer">로그아웃</a></li>
+        <ul class="loginset">
+        <li id="user-name" th:text="${loginName}"></li>
+        <li id="notification-icon"><a href="logout" style="cursor: pointer">로그아웃</a></li>
+        </ul>
     </ul>
 </nav>
 

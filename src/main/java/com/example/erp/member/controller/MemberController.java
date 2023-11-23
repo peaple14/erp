@@ -42,6 +42,7 @@ public class MemberController {
             session.setAttribute("loginId", loginResult.getUserId());
             session.setAttribute("loginName", loginResult.getUserName());
             model.addAttribute("authority", loginResult.getUserauthority()); // 모델에 권한 추가
+            model.addAttribute("loginName", loginResult.getUserName());
             System.out.println("로그인 성공");
             return "/index";
         } else {
